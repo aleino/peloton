@@ -56,13 +56,58 @@ POSTGRES_PORT=5432
 
 ## Database Schema
 
-TBW.
+The database uses the `hsl` schema to organize HSL city bike data.
+
+### Tables
+
+#### `hsl.stations`
+
+City bike station information with geospatial data.
+
+| Column       | Type                       | Constraints                     | Description                                           |
+| ------------ | -------------------------- | ------------------------------- | ----------------------------------------------------- |
+| `station_id` | `VARCHAR(10)`              | PRIMARY KEY                     | HSL station identifier (e.g., '018', '103')           |
+| `name`       | `VARCHAR(255)`             | NOT NULL                        | Station name                                          |
+| `location`   | `GEOGRAPHY(POINT, 4326)`   |                                 | Station location as WGS84 point (longitude, latitude) |
+| `address`    | `VARCHAR(255)`             |                                 | Street address                                        |
+| `city`       | `VARCHAR(100)`             | CHECK (Helsinki, Espoo, Vantaa) | City where station is located                         |
+| `created_at` | `TIMESTAMP WITH TIME ZONE` | DEFAULT CURRENT_TIMESTAMP       | Record creation timestamp                             |
+| `updated_at` | `TIMESTAMP WITH TIME ZONE` | DEFAULT CURRENT_TIMESTAMP       | Last update timestamp (auto-updated)                  |
+
+#### `hsl.trips`
+
+Individual bike trip records (Origin-Destination data).
+
+| Column                 | Type                       | Constraints               | Description                                                 |
+| ---------------------- | -------------------------- | ------------------------- | ----------------------------------------------------------- |
+| `trip_id`              | `BIGSERIAL`                | PRIMARY KEY               | Auto-incrementing trip identifier                           |
+| `departure_time`       | `TIMESTAMP WITH TIME ZONE` | NOT NULL                  | Trip departure timestamp                                    |
+| `departure_date`       | `DATE`                     | NOT NULL                  | Departure date (denormalized for query performance)         |
+| `departure_hour`       | `INTEGER`                  | NOT NULL, 0-23            | Departure hour (denormalized for query performance)         |
+| `departure_weekday`    | `INTEGER`                  | NOT NULL, 0-6             | Departure weekday (0=Monday, 6=Sunday)                      |
+| `return_time`          | `TIMESTAMP WITH TIME ZONE` | NOT NULL                  | Trip return timestamp                                       |
+| `return_date`          | `DATE`                     | NOT NULL                  | Return date (denormalized for query performance)            |
+| `return_hour`          | `INTEGER`                  | NOT NULL, 0-23            | Return hour (denormalized for query performance)            |
+| `return_weekday`       | `INTEGER`                  | NOT NULL, 0-6             | Return weekday (0=Monday, 6=Sunday)                         |
+| `departure_station_id` | `VARCHAR(10)`              | NOT NULL, FK → stations   | Departure station reference                                 |
+| `return_station_id`    | `VARCHAR(10)`              | NOT NULL, FK → stations   | Return station reference                                    |
+| `distance_meters`      | `INTEGER`                  | NOT NULL, ≥ 0             | Trip distance in meters (can be 0 for same-station returns) |
+| `duration_seconds`     | `INTEGER`                  | NOT NULL, > 0             | Trip duration in seconds                                    |
+| `created_at`           | `TIMESTAMP WITH TIME ZONE` | DEFAULT CURRENT_TIMESTAMP | Record creation timestamp                                   |
+
+**Data Validation:**
+
+- Return time must be after departure time
+- Average speed cannot exceed 50 km/h
+- Duration must match timestamp difference (±60 seconds tolerance)
+- All hour and weekday values must be in valid ranges
 
 ## Initialization Scripts
 
 The database is initialized with scripts in `init-scripts/` directory:
 
 - `01-extensions.sql` - Enables PostGIS extension
+- `02-schema.sql` - Creates tables: `hsl.stations`, `hsl.trips`
 
 Scripts are executed in alphabetical order during first container start.
 
