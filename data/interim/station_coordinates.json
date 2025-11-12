@@ -1,0 +1,3634 @@
+{
+  "metadata": {
+    "source": "HSL Digitransit API",
+    "endpoint": "https://api.digitransit.fi/routing/v2/hsl/gtfs/v1",
+    "total_stations": 453,
+    "unmatched_count": 6
+  },
+  "stations": {
+    "A.I. Virtasen aukio": {
+      "stationId": "204",
+      "name": "A.I. Virtasen aukio",
+      "lat": 60.205577,
+      "lon": 24.962152,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Aalto-yliopisto (M), Korkeakouluaukio": {
+      "stationId": "541",
+      "name": "Aalto-yliopisto (M), Korkeakouluaukio",
+      "lat": 60.184312,
+      "lon": 24.826671,
+      "bikesAvailable": 10,
+      "spacesAvailable": 32
+    },
+    "Aalto-yliopisto (M), Tietotie": {
+      "stationId": "539",
+      "name": "Aalto-yliopisto (M), Tietotie",
+      "lat": 60.184987,
+      "lon": 24.820099,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Abraham Wetterin tie": {
+      "stationId": "258",
+      "name": "Abraham Wetterin tie",
+      "lat": 60.19270789626325,
+      "lon": 25.042580274921047,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Agnetankuja": {
+      "stationId": "254",
+      "name": "Agnetankuja",
+      "lat": 60.187234122757424,
+      "lon": 25.036412289626025,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Agronominkatu": {
+      "stationId": "241",
+      "name": "Agronominkatu",
+      "lat": 60.2340530100318,
+      "lon": 25.032857400999006,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Ahertajantie": {
+      "stationId": "523",
+      "name": "Ahertajantie",
+      "lat": 60.178766,
+      "lon": 24.798223,
+      "bikesAvailable": 1,
+      "spacesAvailable": 15
+    },
+    "Ajomiehentie": {
+      "stationId": "398",
+      "name": "Ajomiehentie",
+      "lat": 60.2388821,
+      "lon": 24.85129051,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Ala-Malmin tori": {
+      "stationId": "364",
+      "name": "Ala-Malmin tori",
+      "lat": 60.25030635,
+      "lon": 25.01323714,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Alakiventie": {
+      "stationId": "283",
+      "name": "Alakiventie",
+      "lat": 60.21985096601641,
+      "lon": 25.077470244052627,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Albertinkatu": {
+      "stationId": "068",
+      "name": "Albertinkatu",
+      "lat": 60.16185747,
+      "lon": 24.93680505,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Alppikylä": {
+      "stationId": "339",
+      "name": "Alppikylä",
+      "lat": 60.25943112,
+      "lon": 25.06489421,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Annankatu": {
+      "stationId": "049",
+      "name": "Annankatu",
+      "lat": 60.16345894291,
+      "lon": 24.94177084206,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Apollonkatu": {
+      "stationId": "036",
+      "name": "Apollonkatu",
+      "lat": 60.1760798,
+      "lon": 24.9223942,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Arabian kauppakeskus": {
+      "stationId": "137",
+      "name": "Arabian kauppakeskus",
+      "lat": 60.20292024,
+      "lon": 24.96577119,
+      "bikesAvailable": 0,
+      "spacesAvailable": 26
+    },
+    "Arabiankatu": {
+      "stationId": "138",
+      "name": "Arabiankatu",
+      "lat": 60.20649156514502,
+      "lon": 24.977079011778606,
+      "bikesAvailable": 2,
+      "spacesAvailable": 22
+    },
+    "Arielinkatu": {
+      "stationId": "125",
+      "name": "Arielinkatu",
+      "lat": 60.18592173,
+      "lon": 24.97973856,
+      "bikesAvailable": 2,
+      "spacesAvailable": 16
+    },
+    "Asentajanpuisto": {
+      "stationId": "261",
+      "name": "Asentajanpuisto",
+      "lat": 60.19912713758262,
+      "lon": 25.042592465753465,
+      "bikesAvailable": 14,
+      "spacesAvailable": 6
+    },
+    "Aulangontie": {
+      "stationId": "237",
+      "name": "Aulangontie",
+      "lat": 60.23030192663912,
+      "lon": 24.998533819860555,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Auringonkatu": {
+      "stationId": "643",
+      "name": "Auringonkatu",
+      "lat": 60.171548,
+      "lon": 24.731472,
+      "bikesAvailable": 1,
+      "spacesAvailable": 19
+    },
+    "Aurinkolahdenaukio": {
+      "stationId": "304",
+      "name": "Aurinkolahdenaukio",
+      "lat": 60.20113608,
+      "lon": 25.15011353,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Aurinkotuulenkatu": {
+      "stationId": "301",
+      "name": "Aurinkotuulenkatu",
+      "lat": 60.2027734,
+      "lon": 25.15934635,
+      "bikesAvailable": 0,
+      "spacesAvailable": 30
+    },
+    "Avaruuskatu": {
+      "stationId": "633",
+      "name": "Avaruuskatu",
+      "lat": 60.168971,
+      "lon": 24.724908,
+      "bikesAvailable": 3,
+      "spacesAvailable": 13
+    },
+    "Baana": {
+      "stationId": "029",
+      "name": "Baana",
+      "lat": 60.164088,
+      "lon": 24.9225658,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Bermudankuja": {
+      "stationId": "402",
+      "name": "Bermudankuja",
+      "lat": 60.15490426,
+      "lon": 24.91014211,
+      "bikesAvailable": 1,
+      "spacesAvailable": 14
+    },
+    "Betonimies": {
+      "stationId": "532",
+      "name": "Betonimies",
+      "lat": 60.180027,
+      "lon": 24.831804,
+      "bikesAvailable": 7,
+      "spacesAvailable": 11
+    },
+    "Brahen kenttä": {
+      "stationId": "045",
+      "name": "Brahen kenttä",
+      "lat": 60.1868618,
+      "lon": 24.9509168,
+      "bikesAvailable": 1,
+      "spacesAvailable": 20
+    },
+    "Brahen puistikko": {
+      "stationId": "117",
+      "name": "Brahen puistikko",
+      "lat": 60.1896706,
+      "lon": 24.9481024,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Cygnaeuksenkatu": {
+      "stationId": "035",
+      "name": "Cygnaeuksenkatu",
+      "lat": 60.174063715,
+      "lon": 24.92822758053,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Derby Business Park": {
+      "stationId": "902",
+      "name": "Derby Business Park",
+      "lat": 60.209017,
+      "lon": 24.835356,
+      "bikesAvailable": 1,
+      "spacesAvailable": 20
+    },
+    "Designmuseo": {
+      "stationId": "007",
+      "name": "Designmuseo",
+      "lat": 60.163151,
+      "lon": 24.945888,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Diakoniapuisto": {
+      "stationId": "046",
+      "name": "Diakoniapuisto",
+      "lat": 60.186979,
+      "lon": 24.943358,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Eerikinkatu": {
+      "stationId": "027",
+      "name": "Eerikinkatu",
+      "lat": 60.167392,
+      "lon": 24.935939,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Ehrenströmintie": {
+      "stationId": "066",
+      "name": "Ehrenströmintie",
+      "lat": 60.155309,
+      "lon": 24.9591271,
+      "bikesAvailable": 1,
+      "spacesAvailable": 20
+    },
+    "Elfvik": {
+      "stationId": "703",
+      "name": "Elfvik",
+      "lat": 60.203852,
+      "lon": 24.8231,
+      "bikesAvailable": 3,
+      "spacesAvailable": 7
+    },
+    "Elimäenkatu": {
+      "stationId": "131",
+      "name": "Elimäenkatu",
+      "lat": 60.1962627,
+      "lon": 24.9476186,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Eläinmuseo": {
+      "stationId": "032",
+      "name": "Eläinmuseo",
+      "lat": 60.1713589074265,
+      "lon": 24.9318975121428,
+      "bikesAvailable": 1,
+      "spacesAvailable": 19
+    },
+    "Erottajan aukio": {
+      "stationId": "009",
+      "name": "Erottajan aukio",
+      "lat": 60.166890083486,
+      "lon": 24.9442610720753,
+      "bikesAvailable": 2,
+      "spacesAvailable": 43
+    },
+    "Eränkävijäntori": {
+      "stationId": "264",
+      "name": "Eränkävijäntori",
+      "lat": 60.204561663649095,
+      "lon": 25.033597412211737,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Esterinportti": {
+      "stationId": "111",
+      "name": "Esterinportti",
+      "lat": 60.1975724,
+      "lon": 24.9267808,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Eteläesplanadi": {
+      "stationId": "161",
+      "name": "Eteläesplanadi",
+      "lat": 60.16723083051,
+      "lon": 24.94746581951,
+      "bikesAvailable": 1,
+      "spacesAvailable": 34
+    },
+    "Eteläinen Hesperiankatu": {
+      "stationId": "072",
+      "name": "Eteläinen Hesperiankatu",
+      "lat": 60.175586,
+      "lon": 24.915521,
+      "bikesAvailable": 1,
+      "spacesAvailable": 24
+    },
+    "Etuniementie": {
+      "stationId": "619",
+      "name": "Etuniementie",
+      "lat": 60.160645,
+      "lon": 24.724835,
+      "bikesAvailable": 7,
+      "spacesAvailable": 8
+    },
+    "Etupellonpuisto": {
+      "stationId": "374",
+      "name": "Etupellonpuisto",
+      "lat": 60.24198627,
+      "lon": 24.95944938,
+      "bikesAvailable": 1,
+      "spacesAvailable": 18
+    },
+    "Fleminginkatu": {
+      "stationId": "118",
+      "name": "Fleminginkatu",
+      "lat": 60.188154,
+      "lon": 24.952916,
+      "bikesAvailable": 0,
+      "spacesAvailable": 22
+    },
+    "Friisilänaukio": {
+      "stationId": "631",
+      "name": "Friisilänaukio",
+      "lat": 60.162842,
+      "lon": 24.721367,
+      "bikesAvailable": 14,
+      "spacesAvailable": 4
+    },
+    "Gallen-Kallelan tie": {
+      "stationId": "701",
+      "name": "Gallen-Kallelan tie",
+      "lat": 60.206142,
+      "lon": 24.840699,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Gebhardinaukio": {
+      "stationId": "119",
+      "name": "Gebhardinaukio",
+      "lat": 60.19118046,
+      "lon": 24.95507679,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Golfpolku": {
+      "stationId": "507",
+      "name": "Golfpolku",
+      "lat": 60.168143,
+      "lon": 24.796136,
+      "bikesAvailable": 2,
+      "spacesAvailable": 14
+    },
+    "Gransinmäki": {
+      "stationId": "741",
+      "name": "Gransinmäki",
+      "lat": 60.222154,
+      "lon": 24.804898,
+      "bikesAvailable": 6,
+      "spacesAvailable": 19
+    },
+    "Gunillantie": {
+      "stationId": "248",
+      "name": "Gunillantie",
+      "lat": 60.17095988,
+      "lon": 25.03279498,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Gyldenintie": {
+      "stationId": "054",
+      "name": "Gyldenintie",
+      "lat": 60.159644,
+      "lon": 24.877286,
+      "bikesAvailable": 0,
+      "spacesAvailable": 28
+    },
+    "Haagan tori": {
+      "stationId": "211",
+      "name": "Haagan tori",
+      "lat": 60.21227524113252,
+      "lon": 24.899551136356806,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Haakoninlahdenkatu": {
+      "stationId": "247",
+      "name": "Haakoninlahdenkatu",
+      "lat": 60.168376,
+      "lon": 25.01604,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Haapaniemenkatu": {
+      "stationId": "042",
+      "name": "Haapaniemenkatu",
+      "lat": 60.181949,
+      "lon": 24.956806,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Haapasaarentie": {
+      "stationId": "317",
+      "name": "Haapasaarentie",
+      "lat": 60.21877663,
+      "lon": 25.14678718,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Hagalundinpuisto": {
+      "stationId": "538",
+      "name": "Hagalundinpuisto",
+      "lat": 60.18363,
+      "lon": 24.817403,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Hakalehto": {
+      "stationId": "513",
+      "name": "Hakalehto",
+      "lat": 60.173567,
+      "lon": 24.79139,
+      "bikesAvailable": 3,
+      "spacesAvailable": 22
+    },
+    "Hakaniemi (M)": {
+      "stationId": "040",
+      "name": "Hakaniemi (M)",
+      "lat": 60.17952585,
+      "lon": 24.9508981,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Hakuninmaa": {
+      "stationId": "382",
+      "name": "Hakuninmaa",
+      "lat": 60.25161764,
+      "lon": 24.89695993,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Halkaisijantie": {
+      "stationId": "310",
+      "name": "Halkaisijantie",
+      "lat": 60.20238693,
+      "lon": 25.12790982,
+      "bikesAvailable": 4,
+      "spacesAvailable": 14
+    },
+    "Halmetie": {
+      "stationId": "355",
+      "name": "Halmetie",
+      "lat": 60.26090681,
+      "lon": 25.01765775,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Hanasaari": {
+      "stationId": "501",
+      "name": "Hanasaari",
+      "lat": 60.16582,
+      "lon": 24.840319,
+      "bikesAvailable": 7,
+      "spacesAvailable": 6
+    },
+    "Hankasuontie": {
+      "stationId": "397",
+      "name": "Hankasuontie",
+      "lat": 60.24474377,
+      "lon": 24.84758603,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Hauenkallio": {
+      "stationId": "587",
+      "name": "Hauenkallio",
+      "lat": 60.162477,
+      "lon": 24.767831,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Hauenkalliontie": {
+      "stationId": "621",
+      "name": "Hauenkalliontie",
+      "lat": 60.161138,
+      "lon": 24.756272,
+      "bikesAvailable": 22,
+      "spacesAvailable": 4
+    },
+    "Haukilahdenaukio": {
+      "stationId": "585",
+      "name": "Haukilahdenaukio",
+      "lat": 60.16269,
+      "lon": 24.775853,
+      "bikesAvailable": 4,
+      "spacesAvailable": 13
+    },
+    "Haukilahdenkatu": {
+      "stationId": "134",
+      "name": "Haukilahdenkatu",
+      "lat": 60.198537,
+      "lon": 24.967592,
+      "bikesAvailable": 1,
+      "spacesAvailable": 27
+    },
+    "Haukilahdenranta": {
+      "stationId": "589",
+      "name": "Haukilahdenranta",
+      "lat": 60.158048,
+      "lon": 24.769864,
+      "bikesAvailable": 20,
+      "spacesAvailable": 5
+    },
+    "Haukilahdensolmu": {
+      "stationId": "583",
+      "name": "Haukilahdensolmu",
+      "lat": 60.166481,
+      "lon": 24.772708,
+      "bikesAvailable": 9,
+      "spacesAvailable": 10
+    },
+    "Heikinlaakso": {
+      "stationId": "341",
+      "name": "Heikinlaakso",
+      "lat": 60.27019655,
+      "lon": 25.07271271,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Heikkilänaukio": {
+      "stationId": "052",
+      "name": "Heikkilänaukio",
+      "lat": 60.1540763,
+      "lon": 24.8793159,
+      "bikesAvailable": 1,
+      "spacesAvailable": 19
+    },
+    "Heikkiläntie": {
+      "stationId": "053",
+      "name": "Heikkiläntie",
+      "lat": 60.156817,
+      "lon": 24.8850653,
+      "bikesAvailable": 1,
+      "spacesAvailable": 11
+    },
+    "Helluntairaitti": {
+      "stationId": "353",
+      "name": "Helluntairaitti",
+      "lat": 60.2632143,
+      "lon": 25.0368876,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Hernepellontie": {
+      "stationId": "236",
+      "name": "Hernepellontie",
+      "lat": 60.224212141004635,
+      "lon": 24.98860011548657,
+      "bikesAvailable": 13,
+      "spacesAvailable": 7
+    },
+    "Hernesaarenranta": {
+      "stationId": "065",
+      "name": "Hernesaarenranta",
+      "lat": 60.15352968178976,
+      "lon": 24.93125406706023,
+      "bikesAvailable": 1,
+      "spacesAvailable": 40
+    },
+    "Hertanmäenkatu": {
+      "stationId": "109",
+      "name": "Hertanmäenkatu",
+      "lat": 60.202539,
+      "lon": 24.922458,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Herttoniemen kirkko": {
+      "stationId": "263",
+      "name": "Herttoniemen kirkko",
+      "lat": 60.19844295116548,
+      "lon": 25.032112127941765,
+      "bikesAvailable": 1,
+      "spacesAvailable": 16
+    },
+    "Herttoniemenranta": {
+      "stationId": "256",
+      "name": "Herttoniemenranta",
+      "lat": 60.190210145879014,
+      "lon": 25.026065710136564,
+      "bikesAvailable": 1,
+      "spacesAvailable": 14
+    },
+    "Herttoniemi (M)": {
+      "stationId": "260",
+      "name": "Herttoniemi (M)",
+      "lat": 60.194614624348006,
+      "lon": 25.02887208274608,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Hietalahdentori": {
+      "stationId": "006",
+      "name": "Hietalahdentori",
+      "lat": 60.1622251,
+      "lon": 24.9297099,
+      "bikesAvailable": 3,
+      "spacesAvailable": 23
+    },
+    "Hietaniemenkatu": {
+      "stationId": "071",
+      "name": "Hietaniemenkatu",
+      "lat": 60.17314,
+      "lon": 24.908698,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Honkasuo": {
+      "stationId": "08738d82-3e32-4ce0-a80d-fb6f5d1d558e",
+      "name": "Honkasuo",
+      "lat": 60.258996,
+      "lon": 24.84482,
+      "bikesAvailable": 4,
+      "spacesAvailable": 16
+    },
+    "Huhtakuja": {
+      "stationId": "361",
+      "name": "Huhtakuja",
+      "lat": 60.25756333,
+      "lon": 25.01310802,
+      "bikesAvailable": 1,
+      "spacesAvailable": 16
+    },
+    "Humalniementie": {
+      "stationId": "252",
+      "name": "Humalniementie",
+      "lat": 60.18374384938291,
+      "lon": 25.053037859101934,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Humikkalankuja": {
+      "stationId": "327",
+      "name": "Humikkalankuja",
+      "lat": 60.229825,
+      "lon": 25.09006415,
+      "bikesAvailable": 8,
+      "spacesAvailable": 9
+    },
+    "Huopalahden asema": {
+      "stationId": "213",
+      "name": "Huopalahden asema",
+      "lat": 60.2180455,
+      "lon": 24.89186323,
+      "bikesAvailable": 1,
+      "spacesAvailable": 18
+    },
+    "Huopalahdentie": {
+      "stationId": "096",
+      "name": "Huopalahdentie",
+      "lat": 60.1996653,
+      "lon": 24.8836209,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Huovitie": {
+      "stationId": "222",
+      "name": "Huovitie",
+      "lat": 60.22197553556329,
+      "lon": 24.903286646676616,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Hämeenlinnanväylä": {
+      "stationId": "223",
+      "name": "Hämeenlinnanväylä",
+      "lat": 60.22769079,
+      "lon": 24.90637276,
+      "bikesAvailable": 1,
+      "spacesAvailable": 16
+    },
+    "Ida Aalbergin tie": {
+      "stationId": "220",
+      "name": "Ida Aalbergin tie",
+      "lat": 60.229488,
+      "lon": 24.895199,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Ilmalan asema": {
+      "stationId": "205",
+      "name": "Ilmalan asema",
+      "lat": 60.206626437691405,
+      "lon": 24.922219888430064,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Innopoli": {
+      "stationId": "537",
+      "name": "Innopoli",
+      "lat": 60.185096,
+      "lon": 24.81422,
+      "bikesAvailable": 1,
+      "spacesAvailable": 19
+    },
+    "Intiankatu": {
+      "stationId": "141",
+      "name": "Intiankatu",
+      "lat": 60.2078582,
+      "lon": 24.9676383,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Isoisänsilta": {
+      "stationId": "124",
+      "name": "Isoisänsilta",
+      "lat": 60.18265182058,
+      "lon": 24.98179260578,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Isosaarentie": {
+      "stationId": "249",
+      "name": "Isosaarentie",
+      "lat": 60.17550749,
+      "lon": 25.05311105,
+      "bikesAvailable": 1,
+      "spacesAvailable": 14
+    },
+    "Itäkeskus (M)": {
+      "stationId": "275",
+      "name": "Itäkeskus (M)",
+      "lat": 60.20960066552812,
+      "lon": 25.07596801515546,
+      "bikesAvailable": 0,
+      "spacesAvailable": 28
+    },
+    "Itäkeskus Metrovarikko": {
+      "stationId": "291",
+      "name": "Itäkeskus Metrovarikko",
+      "lat": 60.211446,
+      "lon": 25.065816,
+      "bikesAvailable": 1,
+      "spacesAvailable": 16
+    },
+    "Itälahdenkatu": {
+      "stationId": "051",
+      "name": "Itälahdenkatu",
+      "lat": 60.15066,
+      "lon": 24.8812502,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Itämerentori": {
+      "stationId": "030",
+      "name": "Itämerentori",
+      "lat": 60.1635309,
+      "lon": 24.9145165,
+      "bikesAvailable": 1,
+      "spacesAvailable": 40
+    },
+    "Itäportti": {
+      "stationId": "639",
+      "name": "Itäportti",
+      "lat": 60.174914,
+      "lon": 24.738122,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Jakomäentie": {
+      "stationId": "338",
+      "name": "Jakomäentie",
+      "lat": 60.25377123,
+      "lon": 25.07437759,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Jakomäki": {
+      "stationId": "340",
+      "name": "Jakomäki",
+      "lat": 60.26101941,
+      "lon": 25.0759056,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Jalavatie": {
+      "stationId": "085",
+      "name": "Jalavatie",
+      "lat": 60.1934696,
+      "lon": 24.905889,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Jokipellontie": {
+      "stationId": "372",
+      "name": "Jokipellontie",
+      "lat": 60.24521779,
+      "lon": 24.98332148,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Jollas": {
+      "stationId": "405",
+      "name": "Jollas",
+      "lat": 60.16440749,
+      "lon": 25.06166787,
+      "bikesAvailable": 8,
+      "spacesAvailable": 8
+    },
+    "Juhana Herttuan tie": {
+      "stationId": "148",
+      "name": "Juhana Herttuan tie",
+      "lat": 60.2184427,
+      "lon": 24.9664619,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Jämeräntaival": {
+      "stationId": "547",
+      "name": "Jämeräntaival",
+      "lat": 60.187712,
+      "lon": 24.83556,
+      "bikesAvailable": 16,
+      "spacesAvailable": 15
+    },
+    "Jännetie": {
+      "stationId": "216",
+      "name": "Jännetie",
+      "lat": 60.22691,
+      "lon": 24.853805,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Jätkäsaarenlaituri": {
+      "stationId": "063",
+      "name": "Jätkäsaarenlaituri",
+      "lat": 60.161506,
+      "lon": 24.921552,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Jäähalli": {
+      "stationId": "080",
+      "name": "Jäähalli",
+      "lat": 60.1894025,
+      "lon": 24.9205978,
+      "bikesAvailable": 1,
+      "spacesAvailable": 21
+    },
+    "Kaapelitehdas": {
+      "stationId": "060",
+      "name": "Kaapelitehdas",
+      "lat": 60.161066,
+      "lon": 24.903107,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Kaisaniemenpuisto": {
+      "stationId": "020",
+      "name": "Kaisaniemenpuisto",
+      "lat": 60.172886,
+      "lon": 24.942844,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Kaivonkatsojanpuisto": {
+      "stationId": "309",
+      "name": "Kaivonkatsojanpuisto",
+      "lat": 60.20440477,
+      "lon": 25.13599933,
+      "bikesAvailable": 21,
+      "spacesAvailable": 5
+    },
+    "Kaivopuisto": {
+      "stationId": "001",
+      "name": "Kaivopuisto",
+      "lat": 60.15544479382098,
+      "lon": 24.950292889690314,
+      "bikesAvailable": 0,
+      "spacesAvailable": 30
+    },
+    "Kalannintie": {
+      "stationId": "384",
+      "name": "Kalannintie",
+      "lat": 60.25280663,
+      "lon": 24.88410754,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Kalasatama (M)": {
+      "stationId": "126",
+      "name": "Kalasatama (M)",
+      "lat": 60.187786,
+      "lon": 24.977032,
+      "bikesAvailable": 2,
+      "spacesAvailable": 24
+    },
+    "Kalevalantie": {
+      "stationId": "555",
+      "name": "Kalevalantie",
+      "lat": 60.184765,
+      "lon": 24.804022,
+      "bikesAvailable": 1,
+      "spacesAvailable": 19
+    },
+    "Kalevankatu": {
+      "stationId": "069",
+      "name": "Kalevankatu",
+      "lat": 60.16568017,
+      "lon": 24.93142157,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Kalkkihiekantie": {
+      "stationId": "305",
+      "name": "Kalkkihiekantie",
+      "lat": 60.2021242,
+      "lon": 25.14304029,
+      "bikesAvailable": 1,
+      "spacesAvailable": 16
+    },
+    "Kalkkipellonmäki": {
+      "stationId": "763",
+      "name": "Kalkkipellonmäki",
+      "lat": 60.220551,
+      "lon": 24.833536,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Kamppi (M)": {
+      "stationId": "026",
+      "name": "Kamppi (M)",
+      "lat": 60.16876693,
+      "lon": 24.9308082,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Kanavaranta": {
+      "stationId": "012",
+      "name": "Kanavaranta",
+      "lat": 60.168384,
+      "lon": 24.9583814,
+      "bikesAvailable": 1,
+      "spacesAvailable": 34
+    },
+    "Kannelmäen asema": {
+      "stationId": "389",
+      "name": "Kannelmäen asema",
+      "lat": 60.23934599,
+      "lon": 24.87664725,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Kannelmäen liikuntapuisto": {
+      "stationId": "386",
+      "name": "Kannelmäen liikuntapuisto",
+      "lat": 60.24374634,
+      "lon": 24.8788005,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Kansallismuseo": {
+      "stationId": "034",
+      "name": "Kansallismuseo",
+      "lat": 60.173929,
+      "lon": 24.932225,
+      "bikesAvailable": 1,
+      "spacesAvailable": 16
+    },
+    "Kapteeninpuistikko": {
+      "stationId": "003",
+      "name": "Kapteeninpuistikko",
+      "lat": 60.1581892,
+      "lon": 24.9449274,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Karhulantie": {
+      "stationId": "282",
+      "name": "Karhulantie",
+      "lat": 60.21869709,
+      "lon": 25.10221935,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Karhupuisto": {
+      "stationId": "043",
+      "name": "Karhupuisto",
+      "lat": 60.184273,
+      "lon": 24.952526,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Karhusuontie": {
+      "stationId": "367",
+      "name": "Karhusuontie",
+      "lat": 60.250978,
+      "lon": 24.986935,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Karviaistie": {
+      "stationId": "365",
+      "name": "Karviaistie",
+      "lat": 60.24684531,
+      "lon": 25.00786044,
+      "bikesAvailable": 1,
+      "spacesAvailable": 16
+    },
+    "Kasarmitori": {
+      "stationId": "010",
+      "name": "Kasarmitori",
+      "lat": 60.1650171805,
+      "lon": 24.94947287873,
+      "bikesAvailable": 1,
+      "spacesAvailable": 28
+    },
+    "Katariina Saksilaisen katu": {
+      "stationId": "235",
+      "name": "Katariina Saksilaisen katu",
+      "lat": 60.217214807977534,
+      "lon": 24.984420078358692,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Kauppakeskus Columbus": {
+      "stationId": "306",
+      "name": "Kauppakeskus Columbus",
+      "lat": 60.2063719,
+      "lon": 25.14550436,
+      "bikesAvailable": 2,
+      "spacesAvailable": 19
+    },
+    "Kauppakeskus Kaari": {
+      "stationId": "387",
+      "name": "Kauppakeskus Kaari",
+      "lat": 60.23633055,
+      "lon": 24.88947967,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Kauppakorkeakoulu": {
+      "stationId": "033",
+      "name": "Kauppakorkeakoulu",
+      "lat": 60.171196,
+      "lon": 24.924894,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Kaustisentie": {
+      "stationId": "388",
+      "name": "Kaustisentie",
+      "lat": 60.23780652,
+      "lon": 24.88145171,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Keilalahti": {
+      "stationId": "503",
+      "name": "Keilalahti",
+      "lat": 60.1690523,
+      "lon": 24.8307727,
+      "bikesAvailable": 2,
+      "spacesAvailable": 29
+    },
+    "Keilaniemi (M)": {
+      "stationId": "529",
+      "name": "Keilaniemi (M)",
+      "lat": 60.175233,
+      "lon": 24.82895,
+      "bikesAvailable": 0,
+      "spacesAvailable": 40
+    },
+    "Keilaranta": {
+      "stationId": "531",
+      "name": "Keilaranta",
+      "lat": 60.178762,
+      "lon": 24.835132,
+      "bikesAvailable": 2,
+      "spacesAvailable": 22
+    },
+    "Kesäkatu": {
+      "stationId": "073",
+      "name": "Kesäkatu",
+      "lat": 60.1792967,
+      "lon": 24.9132504,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Kiasma": {
+      "stationId": "023",
+      "name": "Kiasma",
+      "lat": 60.171273,
+      "lon": 24.937106,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Kirkkoherrantie": {
+      "stationId": "233",
+      "name": "Kirkkoherrantie",
+      "lat": 60.22493036511101,
+      "lon": 24.972819375145058,
+      "bikesAvailable": 0,
+      "spacesAvailable": 10
+    },
+    "Kiskontie": {
+      "stationId": "088",
+      "name": "Kiskontie",
+      "lat": 60.1989402,
+      "lon": 24.9012997,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Kivikon liikuntapuisto": {
+      "stationId": "337",
+      "name": "Kivikon liikuntapuisto",
+      "lat": 60.23703582,
+      "lon": 25.05246958,
+      "bikesAvailable": 8,
+      "spacesAvailable": 10
+    },
+    "Kivikonkaari": {
+      "stationId": "333",
+      "name": "Kivikonkaari",
+      "lat": 60.23990429,
+      "lon": 25.07464334,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Kivikonlaita": {
+      "stationId": "336",
+      "name": "Kivikonlaita",
+      "lat": 60.23046218,
+      "lon": 25.05491523,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Koetilankuja": {
+      "stationId": "343",
+      "name": "Koetilankuja",
+      "lat": 60.223785,
+      "lon": 25.021597,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Koivu-Mankkaa": {
+      "stationId": "561",
+      "name": "Koivu-Mankkaa",
+      "lat": 60.182976,
+      "lon": 24.78576,
+      "bikesAvailable": 12,
+      "spacesAvailable": 12
+    },
+    "Koivusaari (M)": {
+      "stationId": "401",
+      "name": "Koivusaari (M)",
+      "lat": 60.16338631,
+      "lon": 24.85516427,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Komeetankatu": {
+      "stationId": "641",
+      "name": "Komeetankatu",
+      "lat": 60.167216,
+      "lon": 24.735969,
+      "bikesAvailable": 1,
+      "spacesAvailable": 15
+    },
+    "Komentajankatu": {
+      "stationId": "715",
+      "name": "Komentajankatu",
+      "lat": 60.216222,
+      "lon": 24.821932,
+      "bikesAvailable": 28,
+      "spacesAvailable": 3
+    },
+    "Kontula (M)": {
+      "stationId": "330",
+      "name": "Kontula (M)",
+      "lat": 60.23609535,
+      "lon": 25.08260956,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Kontulankaari": {
+      "stationId": "332",
+      "name": "Kontulankaari",
+      "lat": 60.24384164,
+      "lon": 25.07622658,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Korjaamo": {
+      "stationId": "075",
+      "name": "Korjaamo",
+      "lat": 60.1838677,
+      "lon": 24.9198371,
+      "bikesAvailable": 1,
+      "spacesAvailable": 20
+    },
+    "Korkeasaari": {
+      "stationId": "293",
+      "name": "Korkeasaari",
+      "lat": 60.178415,
+      "lon": 24.975571,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Korppaanmäentie": {
+      "stationId": "106",
+      "name": "Korppaanmäentie",
+      "lat": 60.202122,
+      "lon": 24.899049,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Korppaantie": {
+      "stationId": "103",
+      "name": "Korppaantie",
+      "lat": 60.208925,
+      "lon": 24.8895209,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Koskelan varikko": {
+      "stationId": "292",
+      "name": "Koskelan varikko",
+      "lat": 60.21527,
+      "lon": 24.964835,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Koskelantie": {
+      "stationId": "142",
+      "name": "Koskelantie",
+      "lat": 60.20876151,
+      "lon": 24.94668935,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Kotinummentie": {
+      "stationId": "351",
+      "name": "Kotinummentie",
+      "lat": 60.2675063,
+      "lon": 25.01357237,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Koukkusaarentie": {
+      "stationId": "320",
+      "name": "Koukkusaarentie",
+      "lat": 60.21398072,
+      "lon": 25.13423251,
+      "bikesAvailable": 1,
+      "spacesAvailable": 15
+    },
+    "Kriikunakuja": {
+      "stationId": "104",
+      "name": "Kriikunakuja",
+      "lat": 60.2056785,
+      "lon": 24.8916817,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Kruunuvuorenrannan lautta": {
+      "stationId": "345",
+      "name": "Kruunuvuorenrannan lautta",
+      "lat": 60.165526,
+      "lon": 25.012858,
+      "bikesAvailable": 1,
+      "spacesAvailable": 15
+    },
+    "Kuikkarinne": {
+      "stationId": "143",
+      "name": "Kuikkarinne",
+      "lat": 60.15708560052,
+      "lon": 24.86930605276,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Kulosaari (M)": {
+      "stationId": "245",
+      "name": "Kulosaari (M)",
+      "lat": 60.188950088551046,
+      "lon": 25.006566530899704,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Kuninkaantammi": {
+      "stationId": "383",
+      "name": "Kuninkaantammi",
+      "lat": 60.25925606,
+      "lon": 24.8927574,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Kurkijoentie": {
+      "stationId": "768",
+      "name": "Kurkijoentie",
+      "lat": 60.2045331951086,
+      "lon": 24.808291407921942,
+      "bikesAvailable": 1,
+      "spacesAvailable": 9
+    },
+    "Kurkimäentie": {
+      "stationId": "335",
+      "name": "Kurkimäentie",
+      "lat": 60.23319439,
+      "lon": 25.06260837,
+      "bikesAvailable": 4,
+      "spacesAvailable": 12
+    },
+    "Kurkimäki": {
+      "stationId": "329",
+      "name": "Kurkimäki",
+      "lat": 60.22829039,
+      "lon": 25.07164165,
+      "bikesAvailable": 1,
+      "spacesAvailable": 15
+    },
+    "Kustaankartano": {
+      "stationId": "228",
+      "name": "Kustaankartano",
+      "lat": 60.2307028705708,
+      "lon": 24.9487651621967,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Kustaankatu": {
+      "stationId": "087",
+      "name": "Kustaankatu",
+      "lat": 60.187522,
+      "lon": 24.955992,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Kutsuntatie": {
+      "stationId": "755",
+      "name": "Kutsuntatie",
+      "lat": 60.230453,
+      "lon": 24.824561,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Kuunkatu": {
+      "stationId": "635",
+      "name": "Kuunkatu",
+      "lat": 60.172673,
+      "lon": 24.726025,
+      "bikesAvailable": 1,
+      "spacesAvailable": 23
+    },
+    "Kuusisaari": {
+      "stationId": "400",
+      "name": "Kuusisaari",
+      "lat": 60.184485,
+      "lon": 24.856701,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Kuusitie": {
+      "stationId": "086",
+      "name": "Kuusitie",
+      "lat": 60.195214,
+      "lon": 24.901834,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Kylävoudintie": {
+      "stationId": "227",
+      "name": "Kylävoudintie",
+      "lat": 60.22440378465167,
+      "lon": 24.952561243589713,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Käpylän asema": {
+      "stationId": "147",
+      "name": "Käpylän asema",
+      "lat": 60.2208057097763,
+      "lon": 24.9479290250383,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Käpyläntie": {
+      "stationId": "144",
+      "name": "Käpyläntie",
+      "lat": 60.2139043,
+      "lon": 24.9588108,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Käskynhaltijantie": {
+      "stationId": "229",
+      "name": "Käskynhaltijantie",
+      "lat": 60.2325155,
+      "lon": 24.95788852,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Kössi Koskisen aukio": {
+      "stationId": "710",
+      "name": "Kössi Koskisen aukio",
+      "lat": 60.215112,
+      "lon": 24.826953,
+      "bikesAvailable": 20,
+      "spacesAvailable": 8
+    },
+    "Laajalahden aukio": {
+      "stationId": "094",
+      "name": "Laajalahden aukio",
+      "lat": 60.19793090756802,
+      "lon": 24.876221716500662,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Laajalahden keskus": {
+      "stationId": "705",
+      "name": "Laajalahden keskus",
+      "lat": 60.203892,
+      "lon": 24.80493,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Laajasalon ostoskeskus": {
+      "stationId": "251",
+      "name": "Laajasalon ostoskeskus",
+      "lat": 60.18009213610057,
+      "lon": 25.05188370479307,
+      "bikesAvailable": 15,
+      "spacesAvailable": 7
+    },
+    "Laivalahden puistotie": {
+      "stationId": "255",
+      "name": "Laivalahden puistotie",
+      "lat": 60.18795810306132,
+      "lon": 25.031385306773423,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Laivasillankatu": {
+      "stationId": "002",
+      "name": "Laivasillankatu",
+      "lat": 60.160959094315416,
+      "lon": 24.95634747175871,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Lallukankuja": {
+      "stationId": "328",
+      "name": "Lallukankuja",
+      "lat": 60.22352658,
+      "lon": 25.08297117,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Lastenlehto": {
+      "stationId": "028",
+      "name": "Lastenlehto",
+      "lat": 60.1658121,
+      "lon": 24.927021,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Laulurastaantie": {
+      "stationId": "356",
+      "name": "Laulurastaantie",
+      "lat": 60.26088465,
+      "lon": 25.00331024,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Lauttasaaren ostoskeskus": {
+      "stationId": "057",
+      "name": "Lauttasaaren ostoskeskus",
+      "lat": 60.16043,
+      "lon": 24.882887,
+      "bikesAvailable": 1,
+      "spacesAvailable": 26
+    },
+    "Lauttasaarensilta": {
+      "stationId": "058",
+      "name": "Lauttasaarensilta",
+      "lat": 60.1615512,
+      "lon": 24.8926386,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Lehtisaarentie": {
+      "stationId": "163",
+      "name": "Lehtisaarentie",
+      "lat": 60.1818132200983,
+      "lon": 24.8504396679317,
+      "bikesAvailable": 1,
+      "spacesAvailable": 12
+    },
+    "Leikosaarentie": {
+      "stationId": "303",
+      "name": "Leikosaarentie",
+      "lat": 60.2046813,
+      "lon": 25.15154626,
+      "bikesAvailable": 2,
+      "spacesAvailable": 14
+    },
+    "Lepolantie": {
+      "stationId": "226",
+      "name": "Lepolantie",
+      "lat": 60.23910894200569,
+      "lon": 24.92859501499382,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Leppäsuonaukio": {
+      "stationId": "162",
+      "name": "Leppäsuonaukio",
+      "lat": 60.16957343209,
+      "lon": 24.92659049777,
+      "bikesAvailable": 0,
+      "spacesAvailable": 28
+    },
+    "Leppävaaran uimahalli": {
+      "stationId": "747",
+      "name": "Leppävaaran uimahalli",
+      "lat": 60.226379,
+      "lon": 24.804735,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Leppävaaran urheilupuisto": {
+      "stationId": "745",
+      "name": "Leppävaaran urheilupuisto",
+      "lat": 60.224963,
+      "lon": 24.801345,
+      "bikesAvailable": 0,
+      "spacesAvailable": 32
+    },
+    "Leppävaaranaukio": {
+      "stationId": "729",
+      "name": "Leppävaaranaukio",
+      "lat": 60.21881,
+      "lon": 24.813945,
+      "bikesAvailable": 43,
+      "spacesAvailable": 2
+    },
+    "Leppävaarankäytävä": {
+      "stationId": "731",
+      "name": "Leppävaarankäytävä",
+      "lat": 60.220254,
+      "lon": 24.813437,
+      "bikesAvailable": 26,
+      "spacesAvailable": 11
+    },
+    "Lettopolku": {
+      "stationId": "331",
+      "name": "Lettopolku",
+      "lat": 60.24091394,
+      "lon": 25.08552977,
+      "bikesAvailable": 7,
+      "spacesAvailable": 9
+    },
+    "Liisanpuistikko": {
+      "stationId": "016",
+      "name": "Liisanpuistikko",
+      "lat": 60.174140249623726,
+      "lon": 24.962084269349347,
+      "bikesAvailable": 0,
+      "spacesAvailable": 17
+    },
+    "Linnakepolku": {
+      "stationId": "597",
+      "name": "Linnakepolku",
+      "lat": 60.1637,
+      "lon": 24.790132,
+      "bikesAvailable": 5,
+      "spacesAvailable": 7
+    },
+    "Linnanmäki": {
+      "stationId": "116",
+      "name": "Linnanmäki",
+      "lat": 60.19113575,
+      "lon": 24.9402049,
+      "bikesAvailable": 0,
+      "spacesAvailable": 28
+    },
+    "Linnuntie": {
+      "stationId": "753",
+      "name": "Linnuntie",
+      "lat": 60.234401,
+      "lon": 24.813954,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Lintulahdenkatu": {
+      "stationId": "122",
+      "name": "Lintulahdenkatu",
+      "lat": 60.1837182,
+      "lon": 24.9621936,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Lokitie": {
+      "stationId": "314",
+      "name": "Lokitie",
+      "lat": 60.20955807,
+      "lon": 25.1365036,
+      "bikesAvailable": 1,
+      "spacesAvailable": 17
+    },
+    "Louhentori": {
+      "stationId": "557",
+      "name": "Louhentori",
+      "lat": 60.18715,
+      "lon": 24.796959,
+      "bikesAvailable": 3,
+      "spacesAvailable": 14
+    },
+    "Lukutori": {
+      "stationId": "653",
+      "name": "Lukutori",
+      "lat": 60.187086,
+      "lon": 24.742936,
+      "bikesAvailable": 13,
+      "spacesAvailable": 3
+    },
+    "Luoteisväylä": {
+      "stationId": "056",
+      "name": "Luoteisväylä",
+      "lat": 60.1654485,
+      "lon": 24.8601992,
+      "bikesAvailable": 0,
+      "spacesAvailable": 10
+    },
+    "Lystimäensilta": {
+      "stationId": "649",
+      "name": "Lystimäensilta",
+      "lat": 60.17471,
+      "lon": 24.752442,
+      "bikesAvailable": 3,
+      "spacesAvailable": 10
+    },
+    "Lystimäki": {
+      "stationId": "647",
+      "name": "Lystimäki",
+      "lat": 60.172814,
+      "lon": 24.745666,
+      "bikesAvailable": 0,
+      "spacesAvailable": 10
+    },
+    "Läkkitori": {
+      "stationId": "733",
+      "name": "Läkkitori",
+      "lat": 60.221019,
+      "lon": 24.813109,
+      "bikesAvailable": 31,
+      "spacesAvailable": 5
+    },
+    "Länsisatamankatu": {
+      "stationId": "061",
+      "name": "Länsisatamankatu",
+      "lat": 60.1589276,
+      "lon": 24.909692,
+      "bikesAvailable": 1,
+      "spacesAvailable": 15
+    },
+    "Länsisatamankuja": {
+      "stationId": "201",
+      "name": "Länsisatamankuja",
+      "lat": 60.15693191359567,
+      "lon": 24.912200440174857,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Länsiterminaali": {
+      "stationId": "200",
+      "name": "Länsiterminaali",
+      "lat": 60.150395628620245,
+      "lon": 24.915862667368163,
+      "bikesAvailable": 2,
+      "spacesAvailable": 24
+    },
+    "Länsituuli": {
+      "stationId": "517",
+      "name": "Länsituuli",
+      "lat": 60.175358,
+      "lon": 24.802049,
+      "bikesAvailable": 2,
+      "spacesAvailable": 24
+    },
+    "Maarinranta": {
+      "stationId": "549",
+      "name": "Maarinranta",
+      "lat": 60.187302664851785,
+      "lon": 24.81061276795635,
+      "bikesAvailable": 1,
+      "spacesAvailable": 15
+    },
+    "Maatullinkuja": {
+      "stationId": "346",
+      "name": "Maatullinkuja",
+      "lat": 60.275776,
+      "lon": 25.024694,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Maistraatintori": {
+      "stationId": "110",
+      "name": "Maistraatintori",
+      "lat": 60.199151,
+      "lon": 24.924873,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Majurinkulma": {
+      "stationId": "707",
+      "name": "Majurinkulma",
+      "lat": 60.210735,
+      "lon": 24.824954,
+      "bikesAvailable": 36,
+      "spacesAvailable": 4
+    },
+    "Malmin asema": {
+      "stationId": "360",
+      "name": "Malmin asema",
+      "lat": 60.25232553,
+      "lon": 25.00912157,
+      "bikesAvailable": 2,
+      "spacesAvailable": 23
+    },
+    "Malmin sairaala": {
+      "stationId": "359",
+      "name": "Malmin sairaala",
+      "lat": 60.25415862,
+      "lon": 25.00282802,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Malminkartanon asema": {
+      "stationId": "393",
+      "name": "Malminkartanon asema",
+      "lat": 60.24764481,
+      "lon": 24.86266771,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Malminkartanonhuippu": {
+      "stationId": "396",
+      "name": "Malminkartanonhuippu",
+      "lat": 60.25040779,
+      "lon": 24.84864869,
+      "bikesAvailable": 1,
+      "spacesAvailable": 11
+    },
+    "Mamsellimyllynkatu": {
+      "stationId": "286",
+      "name": "Mamsellimyllynkatu",
+      "lat": 60.21825196984328,
+      "lon": 25.05910387617357,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Mankkaanaukio": {
+      "stationId": "565",
+      "name": "Mankkaanaukio",
+      "lat": 60.194599,
+      "lon": 24.769021,
+      "bikesAvailable": 6,
+      "spacesAvailable": 16
+    },
+    "Mankkaanlaaksontie": {
+      "stationId": "563",
+      "name": "Mankkaanlaaksontie",
+      "lat": 60.188706,
+      "lon": 24.780478,
+      "bikesAvailable": 2,
+      "spacesAvailable": 25
+    },
+    "Mannerheimintie": {
+      "stationId": "024",
+      "name": "Mannerheimintie",
+      "lat": 60.169718,
+      "lon": 24.937737,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Margareetankuja": {
+      "stationId": "257",
+      "name": "Margareetankuja",
+      "lat": 60.19100958139025,
+      "lon": 25.037070035460086,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Marian sairaala": {
+      "stationId": "031",
+      "name": "Marian sairaala",
+      "lat": 60.168323,
+      "lon": 24.922742,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Marjaniementie": {
+      "stationId": "272",
+      "name": "Marjaniementie",
+      "lat": 60.20432489166999,
+      "lon": 25.07606935994523,
+      "bikesAvailable": 1,
+      "spacesAvailable": 16
+    },
+    "Marjaniemi": {
+      "stationId": "277",
+      "name": "Marjaniemi",
+      "lat": 60.20360955659899,
+      "lon": 25.086296156701028,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Marttila": {
+      "stationId": "217",
+      "name": "Marttila",
+      "lat": 60.227143233822176,
+      "lon": 24.873227365442304,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Mastokatu": {
+      "stationId": "048",
+      "name": "Mastokatu",
+      "lat": 60.1647545,
+      "lon": 24.9674861,
+      "bikesAvailable": 1,
+      "spacesAvailable": 22
+    },
+    "Matinkartanontie": {
+      "stationId": "611",
+      "name": "Matinkartanontie",
+      "lat": 60.156258,
+      "lon": 24.752489,
+      "bikesAvailable": 9,
+      "spacesAvailable": 13
+    },
+    "Matinkyläntie": {
+      "stationId": "613",
+      "name": "Matinkyläntie",
+      "lat": 60.155689,
+      "lon": 24.744978,
+      "bikesAvailable": 12,
+      "spacesAvailable": 8
+    },
+    "Matinlahdenranta": {
+      "stationId": "603",
+      "name": "Matinlahdenranta",
+      "lat": 60.151041,
+      "lon": 24.754196,
+      "bikesAvailable": 20,
+      "spacesAvailable": 8
+    },
+    "Maunula": {
+      "stationId": "225",
+      "name": "Maunula",
+      "lat": 60.23131508,
+      "lon": 24.93504574,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Maununneva": {
+      "stationId": "381",
+      "name": "Maununneva",
+      "lat": 60.24448845,
+      "lon": 24.89943434,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Meilahden sairaala": {
+      "stationId": "083",
+      "name": "Meilahden sairaala",
+      "lat": 60.1902195,
+      "lon": 24.9083351,
+      "bikesAvailable": 0,
+      "spacesAvailable": 29
+    },
+    "Melkonkuja": {
+      "stationId": "050",
+      "name": "Melkonkuja",
+      "lat": 60.1498127,
+      "lon": 24.8861094,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Mellstenintie": {
+      "stationId": "591",
+      "name": "Mellstenintie",
+      "lat": 60.154941,
+      "lon": 24.773993,
+      "bikesAvailable": 21,
+      "spacesAvailable": 18
+    },
+    "Mellunmäki (M)": {
+      "stationId": "325",
+      "name": "Mellunmäki (M)",
+      "lat": 60.23853535,
+      "lon": 25.10987474,
+      "bikesAvailable": 6,
+      "spacesAvailable": 17
+    },
+    "Meri-Rastilan tori": {
+      "stationId": "312",
+      "name": "Meri-Rastilan tori",
+      "lat": 60.20415423,
+      "lon": 25.11942241,
+      "bikesAvailable": 6,
+      "spacesAvailable": 14
+    },
+    "Merihaka": {
+      "stationId": "202",
+      "name": "Merihaka",
+      "lat": 60.181104,
+      "lon": 24.962129,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Merisotilaantori": {
+      "stationId": "013",
+      "name": "Merisotilaantori",
+      "lat": 60.1678703,
+      "lon": 24.9755341,
+      "bikesAvailable": 1,
+      "spacesAvailable": 24
+    },
+    "Messeniuksenkatu": {
+      "stationId": "078",
+      "name": "Messeniuksenkatu",
+      "lat": 60.1878352,
+      "lon": 24.9180102,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Mestarinkatu": {
+      "stationId": "735",
+      "name": "Mestarinkatu",
+      "lat": 60.221938,
+      "lon": 24.817939,
+      "bikesAvailable": 1,
+      "spacesAvailable": 20
+    },
+    "Metsänneidonpolku": {
+      "stationId": "553",
+      "name": "Metsänneidonpolku",
+      "lat": 60.186731,
+      "lon": 24.806152,
+      "bikesAvailable": 1,
+      "spacesAvailable": 17
+    },
+    "Mikkolantie": {
+      "stationId": "373",
+      "name": "Mikkolantie",
+      "lat": 60.23556664,
+      "lon": 24.97154425,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Mosaiikkitori": {
+      "stationId": "308",
+      "name": "Mosaiikkitori",
+      "lat": 60.20797536,
+      "lon": 25.14385259,
+      "bikesAvailable": 1,
+      "spacesAvailable": 18
+    },
+    "Munkkiniemen aukio": {
+      "stationId": "095",
+      "name": "Munkkiniemen aukio",
+      "lat": 60.196781,
+      "lon": 24.883849,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Munkkivuoren ostoskeskus": {
+      "stationId": "101",
+      "name": "Munkkivuoren ostoskeskus",
+      "lat": 60.2059946,
+      "lon": 24.8798291,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Muotoilijankatu": {
+      "stationId": "139",
+      "name": "Muotoilijankatu",
+      "lat": 60.209796,
+      "lon": 24.979682,
+      "bikesAvailable": 5,
+      "spacesAvailable": 15
+    },
+    "Mustikkamaa": {
+      "stationId": "243",
+      "name": "Mustikkamaa",
+      "lat": 60.181861779166056,
+      "lon": 24.992037110168354,
+      "bikesAvailable": 1,
+      "spacesAvailable": 20
+    },
+    "Muurarinkuja": {
+      "stationId": "737",
+      "name": "Muurarinkuja",
+      "lat": 60.223768,
+      "lon": 24.812246,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Muusantori": {
+      "stationId": "099",
+      "name": "Muusantori",
+      "lat": 60.207504,
+      "lon": 24.858567,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Myllypuro (M)": {
+      "stationId": "284",
+      "name": "Myllypuro (M)",
+      "lat": 60.22408646778726,
+      "lon": 25.075395792228694,
+      "bikesAvailable": 0,
+      "spacesAvailable": 28
+    },
+    "Mäkelänkatu": {
+      "stationId": "120",
+      "name": "Mäkelänkatu",
+      "lat": 60.1896352,
+      "lon": 24.9635596,
+      "bikesAvailable": 0,
+      "spacesAvailable": 28
+    },
+    "Mäkitorpantie": {
+      "stationId": "230",
+      "name": "Mäkitorpantie",
+      "lat": 60.22886563,
+      "lon": 24.96354222,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Mäkkylän asema": {
+      "stationId": "761",
+      "name": "Mäkkylän asema",
+      "lat": 60.220467,
+      "lon": 24.83939,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Mäntyviita": {
+      "stationId": "525",
+      "name": "Mäntyviita",
+      "lat": 60.178702,
+      "lon": 24.810974,
+      "bikesAvailable": 5,
+      "spacesAvailable": 9
+    },
+    "Narinkka": {
+      "stationId": "025",
+      "name": "Narinkka",
+      "lat": 60.1700420359,
+      "lon": 24.93460698,
+      "bikesAvailable": 0,
+      "spacesAvailable": 40
+    },
+    "Nelikkotie": {
+      "stationId": "623",
+      "name": "Nelikkotie",
+      "lat": 60.16160490079988,
+      "lon": 24.747049805004206,
+      "bikesAvailable": 4,
+      "spacesAvailable": 9
+    },
+    "Niittykumpu (M)": {
+      "stationId": "581",
+      "name": "Niittykumpu (M)",
+      "lat": 60.170758,
+      "lon": 24.763184,
+      "bikesAvailable": 2,
+      "spacesAvailable": 30
+    },
+    "Niittymaa": {
+      "stationId": "579",
+      "name": "Niittymaa",
+      "lat": 60.171127,
+      "lon": 24.775913,
+      "bikesAvailable": 8,
+      "spacesAvailable": 14
+    },
+    "Nokkala": {
+      "stationId": "601",
+      "name": "Nokkala",
+      "lat": 60.147974,
+      "lon": 24.754344,
+      "bikesAvailable": 17,
+      "spacesAvailable": 5
+    },
+    "Nordenskiöldinaukio": {
+      "stationId": "077",
+      "name": "Nordenskiöldinaukio",
+      "lat": 60.18523632967096,
+      "lon": 24.91724984112588,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Nuottaniementie": {
+      "stationId": "607",
+      "name": "Nuottaniementie",
+      "lat": 60.14754,
+      "lon": 24.741736,
+      "bikesAvailable": 15,
+      "spacesAvailable": 3
+    },
+    "Näkinsilta": {
+      "stationId": "123",
+      "name": "Näkinsilta",
+      "lat": 60.179422,
+      "lon": 24.955838,
+      "bikesAvailable": 0,
+      "spacesAvailable": 26
+    },
+    "Näyttelijäntie": {
+      "stationId": "219",
+      "name": "Näyttelijäntie",
+      "lat": 60.23285213757895,
+      "lon": 24.887434554817386,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Olarinluoma": {
+      "stationId": "577",
+      "name": "Olarinluoma",
+      "lat": 60.18086441449186,
+      "lon": 24.760897068658217,
+      "bikesAvailable": 17,
+      "spacesAvailable": 8
+    },
+    "Olympiastadion": {
+      "stationId": "076",
+      "name": "Olympiastadion",
+      "lat": 60.184706,
+      "lon": 24.925512,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Ooppera": {
+      "stationId": "039",
+      "name": "Ooppera",
+      "lat": 60.182941,
+      "lon": 24.929112,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Opastinsilta": {
+      "stationId": "203",
+      "name": "Opastinsilta",
+      "lat": 60.199235425819,
+      "lon": 24.937826370875783,
+      "bikesAvailable": 0,
+      "spacesAvailable": 40
+    },
+    "Oravannahkatori": {
+      "stationId": "515",
+      "name": "Oravannahkatori",
+      "lat": 60.175769,
+      "lon": 24.792559,
+      "bikesAvailable": 3,
+      "spacesAvailable": 14
+    },
+    "Orionintie": {
+      "stationId": "900",
+      "name": "Orionintie",
+      "lat": 60.180118,
+      "lon": 24.771826,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Orpaanporras": {
+      "stationId": "285",
+      "name": "Orpaanporras",
+      "lat": 60.22356519670723,
+      "lon": 25.0654218381558,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Otaranta": {
+      "stationId": "543",
+      "name": "Otaranta",
+      "lat": 60.18483,
+      "lon": 24.837133,
+      "bikesAvailable": 34,
+      "spacesAvailable": 5
+    },
+    "Otsolahti": {
+      "stationId": "527",
+      "name": "Otsolahti",
+      "lat": 60.178655,
+      "lon": 24.817423,
+      "bikesAvailable": 3,
+      "spacesAvailable": 17
+    },
+    "Otto Brandtin tie": {
+      "stationId": "234",
+      "name": "Otto Brandtin tie",
+      "lat": 60.23178406584145,
+      "lon": 24.978138919040457,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Oulunkylän asema": {
+      "stationId": "232",
+      "name": "Oulunkylän asema",
+      "lat": 60.228176,
+      "lon": 24.967885,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Paavalinpuisto": {
+      "stationId": "133",
+      "name": "Paavalinpuisto",
+      "lat": 60.1974886,
+      "lon": 24.9614385,
+      "bikesAvailable": 0,
+      "spacesAvailable": 22
+    },
+    "Paciuksenkaari": {
+      "stationId": "090",
+      "name": "Paciuksenkaari",
+      "lat": 60.1944475,
+      "lon": 24.8911179,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Paciuksenkatu": {
+      "stationId": "084",
+      "name": "Paciuksenkatu",
+      "lat": 60.19150747,
+      "lon": 24.90134769,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Painiitty": {
+      "stationId": "757",
+      "name": "Painiitty",
+      "lat": 60.235089,
+      "lon": 24.831397,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Pajamäki": {
+      "stationId": "210",
+      "name": "Pajamäki",
+      "lat": 60.218807358014985,
+      "lon": 24.85566795479381,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Pajupillintie": {
+      "stationId": "385",
+      "name": "Pajupillintie",
+      "lat": 60.2432353,
+      "lon": 24.88610263,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Paloheinän kirjasto": {
+      "stationId": "379",
+      "name": "Paloheinän kirjasto",
+      "lat": 60.24950971,
+      "lon": 24.94166821,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Paloheinän maja": {
+      "stationId": "377",
+      "name": "Paloheinän maja",
+      "lat": 60.25523561,
+      "lon": 24.91830089,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Paloheinäntie": {
+      "stationId": "378",
+      "name": "Paloheinäntie",
+      "lat": 60.24699181,
+      "lon": 24.92385807,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Pasilan asema": {
+      "stationId": "113",
+      "name": "Pasilan asema",
+      "lat": 60.198210866794,
+      "lon": 24.9327990790329,
+      "bikesAvailable": 1,
+      "spacesAvailable": 40
+    },
+    "Pernajantie": {
+      "stationId": "129",
+      "name": "Pernajantie",
+      "lat": 60.1942342,
+      "lon": 24.9579931,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Perämiehenkatu": {
+      "stationId": "067",
+      "name": "Perämiehenkatu",
+      "lat": 60.1600875931318,
+      "lon": 24.9340656851357,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Petter Wetterin tie": {
+      "stationId": "259",
+      "name": "Petter Wetterin tie",
+      "lat": 60.19313762536413,
+      "lon": 25.031111942585127,
+      "bikesAvailable": 1,
+      "spacesAvailable": 19
+    },
+    "Peukaloisentie": {
+      "stationId": "269",
+      "name": "Peukaloisentie",
+      "lat": 60.1987054995554,
+      "lon": 25.05854933123242,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Pihlajamäki": {
+      "stationId": "238",
+      "name": "Pihlajamäki",
+      "lat": 60.234578571034135,
+      "lon": 25.010313905081038,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Piikintie": {
+      "stationId": "375",
+      "name": "Piikintie",
+      "lat": 60.24885591,
+      "lon": 24.95814405,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Piispankallio": {
+      "stationId": "645",
+      "name": "Piispankallio",
+      "lat": 60.168441,
+      "lon": 24.743532,
+      "bikesAvailable": 2,
+      "spacesAvailable": 14
+    },
+    "Piispanportti": {
+      "stationId": "629",
+      "name": "Piispanportti",
+      "lat": 60.165603,
+      "lon": 24.732688,
+      "bikesAvailable": 5,
+      "spacesAvailable": 12
+    },
+    "Piispansilta": {
+      "stationId": "627",
+      "name": "Piispansilta",
+      "lat": 60.162403,
+      "lon": 24.738416,
+      "bikesAvailable": 0,
+      "spacesAvailable": 40
+    },
+    "Pirkkolan liikuntapuisto": {
+      "stationId": "380",
+      "name": "Pirkkolan liikuntapuisto",
+      "lat": 60.2327348,
+      "lon": 24.90975085,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Pitäjänmäen asema": {
+      "stationId": "215",
+      "name": "Pitäjänmäen asema",
+      "lat": 60.224166,
+      "lon": 24.858046,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Pohjankulma": {
+      "stationId": "559",
+      "name": "Pohjankulma",
+      "lat": 60.18288,
+      "lon": 24.794014,
+      "bikesAvailable": 6,
+      "spacesAvailable": 19
+    },
+    "Pohjois-Haagan asema": {
+      "stationId": "218",
+      "name": "Pohjois-Haagan asema",
+      "lat": 60.230151499496536,
+      "lon": 24.88312884546424,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Pohjolanaukio": {
+      "stationId": "146",
+      "name": "Pohjolanaukio",
+      "lat": 60.2172043,
+      "lon": 24.9544112,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Pohjolankatu": {
+      "stationId": "145",
+      "name": "Pohjolankatu",
+      "lat": 60.213421,
+      "lon": 24.9437964,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Porolahden koulu": {
+      "stationId": "268",
+      "name": "Porolahden koulu",
+      "lat": 60.19553971683871,
+      "lon": 25.053580944057305,
+      "bikesAvailable": 1,
+      "spacesAvailable": 14
+    },
+    "Porthania": {
+      "stationId": "018",
+      "name": "Porthania",
+      "lat": 60.16988,
+      "lon": 24.948522,
+      "bikesAvailable": 1,
+      "spacesAvailable": 30
+    },
+    "Postiljooninkatu": {
+      "stationId": "349",
+      "name": "Postiljooninkatu",
+      "lat": 60.219208,
+      "lon": 24.929044,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Postipuisto": {
+      "stationId": "294",
+      "name": "Postipuisto",
+      "lat": 60.22030391,
+      "lon": 24.93373696,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Postipuun koulu": {
+      "stationId": "739",
+      "name": "Postipuun koulu",
+      "lat": 60.223827,
+      "lon": 24.826396,
+      "bikesAvailable": 1,
+      "spacesAvailable": 16
+    },
+    "Prinsessantie": {
+      "stationId": "271",
+      "name": "Prinsessantie",
+      "lat": 60.205745,
+      "lon": 25.057488,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Puistokaari": {
+      "stationId": "055",
+      "name": "Puistokaari",
+      "lat": 60.157875,
+      "lon": 24.86202,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Puistolan VPK": {
+      "stationId": "342",
+      "name": "Puistolan VPK",
+      "lat": 60.27008566,
+      "lon": 25.05753557,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Puistolan asema": {
+      "stationId": "344",
+      "name": "Puistolan asema",
+      "lat": 60.2751896,
+      "lon": 25.03435012,
+      "bikesAvailable": 1,
+      "spacesAvailable": 16
+    },
+    "Pukinmäen asema": {
+      "stationId": "369",
+      "name": "Pukinmäen asema",
+      "lat": 60.24308645,
+      "lon": 24.99399523,
+      "bikesAvailable": 1,
+      "spacesAvailable": 12
+    },
+    "Pukinmäen liikuntapuisto": {
+      "stationId": "368",
+      "name": "Pukinmäen liikuntapuisto",
+      "lat": 60.24773234,
+      "lon": 24.99172391,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Punakiventie": {
+      "stationId": "316",
+      "name": "Punakiventie",
+      "lat": 60.21400149,
+      "lon": 25.14675006,
+      "bikesAvailable": 23,
+      "spacesAvailable": 7
+    },
+    "Puotila (M)": {
+      "stationId": "281",
+      "name": "Puotila (M)",
+      "lat": 60.21482071331432,
+      "lon": 25.09112452769074,
+      "bikesAvailable": 1,
+      "spacesAvailable": 20
+    },
+    "Puotilan ostoskeskus": {
+      "stationId": "280",
+      "name": "Puotilan ostoskeskus",
+      "lat": 60.212182,
+      "lon": 25.095697,
+      "bikesAvailable": 2,
+      "spacesAvailable": 14
+    },
+    "Puotilantie": {
+      "stationId": "278",
+      "name": "Puotilantie",
+      "lat": 60.209059633662385,
+      "lon": 25.100426060233303,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Puotinharju": {
+      "stationId": "276",
+      "name": "Puotinharju",
+      "lat": 60.21249416558419,
+      "lon": 25.08232209439382,
+      "bikesAvailable": 2,
+      "spacesAvailable": 23
+    },
+    "Puotinkylän kartano": {
+      "stationId": "279",
+      "name": "Puotinkylän kartano",
+      "lat": 60.21250990784526,
+      "lon": 25.10619874297898,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Purjetie": {
+      "stationId": "319",
+      "name": "Purjetie",
+      "lat": 60.21964832,
+      "lon": 25.13382869,
+      "bikesAvailable": 1,
+      "spacesAvailable": 18
+    },
+    "Päijänteentie": {
+      "stationId": "128",
+      "name": "Päijänteentie",
+      "lat": 60.1920576,
+      "lon": 24.9642238,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Radiokatu": {
+      "stationId": "108",
+      "name": "Radiokatu",
+      "lat": 60.20499,
+      "lon": 24.918419,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Rajasaarentie": {
+      "stationId": "074",
+      "name": "Rajasaarentie",
+      "lat": 60.183137,
+      "lon": 24.911127,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Ramsinniementie": {
+      "stationId": "311",
+      "name": "Ramsinniementie",
+      "lat": 60.19956365,
+      "lon": 25.11990608,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Rapakiventie": {
+      "stationId": "370",
+      "name": "Rapakiventie",
+      "lat": 60.23931968,
+      "lon": 25.00136762,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Rastila (M)": {
+      "stationId": "313",
+      "name": "Rastila (M)",
+      "lat": 60.20553547,
+      "lon": 25.12014086,
+      "bikesAvailable": 6,
+      "spacesAvailable": 10
+    },
+    "Ratapihantie": {
+      "stationId": "114",
+      "name": "Ratapihantie",
+      "lat": 60.196431,
+      "lon": 24.936256,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Ratsutori": {
+      "stationId": "727",
+      "name": "Ratsutori",
+      "lat": 60.217311,
+      "lon": 24.812419,
+      "bikesAvailable": 0,
+      "spacesAvailable": 32
+    },
+    "Rautatieläisenkatu": {
+      "stationId": "112",
+      "name": "Rautatieläisenkatu",
+      "lat": 60.2014382,
+      "lon": 24.9332721,
+      "bikesAvailable": 0,
+      "spacesAvailable": 22
+    },
+    "Rautatientori / itä": {
+      "stationId": "019",
+      "name": "Rautatientori / itä",
+      "lat": 60.171128,
+      "lon": 24.944699,
+      "bikesAvailable": 2,
+      "spacesAvailable": 16
+    },
+    "Rautatientori / länsi": {
+      "stationId": "022",
+      "name": "Rautatientori / länsi",
+      "lat": 60.1706061,
+      "lon": 24.9397601,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Reiherintie": {
+      "stationId": "250",
+      "name": "Reiherintie",
+      "lat": 60.167730503345986,
+      "lon": 25.047496264887712,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Relanderinaukio": {
+      "stationId": "244",
+      "name": "Relanderinaukio",
+      "lat": 60.18588749805257,
+      "lon": 25.00601922389024,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Revontulentie": {
+      "stationId": "509",
+      "name": "Revontulentie",
+      "lat": 60.17140504333,
+      "lon": 24.8016337331,
+      "bikesAvailable": 3,
+      "spacesAvailable": 16
+    },
+    "Ritarikatu": {
+      "stationId": "015",
+      "name": "Ritarikatu",
+      "lat": 60.171609,
+      "lon": 24.956159,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Roihupelto": {
+      "stationId": "267",
+      "name": "Roihupelto",
+      "lat": 60.20959632,
+      "lon": 25.05736634,
+      "bikesAvailable": 1,
+      "spacesAvailable": 14
+    },
+    "Rukatunturintie": {
+      "stationId": "322",
+      "name": "Rukatunturintie",
+      "lat": 60.23128135,
+      "lon": 25.12759698,
+      "bikesAvailable": 13,
+      "spacesAvailable": 6
+    },
+    "Rummunlyöjänkatu": {
+      "stationId": "725",
+      "name": "Rummunlyöjänkatu",
+      "lat": 60.217261,
+      "lon": 24.806279,
+      "bikesAvailable": 7,
+      "spacesAvailable": 17
+    },
+    "Ruomelantie": {
+      "stationId": "637",
+      "name": "Ruomelantie",
+      "lat": 60.17481606,
+      "lon": 24.72927836,
+      "bikesAvailable": 1,
+      "spacesAvailable": 11
+    },
+    "Ruskeasuon varikko": {
+      "stationId": "206",
+      "name": "Ruskeasuon varikko",
+      "lat": 60.206204,
+      "lon": 24.900985,
+      "bikesAvailable": 0,
+      "spacesAvailable": 22
+    },
+    "Ruutikatu": {
+      "stationId": "767",
+      "name": "Ruutikatu",
+      "lat": 60.223377,
+      "lon": 24.820635,
+      "bikesAvailable": 0,
+      "spacesAvailable": 10
+    },
+    "Sallatunturintie": {
+      "stationId": "323",
+      "name": "Sallatunturintie",
+      "lat": 60.23674091,
+      "lon": 25.11830002,
+      "bikesAvailable": 2,
+      "spacesAvailable": 16
+    },
+    "Salmisaarenranta": {
+      "stationId": "059",
+      "name": "Salmisaarenranta",
+      "lat": 60.16478138043,
+      "lon": 24.90096080349,
+      "bikesAvailable": 1,
+      "spacesAvailable": 27
+    },
+    "Sammonpuistikko": {
+      "stationId": "070",
+      "name": "Sammonpuistikko",
+      "lat": 60.1731473,
+      "lon": 24.9224112,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Saniaiskuja": {
+      "stationId": "354",
+      "name": "Saniaiskuja",
+      "lat": 60.25909157,
+      "lon": 25.02909058,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Sateenkaarentie": {
+      "stationId": "347",
+      "name": "Sateenkaarentie",
+      "lat": 60.28075608,
+      "lon": 25.01106298,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Sateentie": {
+      "stationId": "511",
+      "name": "Sateentie",
+      "lat": 60.173424,
+      "lon": 24.810688,
+      "bikesAvailable": 13,
+      "spacesAvailable": 8
+    },
+    "Saunalahdentie": {
+      "stationId": "092",
+      "name": "Saunalahdentie",
+      "lat": 60.1926305828,
+      "lon": 24.87922144235,
+      "bikesAvailable": 0,
+      "spacesAvailable": 8
+    },
+    "Savela": {
+      "stationId": "371",
+      "name": "Savela",
+      "lat": 60.24049485,
+      "lon": 24.99138726,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Senaatintori": {
+      "stationId": "014",
+      "name": "Senaatintori",
+      "lat": 60.169112,
+      "lon": 24.952197,
+      "bikesAvailable": 4,
+      "spacesAvailable": 22
+    },
+    "Sepetlahdentie": {
+      "stationId": "609",
+      "name": "Sepetlahdentie",
+      "lat": 60.152343,
+      "lon": 24.741234,
+      "bikesAvailable": 6,
+      "spacesAvailable": 11
+    },
+    "Sepänkatu": {
+      "stationId": "005",
+      "name": "Sepänkatu",
+      "lat": 60.157937,
+      "lon": 24.936156,
+      "bikesAvailable": 20,
+      "spacesAvailable": 21
+    },
+    "Seurasaari": {
+      "stationId": "091",
+      "name": "Seurasaari",
+      "lat": 60.188399,
+      "lon": 24.8847362,
+      "bikesAvailable": 0,
+      "spacesAvailable": 22
+    },
+    "Siilitie (M)": {
+      "stationId": "262",
+      "name": "Siilitie (M)",
+      "lat": 60.20596244959136,
+      "lon": 25.04516115672629,
+      "bikesAvailable": 0,
+      "spacesAvailable": 22
+    },
+    "Siilitie 13": {
+      "stationId": "266",
+      "name": "Siilitie 13",
+      "lat": 60.215063371665806,
+      "lon": 25.04379377901174,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Siilitie 9": {
+      "stationId": "265",
+      "name": "Siilitie 9",
+      "lat": 60.20947670530612,
+      "lon": 25.037482215660486,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Siltamäki": {
+      "stationId": "348",
+      "name": "Siltamäki",
+      "lat": 60.27446709,
+      "lon": 24.98939662,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Siltavoudintie": {
+      "stationId": "231",
+      "name": "Siltavoudintie",
+      "lat": 60.23370685633967,
+      "lon": 24.96539507775229,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Sinkilätie": {
+      "stationId": "324",
+      "name": "Sinkilätie",
+      "lat": 60.23296145,
+      "lon": 25.11106023,
+      "bikesAvailable": 2,
+      "spacesAvailable": 16
+    },
+    "Sofianlehdonkatu": {
+      "stationId": "136",
+      "name": "Sofianlehdonkatu",
+      "lat": 60.2032721,
+      "lon": 24.9513636,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Sompasaari": {
+      "stationId": "404",
+      "name": "Sompasaari",
+      "lat": 60.181578,
+      "lon": 24.974596,
+      "bikesAvailable": 0,
+      "spacesAvailable": 26
+    },
+    "Stenbäckinkatu": {
+      "stationId": "081",
+      "name": "Stenbäckinkatu",
+      "lat": 60.188749,
+      "lon": 24.913268,
+      "bikesAvailable": 1,
+      "spacesAvailable": 19
+    },
+    "Sumukuja": {
+      "stationId": "302",
+      "name": "Sumukuja",
+      "lat": 60.20544673,
+      "lon": 25.15840938,
+      "bikesAvailable": 4,
+      "spacesAvailable": 12
+    },
+    "Suomenlahdentie": {
+      "stationId": "625",
+      "name": "Suomenlahdentie",
+      "lat": 60.159756,
+      "lon": 24.740267,
+      "bikesAvailable": 12,
+      "spacesAvailable": 25
+    },
+    "Suurpellonaukio": {
+      "stationId": "651",
+      "name": "Suurpellonaukio",
+      "lat": 60.18452871,
+      "lon": 24.74450876,
+      "bikesAvailable": 26,
+      "spacesAvailable": 3
+    },
+    "Syystie": {
+      "stationId": "358",
+      "name": "Syystie",
+      "lat": 60.25667117,
+      "lon": 24.99860558,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Sähkömies": {
+      "stationId": "545",
+      "name": "Sähkömies",
+      "lat": 60.188499,
+      "lon": 24.829985,
+      "bikesAvailable": 7,
+      "spacesAvailable": 10
+    },
+    "Säteri": {
+      "stationId": "719",
+      "name": "Säteri",
+      "lat": 60.213443,
+      "lon": 24.811572,
+      "bikesAvailable": 9,
+      "spacesAvailable": 24
+    },
+    "Säterinniitty": {
+      "stationId": "723",
+      "name": "Säterinniitty",
+      "lat": 60.214666,
+      "lon": 24.800486,
+      "bikesAvailable": 2,
+      "spacesAvailable": 9
+    },
+    "Sörnäinen (M)": {
+      "stationId": "044",
+      "name": "Sörnäinen (M)",
+      "lat": 60.187715,
+      "lon": 24.960584,
+      "bikesAvailable": 0,
+      "spacesAvailable": 22
+    },
+    "Takomotie": {
+      "stationId": "209",
+      "name": "Takomotie",
+      "lat": 60.21789962,
+      "lon": 24.87104647,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Tammisalon aukio": {
+      "stationId": "253",
+      "name": "Tammisalon aukio",
+      "lat": 60.19164687919301,
+      "lon": 25.06118417092495,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Tapanilan asema": {
+      "stationId": "352",
+      "name": "Tapanilan asema",
+      "lat": 60.26330395,
+      "lon": 25.02812397,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Tapiolan urheilupuisto": {
+      "stationId": "571",
+      "name": "Tapiolan urheilupuisto",
+      "lat": 60.177749,
+      "lon": 24.784654,
+      "bikesAvailable": 31,
+      "spacesAvailable": 7
+    },
+    "Tapionaukio": {
+      "stationId": "519",
+      "name": "Tapionaukio",
+      "lat": 60.176168,
+      "lon": 24.805825,
+      "bikesAvailable": 1,
+      "spacesAvailable": 25
+    },
+    "Teerisuontie": {
+      "stationId": "362",
+      "name": "Teerisuontie",
+      "lat": 60.25339409,
+      "lon": 25.02149008,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Tekniikantie": {
+      "stationId": "533",
+      "name": "Tekniikantie",
+      "lat": 60.180806,
+      "lon": 24.824747,
+      "bikesAvailable": 2,
+      "spacesAvailable": 16
+    },
+    "Teljäntie": {
+      "stationId": "100",
+      "name": "Teljäntie",
+      "lat": 60.20969562580255,
+      "lon": 24.868739477207995,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Tenholantie": {
+      "stationId": "107",
+      "name": "Tenholantie",
+      "lat": 60.2024393,
+      "lon": 24.9054609,
+      "bikesAvailable": 1,
+      "spacesAvailable": 17
+    },
+    "Teollisuuskatu": {
+      "stationId": "130",
+      "name": "Teollisuuskatu",
+      "lat": 60.193459,
+      "lon": 24.948761,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Teurastamo": {
+      "stationId": "127",
+      "name": "Teurastamo",
+      "lat": 60.1896994,
+      "lon": 24.9711926,
+      "bikesAvailable": 0,
+      "spacesAvailable": 30
+    },
+    "Thalianaukio": {
+      "stationId": "221",
+      "name": "Thalianaukio",
+      "lat": 60.22534052315868,
+      "lon": 24.894792651160333,
+      "bikesAvailable": 0,
+      "spacesAvailable": 15
+    },
+    "Tietäjä": {
+      "stationId": "551",
+      "name": "Tietäjä",
+      "lat": 60.189143,
+      "lon": 24.807083,
+      "bikesAvailable": 3,
+      "spacesAvailable": 17
+    },
+    "Tiistiläntie": {
+      "stationId": "615",
+      "name": "Tiistiläntie",
+      "lat": 60.156755,
+      "lon": 24.737664,
+      "bikesAvailable": 7,
+      "spacesAvailable": 13
+    },
+    "Tiistinkallio": {
+      "stationId": "617",
+      "name": "Tiistinkallio",
+      "lat": 60.153737,
+      "lon": 24.729112,
+      "bikesAvailable": 25,
+      "spacesAvailable": 1
+    },
+    "Tilkantori": {
+      "stationId": "105",
+      "name": "Tilkantori",
+      "lat": 60.2028392,
+      "lon": 24.8934761,
+      "bikesAvailable": 1,
+      "spacesAvailable": 16
+    },
+    "Tilkanvierto": {
+      "stationId": "089",
+      "name": "Tilkanvierto",
+      "lat": 60.197382,
+      "lon": 24.899694,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Tilketori": {
+      "stationId": "366",
+      "name": "Tilketori",
+      "lat": 60.24982656,
+      "lon": 25.00399305,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Toinen linja": {
+      "stationId": "149",
+      "name": "Toinen linja",
+      "lat": 60.183164,
+      "lon": 24.9441949,
+      "bikesAvailable": 0,
+      "spacesAvailable": 22
+    },
+    "Tollinpolku": {
+      "stationId": "391",
+      "name": "Tollinpolku",
+      "lat": 60.24590853,
+      "lon": 24.86771102,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Tontunmäentie": {
+      "stationId": "575",
+      "name": "Tontunmäentie",
+      "lat": 60.176107,
+      "lon": 24.769667,
+      "bikesAvailable": 27,
+      "spacesAvailable": 1
+    },
+    "Toppelundinportti": {
+      "stationId": "596",
+      "name": "Toppelundinportti",
+      "lat": 60.1624471,
+      "lon": 24.7848628,
+      "bikesAvailable": 33,
+      "spacesAvailable": 4
+    },
+    "Toppelundintie": {
+      "stationId": "593",
+      "name": "Toppelundintie",
+      "lat": 60.1591405,
+      "lon": 24.782477,
+      "bikesAvailable": 7,
+      "spacesAvailable": 8
+    },
+    "Torpanranta": {
+      "stationId": "093",
+      "name": "Torpanranta",
+      "lat": 60.1948358,
+      "lon": 24.8713963,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Torpparinmäentie": {
+      "stationId": "376",
+      "name": "Torpparinmäentie",
+      "lat": 60.257183,
+      "lon": 24.943635,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Trumpettikuja": {
+      "stationId": "390",
+      "name": "Trumpettikuja",
+      "lat": 60.239186,
+      "lon": 24.870887,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Tulisuontie": {
+      "stationId": "270",
+      "name": "Tulisuontie",
+      "lat": 60.202072986712835,
+      "lon": 25.060046596074795,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Tunnelitie": {
+      "stationId": "212",
+      "name": "Tunnelitie",
+      "lat": 60.21661653745581,
+      "lon": 24.89954369574049,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Tuohipolku": {
+      "stationId": "394",
+      "name": "Tuohipolku",
+      "lat": 60.25156469,
+      "lon": 24.85743226,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Tupasaarentie": {
+      "stationId": "246",
+      "name": "Tupasaarentie",
+      "lat": 60.187998177032696,
+      "lon": 25.015391648483803,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Tuukkalantie": {
+      "stationId": "326",
+      "name": "Tuukkalantie",
+      "lat": 60.23884425,
+      "lon": 25.10072322,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Tuulimäki": {
+      "stationId": "518",
+      "name": "Tuulimäki",
+      "lat": 60.17219,
+      "lon": 24.806849,
+      "bikesAvailable": 1,
+      "spacesAvailable": 19
+    },
+    "Tyynenmerenkatu": {
+      "stationId": "064",
+      "name": "Tyynenmerenkatu",
+      "lat": 60.156838,
+      "lon": 24.920661,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Töyrynummi": {
+      "stationId": "350",
+      "name": "Töyrynummi",
+      "lat": 60.26714677,
+      "lon": 24.99299022,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Töölönkatu": {
+      "stationId": "037",
+      "name": "Töölönkatu",
+      "lat": 60.177847,
+      "lon": 24.927821,
+      "bikesAvailable": 1,
+      "spacesAvailable": 18
+    },
+    "Töölönlahden puisto": {
+      "stationId": "150",
+      "name": "Töölönlahden puisto",
+      "lat": 60.174646,
+      "lon": 24.935186,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Töölönlahdenkatu": {
+      "stationId": "021",
+      "name": "Töölönlahdenkatu",
+      "lat": 60.172191,
+      "lon": 24.939308,
+      "bikesAvailable": 0,
+      "spacesAvailable": 44
+    },
+    "Töölöntori": {
+      "stationId": "038",
+      "name": "Töölöntori",
+      "lat": 60.1791231,
+      "lon": 24.9249114,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Töölöntulli": {
+      "stationId": "082",
+      "name": "Töölöntulli",
+      "lat": 60.19095693226663,
+      "lon": 24.912827135427882,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Uimastadion": {
+      "stationId": "079",
+      "name": "Uimastadion",
+      "lat": 60.1892172,
+      "lon": 24.9292286,
+      "bikesAvailable": 0,
+      "spacesAvailable": 18
+    },
+    "Ulappasilta": {
+      "stationId": "307",
+      "name": "Ulappasilta",
+      "lat": 60.20661604,
+      "lon": 25.14104587,
+      "bikesAvailable": 5,
+      "spacesAvailable": 16
+    },
+    "Ulvilantie": {
+      "stationId": "098",
+      "name": "Ulvilantie",
+      "lat": 60.2038803,
+      "lon": 24.8708833,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Unioninkatu": {
+      "stationId": "011",
+      "name": "Unioninkatu",
+      "lat": 60.1674573,
+      "lon": 24.9510227,
+      "bikesAvailable": 1,
+      "spacesAvailable": 21
+    },
+    "Upseerinkatu": {
+      "stationId": "713",
+      "name": "Upseerinkatu",
+      "lat": 60.216067,
+      "lon": 24.819396,
+      "bikesAvailable": 26,
+      "spacesAvailable": 13
+    },
+    "Urhea-kampus": {
+      "stationId": "132",
+      "name": "Urhea-kampus",
+      "lat": 60.19914958,
+      "lon": 24.94782519,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Urheilupuisto (M)": {
+      "stationId": "573",
+      "name": "Urheilupuisto (M)",
+      "lat": 60.17465,
+      "lon": 24.779428,
+      "bikesAvailable": 9,
+      "spacesAvailable": 24
+    },
+    "Valimon asema": {
+      "stationId": "214",
+      "name": "Valimon asema",
+      "lat": 60.22229427877046,
+      "lon": 24.875870912746144,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Valimotie": {
+      "stationId": "208",
+      "name": "Valimotie",
+      "lat": 60.21560492,
+      "lon": 24.87541595,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Vallikatu": {
+      "stationId": "749",
+      "name": "Vallikatu",
+      "lat": 60.228463,
+      "lon": 24.813871,
+      "bikesAvailable": 3,
+      "spacesAvailable": 21
+    },
+    "Vallilan varikko": {
+      "stationId": "290",
+      "name": "Vallilan varikko",
+      "lat": 60.195225,
+      "lon": 24.962832,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Vallipolku": {
+      "stationId": "751",
+      "name": "Vallipolku",
+      "lat": 60.227827,
+      "lon": 24.819614,
+      "bikesAvailable": 0,
+      "spacesAvailable": 20
+    },
+    "Vanha Kauppahalli": {
+      "stationId": "047",
+      "name": "Vanha Kauppahalli",
+      "lat": 60.165343,
+      "lon": 24.953535,
+      "bikesAvailable": 0,
+      "spacesAvailable": 22
+    },
+    "Vanha Tapanilantie": {
+      "stationId": "357",
+      "name": "Vanha Tapanilantie",
+      "lat": 60.25969904,
+      "lon": 24.98975388,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Vanha Viertotie": {
+      "stationId": "207",
+      "name": "Vanha Viertotie",
+      "lat": 60.211075296273414,
+      "lon": 24.881660254358646,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Vanha kirkkopuisto": {
+      "stationId": "008",
+      "name": "Vanha kirkkopuisto",
+      "lat": 60.1652883,
+      "lon": 24.9391499,
+      "bikesAvailable": 0,
+      "spacesAvailable": 24
+    },
+    "Varsapuistikko": {
+      "stationId": "017",
+      "name": "Varsapuistikko",
+      "lat": 60.1731029004969,
+      "lon": 24.9495192737191,
+      "bikesAvailable": 0,
+      "spacesAvailable": 28
+    },
+    "Vartioharjuntie": {
+      "stationId": "321",
+      "name": "Vartioharjuntie",
+      "lat": 60.22088947,
+      "lon": 25.11091442,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Varustuksentie": {
+      "stationId": "334",
+      "name": "Varustuksentie",
+      "lat": 60.23913101,
+      "lon": 25.06685726,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Velodrominrinne": {
+      "stationId": "135",
+      "name": "Velodrominrinne",
+      "lat": 60.2010614,
+      "lon": 24.9440506,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Venttiilikuja": {
+      "stationId": "115",
+      "name": "Venttiilikuja",
+      "lat": 60.1942095,
+      "lon": 24.941578,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Verkatehtaanpuisto": {
+      "stationId": "140",
+      "name": "Verkatehtaanpuisto",
+      "lat": 60.2137007,
+      "lon": 24.9797283,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Verkkosaari": {
+      "stationId": "403",
+      "name": "Verkkosaari",
+      "lat": 60.18955618,
+      "lon": 24.97754808,
+      "bikesAvailable": 1,
+      "spacesAvailable": 19
+    },
+    "Vesakkotie": {
+      "stationId": "224",
+      "name": "Vesakkotie",
+      "lat": 60.22794236805671,
+      "lon": 24.926564764263762,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Viikin normaalikoulu": {
+      "stationId": "240",
+      "name": "Viikin normaalikoulu",
+      "lat": 60.227495295832895,
+      "lon": 25.02761893353016,
+      "bikesAvailable": 1,
+      "spacesAvailable": 20
+    },
+    "Viikin tiedepuisto": {
+      "stationId": "239",
+      "name": "Viikin tiedepuisto",
+      "lat": 60.227520671727405,
+      "lon": 25.010062061139756,
+      "bikesAvailable": 0,
+      "spacesAvailable": 28
+    },
+    "Viiskulma": {
+      "stationId": "004",
+      "name": "Viiskulma",
+      "lat": 60.1609859,
+      "lon": 24.9417758,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Vilhonvuorenkatu": {
+      "stationId": "121",
+      "name": "Vilhonvuorenkatu",
+      "lat": 60.18645529,
+      "lon": 24.96785144,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Viljelijäntie": {
+      "stationId": "392",
+      "name": "Viljelijäntie",
+      "lat": 60.24323344,
+      "lon": 24.85729796,
+      "bikesAvailable": 0,
+      "spacesAvailable": 16
+    },
+    "Voikukantie": {
+      "stationId": "274",
+      "name": "Voikukantie",
+      "lat": 60.20899759942336,
+      "lon": 25.086782105520793,
+      "bikesAvailable": 1,
+      "spacesAvailable": 16
+    },
+    "Von Daehnin katu": {
+      "stationId": "242",
+      "name": "Von Daehnin katu",
+      "lat": 60.23033717886547,
+      "lon": 25.04356806988234,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Vuosaaren liikuntapuisto": {
+      "stationId": "315",
+      "name": "Vuosaaren liikuntapuisto",
+      "lat": 60.21229761,
+      "lon": 25.15346457,
+      "bikesAvailable": 41,
+      "spacesAvailable": 5
+    },
+    "Vuosaaren puistopolku": {
+      "stationId": "318",
+      "name": "Vuosaaren puistopolku",
+      "lat": 60.2213209,
+      "lon": 25.14109536,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Vähäntuvantie": {
+      "stationId": "399",
+      "name": "Vähäntuvantie",
+      "lat": 60.23245104,
+      "lon": 24.84616505,
+      "bikesAvailable": 0,
+      "spacesAvailable": 14
+    },
+    "Välimerenkatu": {
+      "stationId": "062",
+      "name": "Välimerenkatu",
+      "lat": 60.159296,
+      "lon": 24.916241,
+      "bikesAvailable": 1,
+      "spacesAvailable": 16
+    },
+    "Väärämäentie": {
+      "stationId": "363",
+      "name": "Väärämäentie",
+      "lat": 60.24269283,
+      "lon": 25.0297267,
+      "bikesAvailable": 0,
+      "spacesAvailable": 12
+    },
+    "Westendinasema": {
+      "stationId": "505",
+      "name": "Westendinasema",
+      "lat": 60.168266,
+      "lon": 24.805758,
+      "bikesAvailable": 4,
+      "spacesAvailable": 15
+    },
+    "Westendintie": {
+      "stationId": "595",
+      "name": "Westendintie",
+      "lat": 60.158194,
+      "lon": 24.791754,
+      "bikesAvailable": 13,
+      "spacesAvailable": 5
+    },
+    "Ympyrätalo": {
+      "stationId": "041",
+      "name": "Ympyrätalo",
+      "lat": 60.180863,
+      "lon": 24.9494,
+      "bikesAvailable": 0,
+      "spacesAvailable": 36
+    }
+  }
+}
