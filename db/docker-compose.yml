@@ -1,0 +1,40 @@
+services:
+  peloton-db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: peloton-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-peloton_db}
+      POSTGRES_USER: ${POSTGRES_USER:-peloton}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-peloton_dev_password}
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+
+    volumes:
+      # Persistent data storage
+      - peloton-db-data:/var/lib/postgresql/data
+      # Initialization scripts
+      - ./init-scripts:/docker-entrypoint-initdb.d
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    networks:
+      - peloton-db-network
+
+volumes:
+  peloton-db-data:
+    name: peloton-db-data
+
+networks:
+  peloton-db-network:
+    name: peloton-db-network
+    driver: bridge

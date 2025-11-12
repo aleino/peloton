@@ -1,3 +1,4 @@
+.env
 # Logs
 logs
 *.log
@@ -140,7 +141,11 @@ vite.config.ts.timestamp-*
 
 /data/raw/
 
-.ai/
 .github/
+.ai/
+
+# Database
+db/.env
+db/backups/
 
 .DS_Store
