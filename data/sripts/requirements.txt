@@ -1,0 +1,2 @@
+# Requirements for HSL bike data fetching scripts
+requests>=2.31.0
