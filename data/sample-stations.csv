@@ -1,0 +1,11 @@
+station_id,name,address,city,latitude,longitude,capacity
+001,Kaivopuisto,Meritori 1,Helsinki,60.155371,24.950390,30
+002,Töölönlahdenpuisto,Töölönlahdenkatu,Helsinki,60.177330,24.926450,40
+003,Rautatientori,Kaivokatu 1,Helsinki,60.171320,24.944450,50
+004,Kamppi,Urho Kekkosen katu 1,Helsinki,60.168320,24.932320,35
+005,Senaatintori,Senaatintori,Helsinki,60.169250,24.951630,25
+006,Hakaniemi,Hämeentie 1,Helsinki,60.178960,24.950890,30
+007,Kaisaniemi,Kaisaniemenkatu 3,Helsinki,60.173020,24.945540,28
+008,Esplanadi,Pohjoisesplanadi 11,Helsinki,60.168540,24.947890,32
+009,Karhupuisto,Korkeavuorenkatu 45,Helsinki,60.159610,24.946210,22
+010,Laivasillankatu,Laivasillankatu 14,Helsinki,60.157260,24.956870,26

@@ -1,0 +1,159 @@
+.sidebar {
+  width: 350px;
+  background: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #e0e0e0;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  padding: 1rem;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #007ac9;
+}
+
+.sort-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: white;
+  cursor: pointer;
+}
+
+.sort-select:focus {
+  outline: none;
+  border-color: #007ac9;
+}
+
+.stations-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.no-results {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.station-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+}
+
+.station-card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.station-card.selected {
+  border-color: #007ac9;
+  box-shadow: 0 4px 12px rgba(0,122,201,0.2);
+}
+
+.station-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.station-name {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 600;
+  flex: 1;
+}
+
+.availability-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-left: 0.5rem;
+  flex-shrink: 0;
+}
+
+.availability-indicator.high {
+  background: #10b981;
+}
+
+.availability-indicator.medium {
+  background: #f59e0b;
+}
+
+.availability-indicator.low {
+  background: #ef4444;
+}
+
+.availability-indicator.empty {
+  background: #9ca3af;
+}
+
+.station-address {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.station-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.info-icon {
+  font-size: 1rem;
+}
+
+.info-label {
+  color: #666;
+  flex: 1;
+}
+
+.info-value {
+  font-weight: 600;
+  color: #007ac9;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    max-height: 40vh;
+  }
+
+  .stations-list {
+    max-height: calc(40vh - 120px);
+  }
+}
