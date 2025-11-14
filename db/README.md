@@ -106,8 +106,9 @@ Individual bike trip records (Origin-Destination data).
 
 The database is initialized with scripts in `init-scripts/` directory:
 
-- `01-extensions.sql` - Enables PostGIS extension
-- `02-schema.sql` - Creates tables: `hsl.stations`, `hsl.trips`
+- `01-ini.sql` - Sets timezone, creates schema, enables PostGIS extension
+- `02-stations.sql` - Creates `hsl.stations` table with indexes and triggers
+- `03-trips.sql` - Creates `hsl.trips` table with indexes and constraints
 
 Scripts are executed in alphabetical order during first container start.
 
