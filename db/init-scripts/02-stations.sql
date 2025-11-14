@@ -24,8 +24,6 @@ CREATE TABLE IF NOT EXISTS hsl.stations (
 
     -- Location (PostGIS geography)
     location GEOGRAPHY(POINT, 4326),
-    address VARCHAR(255),
-    city VARCHAR(100) CHECK (city IN ('Helsinki', 'Espoo', 'Vantaa')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
