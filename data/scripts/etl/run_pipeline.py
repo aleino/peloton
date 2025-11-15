@@ -41,10 +41,17 @@ def load_config(config_path: str) -> dict:
     Returns:
         Configuration dictionary
     """
-    # Load .env file from db directory if it exists
-    env_path = Path(__file__).parent.parent.parent.parent / "db" / ".env"
-    if env_path.exists():
-        load_dotenv(env_path)
+    # Load root .env file first (shared configuration)
+    root_env = Path(__file__).parent.parent.parent.parent / ".env"
+    if root_env.exists():
+        load_dotenv(root_env)
+        logger.info(f"Loaded root .env from {root_env}")
+
+    # Load db .env for backwards compatibility (will override root values)
+    db_env = Path(__file__).parent.parent.parent.parent / "db" / ".env"
+    if db_env.exists():
+        load_dotenv(db_env, override=True)
+        logger.info(f"Loaded db .env from {db_env}")
 
     with open(config_path, "r") as f:
         config = yaml.safe_load(f)

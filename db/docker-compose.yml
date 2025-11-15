@@ -6,6 +6,10 @@ services:
     container_name: peloton-postgres
     restart: unless-stopped
 
+    # Load environment variables from root .env file
+    env_file:
+      - ../.env
+
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-peloton_db}
       POSTGRES_USER: ${POSTGRES_USER:-peloton}

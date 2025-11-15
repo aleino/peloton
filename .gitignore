@@ -1,4 +1,12 @@
+# Environment variables
 .env
+.env.local
+.env.*.local
+
+# Keep example files
+!.env.example
+!**/.env.example
+
 # Logs
 logs
 *.log
@@ -68,8 +76,12 @@ web_modules/
 
 # dotenv environment variable files
 .env
-.env.*
+.env.local
+.env.*.local
+
+# Keep example files
 !.env.example
+!**/.env.example
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
