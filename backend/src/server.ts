@@ -1,5 +1,5 @@
 import { createApp } from './app.js';
-import { testConnection } from './config/database.js';
+import { closeDatabasePool, testConnection } from './config/database.js';
 import { env } from './config/env.js';
 import { logger } from './utils/logger.js';
 
@@ -14,22 +14,37 @@ async function startServer(): Promise<void> {
     const app = createApp();
 
     const server = app.listen(env.PORT, () => {
-      logger.info(`Server running on port ${env.PORT}`);
-      logger.info(`Environment: ${env.NODE_ENV}`);
-      logger.info(`API Version: ${env.API_VERSION}`);
+      logger.info(`🚀 Server running on http://localhost:${env.PORT}`);
+      logger.info(`📊 Health check: http://localhost:${env.PORT}/api/${env.API_VERSION}/health`);
+      logger.info(`🌍 Environment: ${env.NODE_ENV}`);
     });
 
     // Graceful shutdown
-    const shutdown = () => {
-      logger.info('Received shutdown signal, closing server...');
-      server.close(() => {
-        logger.info('Server closed');
-        process.exit(0);
+    const shutdown = async (signal: string) => {
+      logger.info(`${signal} received, shutting down gracefully...`);
+
+      server.close(async () => {
+        logger.info('HTTP server closed');
+
+        try {
+          await closeDatabasePool();
+          logger.info('Database connections closed');
+          process.exit(0);
+        } catch (error) {
+          logger.error('Error during shutdown:', error);
+          process.exit(1);
+        }
       });
+
+      // Force shutdown after 10 seconds
+      setTimeout(() => {
+        logger.error('Forced shutdown after timeout');
+        process.exit(1);
+      }, 10000);
     };
 
-    process.on('SIGTERM', shutdown);
-    process.on('SIGINT', shutdown);
+    process.on('SIGTERM', () => shutdown('SIGTERM'));
+    process.on('SIGINT', () => shutdown('SIGINT'));
   } catch (error) {
     logger.error('Failed to start server:', error);
     process.exit(1);

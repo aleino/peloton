@@ -24,7 +24,7 @@ export function createApp(): Express {
   app.use(morgan(morganFormat, { stream: morganStream }));
 
   // Routes
-  app.use('/health', healthRoutes);
+  app.use(`/api/${env.API_VERSION}`, healthRoutes);
 
   // 404 handler - must be after all routes
   app.use(notFoundHandler);

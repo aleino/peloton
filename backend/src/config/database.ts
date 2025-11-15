@@ -32,10 +32,19 @@ export async function testConnection(): Promise<boolean> {
   }
 }
 
-
 export async function closePool(): Promise<void> {
   await pool.end();
   logger.info('Database connection pool closed');
+}
+
+
+export async function checkDatabaseHealth(): Promise<{ connected: boolean }> {
+  const connected = await testConnection();
+  return { connected };
+}
+
+export async function closeDatabasePool(): Promise<void> {
+  return closePool();
 }
 
 process.on('SIGTERM', () => {
