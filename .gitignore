@@ -191,6 +191,7 @@ env/
 
 .github/
 .ai/
+.vscode/
 
 # Database
 db/.env
