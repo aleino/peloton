@@ -66,7 +66,7 @@ City bike station information with geospatial data.
 
 | Column       | Type                       | Constraints                     | Description                                           |
 | ------------ | -------------------------- | ------------------------------- | ----------------------------------------------------- |
-| `station_id` | `VARCHAR(10)`              | PRIMARY KEY                     | HSL station identifier (e.g., '018', '103')           |
+| `station_id` | `VARCHAR(50)`              | PRIMARY KEY                     | HSL station identifier (e.g., '018', '103')           |
 | `name`       | `VARCHAR(255)`             | NOT NULL                        | Station name                                          |
 | `location`   | `GEOGRAPHY(POINT, 4326)`   |                                 | Station location as WGS84 point (longitude, latitude) |
 | `address`    | `VARCHAR(255)`             |                                 | Street address                                        |
@@ -89,8 +89,8 @@ Individual bike trip records (Origin-Destination data).
 | `return_date`          | `DATE`                     | NOT NULL                  | Return date (denormalized for query performance)            |
 | `return_hour`          | `INTEGER`                  | NOT NULL, 0-23            | Return hour (denormalized for query performance)            |
 | `return_weekday`       | `INTEGER`                  | NOT NULL, 0-6             | Return weekday (0=Monday, 6=Sunday)                         |
-| `departure_station_id` | `VARCHAR(10)`              | NOT NULL, FK → stations   | Departure station reference                                 |
-| `return_station_id`    | `VARCHAR(10)`              | NOT NULL, FK → stations   | Return station reference                                    |
+| `departure_station_id` | `VARCHAR(50)`              | NOT NULL, FK → stations   | Departure station reference                                 |
+| `return_station_id`    | `VARCHAR(50)`              | NOT NULL, FK → stations   | Return station reference                                    |
 | `distance_meters`      | `INTEGER`                  | NOT NULL, ≥ 0             | Trip distance in meters (can be 0 for same-station returns) |
 | `duration_seconds`     | `INTEGER`                  | NOT NULL, > 0             | Trip duration in seconds                                    |
 | `created_at`           | `TIMESTAMP WITH TIME ZONE` | DEFAULT CURRENT_TIMESTAMP | Record creation timestamp                                   |

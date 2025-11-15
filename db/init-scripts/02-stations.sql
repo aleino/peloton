@@ -17,7 +17,8 @@ SET search_path TO hsl, public;
 
 CREATE TABLE IF NOT EXISTS hsl.stations (
     -- Primary key
-    station_id VARCHAR(10) PRIMARY KEY,
+    -- In rare cases id can be UUID instead of 3 numbers.
+    station_id VARCHAR(50) PRIMARY KEY,
 
     -- Station details
     name VARCHAR(255) NOT NULL,
@@ -30,7 +31,6 @@ CREATE TABLE IF NOT EXISTS hsl.stations (
 
 -- Indexes for stations
 CREATE INDEX IF NOT EXISTS idx_stations_location ON hsl.stations USING GIST(location);
-CREATE INDEX IF NOT EXISTS idx_stations_city ON hsl.stations(city) WHERE city IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_stations_name_lower ON hsl.stations(LOWER(name));
 
 -- Add comments for documentation

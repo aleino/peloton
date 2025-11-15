@@ -1,0 +1,29 @@
+database:
+  host: localhost
+  port: 5432
+  database: peloton_db
+  user: peloton
+  password: peloton_password
+  schema: hsl
+
+pipeline:
+  chunk_size: 10000
+  batch_size: 10000
+  max_workers: 4
+  timezone: "Europe/Helsinki"
+
+paths:
+  raw_data: "data/raw/2024/od-trips-2024"
+  station_coordinates: "data/interim/station_coordinates.json"
+  logs: "data/logs"
+  output: "data/output"
+
+validation:
+  max_speed_kmh: 50
+  duration_tolerance_sec: 60
+  min_duration_sec: 1
+
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "data/logs/pipeline.log"

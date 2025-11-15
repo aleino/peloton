@@ -1,0 +1,38 @@
+{
+  "execution_time": "2025-11-15T17:11:18.461489",
+  "duration_seconds": 205.44,
+  "files_processed": 7,
+  "stations": {
+    "loaded": 0,
+    "updated": 453,
+    "missing": 0
+  },
+  "trips": {
+    "total_rows": 2583204,
+    "valid_rows": 2515460,
+    "invalid_rows": 70463,
+    "inserted": 2511618,
+    "duplicates_skipped": 3842,
+    "success_rate": 97.38,
+    "invalid_rate": 2.73
+  },
+  "errors": {
+    "parsing_errors": 2464,
+    "validation_errors": 70463,
+    "database_errors": 0,
+    "error_rate": 2.82,
+    "by_type": {
+      "duration_mismatch": 49358,
+      "missing_station": 16033,
+      "invalid_duration": 2507,
+      "zero_duration": 2507,
+      "invalid_timestamps": 19,
+      "invalid_distance": 39
+    }
+  },
+  "performance": {
+    "rows_per_second": 12574.21,
+    "insertion_rate": 99.85,
+    "duplicate_rate": 0.15
+  }
+}

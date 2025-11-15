@@ -1,0 +1,15 @@
+# Requirements for HSL bike data fetching and processing scripts
+
+# Data fetching
+requests>=2.31.0
+
+# Data processing pipeline (data/scripts/)
+pandas>=2.0.0
+psycopg[binary,pool]>=3.1.0
+python-dotenv>=1.0.0
+pyyaml>=6.0.0
+tqdm>=4.65.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0

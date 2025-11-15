@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS hsl.trips (
     return_weekday INTEGER NOT NULL,
 
     -- Station references
-    departure_station_id VARCHAR(10) NOT NULL,
-    return_station_id VARCHAR(10) NOT NULL,
+    departure_station_id VARCHAR(50) NOT NULL,
+    return_station_id VARCHAR(50) NOT NULL,
 
     -- Trip metrics
     distance_meters INTEGER NOT NULL,
@@ -75,7 +75,11 @@ CREATE TABLE IF NOT EXISTS hsl.trips (
     CONSTRAINT valid_trip_duration CHECK (
         EXTRACT(EPOCH FROM (return_time - departure_time)) >= duration_seconds - 60
         AND EXTRACT(EPOCH FROM (return_time - departure_time)) <= duration_seconds + 60
-    )
+    ),
+
+    -- Unique constraint for deduplication
+    -- A trip is uniquely identified by departure time, departure station, and return station
+    CONSTRAINT trips_unique_trip UNIQUE (departure_time, departure_station_id, return_station_id)
 );
 
 -- Indexes for trips
