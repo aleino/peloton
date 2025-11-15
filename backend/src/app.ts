@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import { env } from './config/env.js';
 import { corsMiddleware } from './middleware/cors.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
-import healthRoutes from './routes/health.js';
+import healthRoutes from './routes/health/health.routes.js';
 import docsRouter from './routes/docs.js';
 import { logger, morganStream } from './utils/logger.js';
 

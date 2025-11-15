@@ -2,8 +2,8 @@ import { Router, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { healthGetResponseBody, type HealthGetResponseBody } from '@peloton/shared';
 
-import { checkDatabaseHealth } from '../config/database.js';
-import { logger } from '../utils/logger.js';
+import { checkDatabaseHealth } from '../../config/database.js';
+import { logger } from '../../utils/logger.js';
 
 const router = Router();
 

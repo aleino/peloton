@@ -1,68 +1,12 @@
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
 import { env } from './env.js';
-import { healthGetResponseBody } from '@peloton/shared';
+import { registerHealthEndpoints } from '../routes/health/health.openapi.js';
 
-/**
- * OpenAPI Registry - central place to register all schemas and routes
- */
+
 export const registry = new OpenAPIRegistry();
 
-// Register health endpoint
-registry.registerPath({
-  method: 'get',
-  path: '/health',
-  tags: ['Health'],
-  summary: 'Health check endpoint',
-  description: `
-Check the health status of the API server and database connectivity.
-
-This endpoint is used by:
-- Docker health checks
-- Load balancer health probes  
-- Monitoring systems
-- CI/CD deployment validation
-    `.trim(),
-  responses: {
-    200: {
-      description: 'System is healthy',
-      content: {
-        'application/json': {
-          schema: healthGetResponseBody,
-          examples: {
-            healthy: {
-              summary: 'Healthy system',
-              value: {
-                status: 'healthy',
-                database: 'connected',
-                timestamp: '2025-11-15T02:33:00.000Z',
-                uptime: 3456,
-              },
-            },
-          },
-        },
-      },
-    },
-    503: {
-      description: 'Service unavailable (database disconnected)',
-      content: {
-        'application/json': {
-          schema: healthGetResponseBody,
-          examples: {
-            degraded: {
-              summary: 'Degraded system',
-              value: {
-                status: 'degraded',
-                database: 'disconnected',
-                timestamp: '2025-11-15T02:33:00.000Z',
-                uptime: 3456,
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-});
+// Register all endpoint groups
+registerHealthEndpoints(registry);
 
 /**
  * Generate OpenAPI document from registry
