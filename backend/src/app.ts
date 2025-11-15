@@ -6,6 +6,7 @@ import { env } from './config/env.js';
 import { corsMiddleware } from './middleware/cors.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import healthRoutes from './routes/health.js';
+import docsRouter from './routes/docs.js';
 import { logger, morganStream } from './utils/logger.js';
 
 
@@ -22,6 +23,9 @@ export function createApp(): Express {
   // HTTP request logging
   const morganFormat = env.NODE_ENV === 'prod' ? 'combined' : 'dev';
   app.use(morgan(morganFormat, { stream: morganStream }));
+
+  // API documentation
+  app.use(`/api/${env.API_VERSION}`, docsRouter);
 
   // Routes
   app.use(`/api/${env.API_VERSION}`, healthRoutes);

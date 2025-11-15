@@ -1,202 +1,212 @@
 # Peloton Backend API
 
-Express.js + TypeScript backend for serving HSL bike trip data.
+Node.js v22 + Express.js REST API for HSL city bike trip visualization.
+
+## Overview
+
+This backend serves data from a PostgreSQL/PostGIS database containing Helsinki Region Transport (HSL) bike trip data. Currently in **MVP phase** with health check endpoint only.
+
+## Tech Stack
+
+- **Runtime**: Node.js v22 (LTS)
+- **Framework**: Express.js 4.x
+- **Language**: TypeScript 5.3+
+- **Database**: PostgreSQL 17 + PostGIS
+- **Testing**: Vitest + Supertest
+- **Documentation**: OpenAPI 3.0 + Swagger UI
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
 - Node.js v22 or higher
-- npm v10 or higher
-- PostgreSQL database (running via Docker in `db/` directory)
+- npm or yarn
+- PostgreSQL database (running in Docker via `db/docker-compose.yml`)
 
-### Installation
+## Setup
 
-1. **Install dependencies:**
+### 1. Install Dependencies
 
 ```bash
-cd backend
 npm install
 ```
 
-2. **Configure environment:**
+### 2. Configure Environment
+
+Copy `.env.example` to `.env` and update values:
 
 ```bash
-# Copy example environment file
 cp .env.example .env
-
-# Edit .env with your database credentials
-# Default values work with the Docker PostgreSQL setup
 ```
 
-3. **Start PostgreSQL (if not already running):**
+Required environment variables:
+
+```env
+NODE_ENV=development
+PORT=3000
+
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=peloton_db
+DB_USER=peloton
+DB_PASSWORD=your_password_here
+
+ALLOWED_ORIGINS=http://localhost:5173
+API_VERSION=v1
+```
+
+### 3. Start Database
 
 ```bash
 cd ../db
 docker-compose up -d
+cd ../backend
 ```
 
-### Development
-
-**Run in development mode (with auto-reload):**
+### 4. Run Development Server
 
 ```bash
 npm run dev
 ```
 
-**Build TypeScript:**
+Server will start at `http://localhost:3000`
+
+## API Documentation
+
+Interactive API documentation available at:
+
+- **Swagger UI**: <http://localhost:3000/api/v1/docs>
+- **OpenAPI Spec**: <http://localhost:3000/api/v1/openapi.json>
+
+## Development
+
+### Available Scripts
 
 ```bash
-npm run build
+npm run dev          # Start development server with hot reload
+npm run build        # Compile TypeScript to dist/
+npm start            # Run production build
+npm test             # Run tests
+npm run test:watch   # Run tests in watch mode
+npm run test:coverage # Generate coverage report
+npm run lint         # Lint code
+npm run format       # Format code with Prettier
 ```
 
-**Run production build:**
+### Project Structure
+
+```
+backend/
+├── src/
+│   ├── config/          # Configuration (DB, env, OpenAPI)
+│   ├── routes/          # API route handlers
+│   ├── middleware/      # Express middleware
+│   ├── utils/           # Utilities (logger, etc.)
+│   ├── app.ts           # Express app setup
+│   └── server.ts        # Server entry point
+├── tests/
+│   └── integration/     # Integration tests
+├── dist/                # Compiled output
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
+## Docker
+
+### Build Image
 
 ```bash
-npm start
+docker build -t peloton-backend:latest .
 ```
 
-**Run tests:**
+### Run with Docker Compose
+
+```bash
+cd ../db
+docker-compose up
+```
+
+Backend will be available at `http://localhost:3000`
+
+## Testing
+
+### Run All Tests
 
 ```bash
 npm test
 ```
 
-**Lint code:**
+### Run with Coverage
 
 ```bash
-npm run lint
-npm run lint:fix  # Auto-fix issues
+npm run test:coverage
 ```
 
-**Format code:**
+Coverage reports are generated in `coverage/` directory.
+
+**Target Coverage**: >80%
+
+### Integration Tests
+
+Tests require a running PostgreSQL database. Use Docker:
 
 ```bash
-npm run format
-```
-
-## 📁 Project Structure
-
-```
-backend/
-├── src/
-│   ├── config/          # Configuration modules
-│   │   ├── database.ts  # PostgreSQL connection pool
-│   │   └── env.ts       # Environment validation
-│   ├── routes/          # Express route handlers
-│   │   └── health.ts    # Health check endpoint
-│   ├── middleware/      # Express middleware
-│   │   ├── errorHandler.ts  # Error handling
-│   │   └── cors.ts      # CORS configuration
-│   ├── utils/           # Utility functions
-│   │   └── logger.ts    # Winston logger
-│   ├── app.ts           # Express app setup
-│   └── server.ts        # Server entry point
-├── tests/               # Test files
-├── logs/                # Application logs (auto-created)
-├── dist/                # Compiled JavaScript (auto-created)
-├── package.json
-├── tsconfig.json
-└── .env
-```
-
-## 🔌 API Endpoints
-
-### Health Check
-
-**GET** `/health`
-
-Returns service health status and database connectivity.
-
-**Response:**
-
-```json
-{
-  "status": "healthy",
-  "timestamp": "2025-11-15T10:30:00.000Z",
-  "uptime": 123.45,
-  "database": {
-    "connected": true
-  }
-}
+cd ../db
+docker-compose up -d peloton-db
+cd ../backend
+npm test
 ```
 
 ## 🔧 Configuration
 
 ### Environment Variables
 
-| Variable          | Description                    | Default                 |
-| ----------------- | ------------------------------ | ----------------------- |
-| `NODE_ENV`        | Environment (development/prod) | `development`           |
-| `PORT`            | Server port                    | `3000`                  |
-| `DB_HOST`         | PostgreSQL host                | `localhost`             |
-| `DB_PORT`         | PostgreSQL port                | `5432`                  |
-| `DB_NAME`         | Database name                  | `peloton_db`            |
-| `DB_USER`         | Database user                  | `peloton`               |
-| `DB_PASSWORD`     | Database password              | (required)              |
-| `DB_POOL_MIN`     | Minimum connection pool size   | `2`                     |
-| `DB_POOL_MAX`     | Maximum connection pool size   | `20`                    |
-| `ALLOWED_ORIGINS` | Comma-separated CORS origins   | `http://localhost:5173` |
-| `API_VERSION`     | API version identifier         | `v1`                    |
+| Variable          | Description                            | Default                 |
+| ----------------- | -------------------------------------- | ----------------------- |
+| `NODE_ENV`        | Environment (development/production)   | `development`           |
+| `PORT`            | Server port                            | `3000`                  |
+| `DB_HOST`         | PostgreSQL host                        | `localhost`             |
+| `DB_PORT`         | PostgreSQL port                        | `5432`                  |
+| `DB_NAME`         | Database name                          | `peloton_db`            |
+| `DB_USER`         | Database user                          | `peloton`               |
+| `DB_PASSWORD`     | Database password                      | **required**            |
+| `DB_POOL_MIN`     | Min connection pool size               | `2`                     |
+| `DB_POOL_MAX`     | Max connection pool size               | `20`                    |
+| `ALLOWED_ORIGINS` | CORS allowed origins (comma-separated) | `http://localhost:5173` |
+| `API_VERSION`     | API version prefix                     | `v1`                    |
 
-## 🧪 Testing
+## Troubleshooting
 
-Run tests with coverage:
+### Database Connection Failed
+
+1. Check PostgreSQL is running: `docker ps`
+2. Verify credentials in `.env`
+3. Test connection: `psql -h localhost -U peloton -d peloton_db`
+
+### Port Already in Use
+
+Change `PORT` in `.env` or kill existing process:
 
 ```bash
-npm test
+lsof -ti:3000 | xargs kill -9
 ```
 
-Run tests in watch mode:
+### TypeScript Errors
+
+Ensure TypeScript is compiled:
 
 ```bash
-npm run test:watch
+npm run build
 ```
 
-## 📦 Tech Stack
+## Deployment
 
-- **Runtime**: Node.js v22
-- **Framework**: Express.js 4.x
-- **Language**: TypeScript 5.3+
-- **Database**: PostgreSQL (via `pg`)
-- **Validation**: Zod
-- **Logging**: Winston
-- **Testing**: Vitest
-- **Security**: Helmet
-- **CORS**: cors middleware
+See `.ai/BackendMVP/007_docker_configuration.md` for Docker deployment details.
 
-## 🛡️ Code Quality
+## Future Endpoints (Roadmap)
 
-This project follows strict TypeScript and code quality standards:
-
-- **TypeScript**: Strict mode enabled
-- **ESLint**: JavaScript/TypeScript linting
-- **Prettier**: Code formatting
-- **Type Safety**: Full type coverage
-
-## 🔐 Security
-
-- Helmet.js for HTTP headers security
-- CORS configuration for cross-origin requests
-- Environment variable validation
-- Parameterized database queries
-- Input validation with Zod
-
-## 📝 Logging
-
-Logs are written to:
-
-- **Console**: Formatted output for development
-- **logs/error.log**: Error-level logs
-- **logs/combined.log**: All logs
-
-Log levels: `error`, `warn`, `info`, `debug`
-
-## 🚧 Development Guidelines
-
-1. **Always use TypeScript** - No `any` types unless absolutely necessary
-2. **Follow naming conventions**:
-   - HTTP schemas: `<concept><method><response|request><body|headers|params>`
-   - Use camelCase for variables, PascalCase for types
-3. **Test before commit**: Ensure all tests pass
-4. **Document API changes**: Update this README
+- `GET /api/v1/stations` - All bike stations (GeoJSON)
+- `GET /api/v1/stations/:id` - Station details
+- `GET /api/v1/trips/stats` - Trip statistics
+- `GET /api/v1/trips/routes` - Route flow data
