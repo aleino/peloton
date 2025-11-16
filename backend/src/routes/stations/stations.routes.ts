@@ -1,37 +1,23 @@
 import {
   stationsGetQueryParams,
   stationsGetPathParams,
+  type StationsGetQueryParams,
+  type StationsGetPathParams,
 } from '@peloton/shared';
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
+import { validateQuery, validateParams } from '../../middleware/validation.js';
 import { getStations, getStationDetail } from '../../services/stationService.js';
 import { logger } from '../../utils/logger.js';
 
 const router = Router();
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', validateQuery(stationsGetQueryParams), async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const validationResult = stationsGetQueryParams.safeParse(req.query);
-
-    if (!validationResult.success) {
-      logger.warn('Invalid query parameters for GET /stations', {
-        query: req.query,
-        errors: validationResult.error.flatten(),
-      });
-
-      res.status(StatusCodes.BAD_REQUEST).json({
-        error: {
-          code: 'INVALID_QUERY_PARAMS',
-          message: 'Invalid query parameters',
-          details: validationResult.error.flatten().fieldErrors,
-        },
-      });
-      return;
-    }
-
-    const { bounds, format } = validationResult.data;
+    // Query params are already validated by middleware
+    const { bounds, format } = req.query as StationsGetQueryParams;
 
     const result = await getStations({ bounds, format });
 
@@ -56,38 +42,16 @@ router.get('/', async (req: Request, res: Response) => {
     }
 
     logger.error('Error fetching stations:', error);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: {
-        code: 'INTERNAL_ERROR',
-        message: 'An unexpected error occurred while fetching stations',
-      },
-    });
+    next(error);
   }
 });
 
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.get('/:stationId', async (req: Request, res: Response) => {
+router.get('/:stationId', validateParams(stationsGetPathParams), async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const validationResult = stationsGetPathParams.safeParse(req.params);
-
-    if (!validationResult.success) {
-      logger.warn('Invalid path parameters for GET /stations/:stationId', {
-        params: req.params,
-        errors: validationResult.error.flatten(),
-      });
-
-      res.status(StatusCodes.BAD_REQUEST).json({
-        error: {
-          code: 'INVALID_STATION_ID',
-          message: 'Invalid station ID format',
-          details: validationResult.error.flatten().fieldErrors,
-        },
-      });
-      return;
-    }
-
-    const { stationId } = validationResult.data;
+    // Params are already validated by middleware
+    const { stationId } = req.params as StationsGetPathParams;
 
     const station = await getStationDetail(stationId);
 
@@ -111,12 +75,7 @@ router.get('/:stationId', async (req: Request, res: Response) => {
     res.status(StatusCodes.OK).json(station);
   } catch (error) {
     logger.error(`Error fetching station ${req.params.stationId}:`, error);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: {
-        code: 'INTERNAL_ERROR',
-        message: 'An unexpected error occurred while fetching station details',
-      },
-    });
+    next(error);
   }
 });
 
