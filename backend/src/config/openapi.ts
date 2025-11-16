@@ -1,12 +1,15 @@
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
+
 import { env } from './env.js';
 import { registerHealthEndpoints } from '../routes/health/health.openapi.js';
+import { registerStationsEndpoints } from '../routes/stations/stations.openapi.js';
 
 
 export const registry = new OpenAPIRegistry();
 
 // Register all endpoint groups
 registerHealthEndpoints(registry);
+registerStationsEndpoints(registry);
 
 /**
  * Generate OpenAPI document from registry
@@ -25,7 +28,9 @@ HSL City Bike Trip Visualization API
 This API provides access to Helsinki Region Transport (HSL) bike trip data,
 including station locations, trip statistics, and route analytics.
 
-**Current Version**: MVP - Health Check Only
+**Available Endpoints:**
+- Health checks and system monitoring
+- Station listing and details with usage statistics
             `.trim(),
       contact: {
         name: 'Peloton Development Team',
@@ -44,6 +49,9 @@ including station locations, trip statistics, and route analytics.
         description: 'Docker development environment',
       },
     ],
-    tags: [{ name: 'Health', description: 'System health and monitoring endpoints' }],
+    tags: [
+      { name: 'Health', description: 'System health and monitoring endpoints' },
+      { name: 'Stations', description: 'HSL bike station endpoints' },
+    ],
   });
 }

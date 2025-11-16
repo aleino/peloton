@@ -5,8 +5,9 @@ import morgan from 'morgan';
 import { env } from './config/env.js';
 import { corsMiddleware } from './middleware/cors.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
-import healthRoutes from './routes/health/health.routes.js';
 import docsRouter from './routes/docs.js';
+import healthRoutes from './routes/health/health.routes.js';
+import stationsRoutes from './routes/stations/stations.routes.js';
 import { logger, morganStream } from './utils/logger.js';
 
 
@@ -29,6 +30,7 @@ export function createApp(): Express {
 
   // Routes
   app.use(`/api/${env.API_VERSION}`, healthRoutes);
+  app.use(`/api/${env.API_VERSION}/stations`, stationsRoutes);
 
   // 404 handler - must be after all routes
   app.use(notFoundHandler);
