@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { location, pointGeometry } from './geospatial.schema.js';
+import { distance, duration } from './common.schema.js';
 
 // Extend Zod with OpenAPI capabilities
 extendZodWithOpenApi(z);
@@ -48,12 +49,12 @@ export const stationStatistics = z
       description: 'Total number of trips arriving at this station',
       example: 1489,
     }),
-    avgTripDurationSeconds: z.number().nonnegative().openapi({
-      description: 'Average trip duration in seconds',
+    avgTripDurationSeconds: duration.openapi({
+      description: 'Average trip duration in seconds (integer)',
       example: 895,
     }),
-    avgTripDistanceMeters: z.number().nonnegative().openapi({
-      description: 'Average trip distance in meters',
+    avgTripDistanceMeters: distance.openapi({
+      description: 'Average trip distance in meters (integer)',
       example: 2340,
     }),
     busiestHour: z.number().int().min(0).max(23).openapi({

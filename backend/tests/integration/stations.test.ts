@@ -213,6 +213,46 @@ describe('Stations API - Integration Tests', () => {
         // At minimum, statistics should be present (even if zero)
         expect(response.body.statistics).toBeDefined();
       });
+
+      it('should return avgTripDurationSeconds as integer (0 decimals)', async () => {
+        const response = await request(app).get(`/api/v1/stations/${validStationId}`).expect(200);
+
+        const avgTripDurationSeconds = response.body.statistics.avgTripDurationSeconds as number;
+
+        // Verify it's an integer
+        expect(Number.isInteger(avgTripDurationSeconds)).toBe(true);
+
+        // Verify no decimal places when converted to string
+        const decimalPlaces = (String(avgTripDurationSeconds).split('.')[1] || '').length;
+        expect(decimalPlaces).toBe(0);
+      });
+
+      it('should return avgTripDistanceMeters as integer (0 decimals)', async () => {
+        const response = await request(app).get(`/api/v1/stations/${validStationId}`).expect(200);
+
+        const avgTripDistanceMeters = response.body.statistics.avgTripDistanceMeters as number;
+
+        // Verify it's an integer
+        expect(Number.isInteger(avgTripDistanceMeters)).toBe(true);
+
+        // Verify no decimal places when converted to string
+        const decimalPlaces = (String(avgTripDistanceMeters).split('.')[1] || '').length;
+        expect(decimalPlaces).toBe(0);
+      });
+
+      it('should round statistics correctly (regression test)', async () => {
+        const response = await request(app).get(`/api/v1/stations/${validStationId}`).expect(200);
+
+        const { avgTripDurationSeconds, avgTripDistanceMeters } = response.body.statistics;
+
+        // Both should be whole numbers (no decimals like 1234.567)
+        expect(avgTripDurationSeconds % 1).toBe(0);
+        expect(avgTripDistanceMeters % 1).toBe(0);
+
+        // Should be non-negative
+        expect(avgTripDurationSeconds).toBeGreaterThanOrEqual(0);
+        expect(avgTripDistanceMeters).toBeGreaterThanOrEqual(0);
+      });
     });
 
     describe('Error cases', () => {

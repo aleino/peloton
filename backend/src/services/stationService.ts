@@ -4,6 +4,7 @@ import type {
   StationStatistics,
   StationsListResponseBody,
 } from '@peloton/shared';
+import { stationStatistics } from '@peloton/shared';
 
 import {
   getAllStations as dbGetAllStations,
@@ -120,14 +121,15 @@ export async function getStationDetail(
     updatedAt: stationRow.updatedAt.toISOString(),
   };
 
-  const statistics: StationStatistics = {
+  // Parse statistics through Zod schema to apply transformations (rounding)
+  const statistics: StationStatistics = stationStatistics.parse({
     totalDepartures: statsRow.totalDepartures,
     totalArrivals: statsRow.totalArrivals,
     avgTripDurationSeconds: statsRow.avgTripDurationSeconds,
     avgTripDistanceMeters: statsRow.avgTripDistanceMeters,
     busiestHour: statsRow.busiestHour,
     busiestDay: statsRow.busiestDay,
-  };
+  });
 
   return {
     ...station,
