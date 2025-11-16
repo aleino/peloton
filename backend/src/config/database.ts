@@ -6,6 +6,13 @@ import { env } from './env.js';
 
 const { Pool } = pg;
 
+// Configure type parsers for automatic conversion
+// Parse bigint (type 20) as number - safe for bike trip counts
+pg.types.setTypeParser(20, (val: string) => parseInt(val, 10));
+
+// Parse numeric/decimal (type 1700) as number - safe for trip averages
+pg.types.setTypeParser(1700, (val: string) => parseFloat(val));
+
 /**
  * Transform query results by converting snake_case column names to camelCase
  */
