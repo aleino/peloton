@@ -3,7 +3,17 @@
 ## General Principles
 
 - DO NOT use ambiguous word `data`. Use more descriptive names like `stations`, `trips`, `routes`, etc...
-- DO NOT use words that can be easily mispelled e.g. `produciton` or `developemnt`. Instead use simpler words like `dev` and `prod`.
+- DO NOT use words that can be easily misspelled e.g. `produciton` or `developemnt`. Instead use simpler words like `dev` and `prod`.
+
+### Environment-Related Naming
+
+- **File names**: Use `dev` and `prod` (e.g., `.env.dev`, `config.prod.ts`)
+- **Environment variable values**: Use full words `'development'` and `'production'`
+  - ✅ `NODE_ENV=development`, `VITE_ENV=production`
+  - ❌ `NODE_ENV=dev`, `VITE_ENV=prod`
+- **Rationale**:
+  - Short names in filenames reduce typing and path length
+  - Full words in environment values follow Node.js/Vite standards and avoid library compatibility issues
 
 ## TypeScript
 

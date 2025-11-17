@@ -13,7 +13,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 
 const envSchema = z.object({
-  NODE_ENV: z.enum(['dev', 'prod', 'test']).default('dev'),
+  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.string().transform(Number).pipe(z.number().min(1).max(65535)).default('3000'),
 
   // Database configuration

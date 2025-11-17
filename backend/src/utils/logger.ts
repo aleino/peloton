@@ -27,13 +27,13 @@ const consoleFormat = winston.format.combine(
 
 
 export const logger = winston.createLogger({
-  level: env.NODE_ENV === 'prod' ? 'info' : 'debug',
+  level: env.NODE_ENV === 'production' ? 'info' : 'debug',
   format: logFormat,
   defaultMeta: { service: 'peloton-backend' },
   transports: [
     // Console transport
     new winston.transports.Console({
-      format: env.NODE_ENV === 'prod' ? logFormat : consoleFormat,
+      format: env.NODE_ENV === 'production' ? logFormat : consoleFormat,
     }),
     // File transport for errors
     new winston.transports.File({

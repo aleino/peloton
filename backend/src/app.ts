@@ -22,7 +22,7 @@ export function createApp(): Express {
   app.use(express.urlencoded({ extended: true }));
 
   // HTTP request logging
-  const morganFormat = env.NODE_ENV === 'prod' ? 'combined' : 'dev';
+  const morganFormat = env.NODE_ENV === 'production' ? 'combined' : 'dev';
   app.use(morgan(morganFormat, { stream: morganStream }));
 
   // API documentation
