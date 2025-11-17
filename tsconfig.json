@@ -19,5 +19,5 @@
     "noFallthroughCasesInSwitch": true
   },
   "files": [],
-  "references": [{ "path": "./packages/shared" }, { "path": "./backend" }]
+  "references": [{ "path": "./packages/shared" }, { "path": "./backend" }, { "path": "./frontend" }]
 }
