@@ -57,3 +57,4 @@ export const settingsReducer = settingsSlice.reducer;
 
 // Selectors
 export const selectSettings = (state: { settings: SettingsState }) => state.settings;
+export const selectTheme = (state: { settings: SettingsState }) => state.settings.theme;

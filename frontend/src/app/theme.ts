@@ -1,0 +1,281 @@
+import { createTheme, ThemeOptions } from '@mui/material/styles';
+
+// Neutral color palette - subtle and complementary to maps
+const NEUTRAL_SLATE = '#64748b'; // Primary neutral
+const NEUTRAL_GRAY = '#94a3b8'; // Secondary neutral
+const ACCENT_TEAL = '#14b8a6'; // Subtle accent for interactions
+
+// Common theme options (shared between light/dark)
+const commonThemeOptions: ThemeOptions = {
+  typography: {
+    fontFamily: [
+      'Inter',
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+    ].join(','),
+    h1: {
+      fontSize: '2.5rem',
+      fontWeight: 700,
+      lineHeight: 1.2,
+    },
+    h2: {
+      fontSize: '2rem',
+      fontWeight: 600,
+      lineHeight: 1.3,
+    },
+    h3: {
+      fontSize: '1.75rem',
+      fontWeight: 600,
+      lineHeight: 1.4,
+    },
+    h4: {
+      fontSize: '1.5rem',
+      fontWeight: 600,
+      lineHeight: 1.5,
+    },
+    h5: {
+      fontSize: '1.25rem',
+      fontWeight: 500,
+      lineHeight: 1.5,
+    },
+    h6: {
+      fontSize: '1rem',
+      fontWeight: 500,
+      lineHeight: 1.5,
+    },
+    body1: {
+      fontSize: '1rem',
+      lineHeight: 1.6,
+    },
+    body2: {
+      fontSize: '0.875rem',
+      lineHeight: 1.6,
+    },
+  },
+  shape: {
+    borderRadius: 8,
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          fontWeight: 500,
+          borderRadius: 6,
+        },
+        contained: {
+          boxShadow: 'none',
+          '&:hover': {
+            boxShadow: 'none',
+          },
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          boxShadow: 'none',
+        },
+      },
+    },
+  },
+};
+
+// Light theme - designed to complement Mapbox light style
+export const lightTheme = createTheme({
+  ...commonThemeOptions,
+  palette: {
+    mode: 'light',
+    primary: {
+      main: NEUTRAL_SLATE, // Neutral slate
+      light: '#94a3b8',
+      dark: '#475569',
+      contrastText: '#ffffff',
+    },
+    secondary: {
+      main: ACCENT_TEAL, // Subtle teal accent
+      light: '#5eead4',
+      dark: '#0f766e',
+      contrastText: '#ffffff',
+    },
+    background: {
+      default: '#f8fafc', // Very light gray, works with map
+      paper: 'rgba(255, 255, 255, 0.95)', // Semi-transparent for overlays
+    },
+    text: {
+      primary: '#1e293b',
+      secondary: '#64748b',
+      disabled: '#cbd5e1',
+    },
+    error: {
+      main: '#ef4444',
+    },
+    warning: {
+      main: '#f59e0b',
+    },
+    info: {
+      main: '#3b82f6',
+    },
+    success: {
+      main: '#10b981',
+    },
+    divider: 'rgba(0, 0, 0, 0.06)', // Very subtle dividers
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        outlined: {
+          borderColor: 'rgba(0, 0, 0, 0.12)',
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+          border: '1px solid rgba(0, 0, 0, 0.06)',
+        },
+        elevation0: {
+          boxShadow: 'none',
+        },
+        elevation1: {
+          boxShadow: 'none',
+        },
+        elevation2: {
+          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          border: '1px solid rgba(0, 0, 0, 0.06)',
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          borderRight: '1px solid rgba(0, 0, 0, 0.06)',
+        },
+      },
+    },
+  },
+});
+
+// Dark theme - designed to complement Mapbox dark style
+export const darkTheme = createTheme({
+  ...commonThemeOptions,
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: NEUTRAL_GRAY, // Lighter neutral for dark mode
+      light: '#cbd5e1',
+      dark: NEUTRAL_SLATE,
+      contrastText: '#0f172a',
+    },
+    secondary: {
+      main: ACCENT_TEAL, // Same subtle accent
+      light: '#5eead4',
+      dark: '#0f766e',
+      contrastText: '#0f172a',
+    },
+    background: {
+      default: '#0f172a', // Dark slate, matches Mapbox dark
+      paper: 'rgba(30, 41, 59, 0.95)', // Semi-transparent for overlays
+    },
+    text: {
+      primary: '#f1f5f9',
+      secondary: '#94a3b8',
+      disabled: '#475569',
+    },
+    error: {
+      main: '#f87171',
+    },
+    warning: {
+      main: '#fbbf24',
+    },
+    info: {
+      main: '#60a5fa',
+    },
+    success: {
+      main: '#34d399',
+    },
+    divider: 'rgba(255, 255, 255, 0.06)', // Very subtle dividers
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        outlined: {
+          borderColor: 'rgba(255, 255, 255, 0.12)',
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+          border: '1px solid rgba(255, 255, 255, 0.06)',
+        },
+        elevation0: {
+          boxShadow: 'none',
+        },
+        elevation1: {
+          boxShadow: 'none',
+        },
+        elevation2: {
+          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.3)',
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          border: '1px solid rgba(255, 255, 255, 0.06)',
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          borderRight: '1px solid rgba(255, 255, 255, 0.06)',
+        },
+      },
+    },
+  },
+});
