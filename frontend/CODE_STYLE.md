@@ -2,10 +2,6 @@
 
 ## General
 
-## Doc strings
-
-- **DO NOT** add docs string unless they create some significant additional value.
-
 ## React
 
 ### Component styles

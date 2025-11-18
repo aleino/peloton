@@ -1,5 +1,6 @@
-import { Box, Paper, type SxProps, type Theme } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material';
 import type { ReactNode } from 'react';
+import { Styled } from './ContentOverlay.styles';
 
 interface ContentOverlayProps {
   /** Content to render in the overlay */
@@ -57,30 +58,22 @@ export const ContentOverlay = ({
   sx = {},
 }: ContentOverlayProps) => {
   return (
-    <Box
-      sx={{
-        position: 'absolute',
-        ...position,
-        zIndex: 10,
-        pointerEvents: 'auto',
-        ...sx,
-      }}
+    <Styled.OverlayContainer
+      top={position.top}
+      right={position.right}
+      bottom={position.bottom}
+      left={position.left}
+      sx={sx}
     >
-      <Paper
+      <Styled.Paper
         elevation={3}
-        sx={{
-          width,
-          maxWidth,
-          maxHeight,
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
-          backdropFilter: 'blur(10px)',
-          overflow: scrollable ? 'auto' : 'visible',
-          borderRadius: 2,
-          p: 2,
-        }}
+        width={width}
+        maxWidth={maxWidth}
+        maxHeight={maxHeight}
+        scrollable={scrollable}
       >
         {children}
-      </Paper>
-    </Box>
+      </Styled.Paper>
+    </Styled.OverlayContainer>
   );
 };

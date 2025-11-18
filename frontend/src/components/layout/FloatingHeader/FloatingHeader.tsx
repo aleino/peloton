@@ -1,5 +1,6 @@
-import { AppBar, Toolbar, Typography, Box, type SxProps, type Theme } from '@mui/material';
+import { Typography, type SxProps, type Theme } from '@mui/material';
 import type { ReactNode } from 'react';
+import { Styled } from './FloatingHeader.styles';
 
 interface FloatingHeaderProps {
   /** Title text for the header */
@@ -41,25 +42,10 @@ export const FloatingHeader = ({
   sx = {},
 }: FloatingHeaderProps) => {
   return (
-    <AppBar
-      position="absolute"
-      elevation={2}
-      sx={{
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 100,
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        backdropFilter: 'blur(10px)',
-        pointerEvents: 'auto',
-        ...sx,
-      }}
-    >
-      <Toolbar>
+    <Styled.AppBar position="absolute" elevation={2} sx={sx}>
+      <Styled.Toolbar>
         {/* Left section */}
-        {leftContent && (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>{leftContent}</Box>
-        )}
+        {leftContent && <Styled.LeftSection>{leftContent}</Styled.LeftSection>}
 
         {/* Title */}
         {title && (
@@ -77,15 +63,11 @@ export const FloatingHeader = ({
         )}
 
         {/* Center section */}
-        {centerContent && (
-          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>{centerContent}</Box>
-        )}
+        {centerContent && <Styled.CenterSection>{centerContent}</Styled.CenterSection>}
 
         {/* Right section */}
-        {rightContent && (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>{rightContent}</Box>
-        )}
-      </Toolbar>
-    </AppBar>
+        {rightContent && <Styled.RightSection>{rightContent}</Styled.RightSection>}
+      </Styled.Toolbar>
+    </Styled.AppBar>
   );
 };

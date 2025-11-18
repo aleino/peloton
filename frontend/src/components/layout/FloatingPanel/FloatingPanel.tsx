@@ -1,6 +1,7 @@
-import { Paper, Box, IconButton, type SxProps, type Theme } from '@mui/material';
+import { IconButton, type SxProps, type Theme } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import type { ReactNode } from 'react';
+import { Styled } from './FloatingPanel.styles';
 
 interface FloatingPanelProps {
   /** Panel content */
@@ -61,50 +62,26 @@ export const FloatingPanel = ({
   sx = {},
 }: FloatingPanelProps) => {
   return (
-    <Box
-      sx={{
-        position: 'absolute',
-        [position]: 16,
-        top,
-        width,
-        maxWidth: 600, // Prevent too wide on large screens
-        minWidth: 300, // Prevent too narrow
-        maxHeight,
-        zIndex: 50,
-        pointerEvents: 'auto',
-        ...sx,
-      }}
+    <Styled.PanelContainer
+      panelPosition={position}
+      width={width}
+      top={top}
+      maxHeight={maxHeight}
+      sx={sx}
     >
-      <Paper
-        elevation={3}
-        sx={{
-          height: '100%',
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
-          backdropFilter: 'blur(10px)',
-          borderRadius: 2,
-          overflow: scrollable ? 'auto' : 'visible',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+      <Styled.Paper elevation={3} scrollable={scrollable}>
         {/* Close button if closable */}
         {closable && (
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              p: 1,
-            }}
-          >
+          <Styled.CloseButtonContainer>
             <IconButton size="small" onClick={onClose} aria-label="Close panel">
               <CloseIcon />
             </IconButton>
-          </Box>
+          </Styled.CloseButtonContainer>
         )}
 
         {/* Panel content */}
-        <Box sx={{ p: 3, flex: 1 }}>{children}</Box>
-      </Paper>
-    </Box>
+        <Styled.ContentContainer>{children}</Styled.ContentContainer>
+      </Styled.Paper>
+    </Styled.PanelContainer>
   );
 };
