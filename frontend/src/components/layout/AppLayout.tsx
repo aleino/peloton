@@ -1,26 +1,58 @@
-import { Box, Typography } from '@mui/material';
 import { Outlet } from 'react-router-dom';
+import { MapBackground } from './MapBackground';
+import { Box } from '@mui/material';
 
+/**
+ * Main application layout with persistent map background
+ *
+ * Renders the map as a fixed background and page content as overlays.
+ * All routes render their content via the Outlet component.
+ *
+ * Layout structure:
+ * - MapBackground (z-index: 0, fixed position)
+ * - Content container (z-index: 1, relative position)
+ *   - Header (future)
+ *   - Outlet (current route's page component)
+ *
+ * @example
+ * ```tsx
+ * // In router configuration
+ * {
+ *   path: '/',
+ *   element: <AppLayout />,
+ *   children: [
+ *     { index: true, element: <MapPage /> },
+ *     { path: 'analytics', element: <AnalyticsPage /> },
+ *   ]
+ * }
+ * ```
+ */
 export const AppLayout = () => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <>
+      {/* Fixed map background */}
+      <MapBackground />
+
+      {/* Content overlay container */}
       <Box
-        component="header"
         sx={{
-          p: 2,
-          bgcolor: 'primary.main',
-          color: 'white',
-          boxShadow: 1,
+          position: 'relative',
+          zIndex: 1,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none', // Allow map interactions by default
+          '& > *': {
+            pointerEvents: 'auto', // Re-enable for content
+          },
         }}
       >
-        <Typography variant="h4" component="h1">
-          Peloton
-        </Typography>
-      </Box>
+        {/* Header will be added in Phase 4 */}
 
-      <Box component="main" sx={{ flex: 1, p: 3 }}>
-        <Outlet />
+        {/* Page content renders here */}
+        <Box component="main" sx={{ width: '100%', height: '100%' }}>
+          <Outlet />
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
