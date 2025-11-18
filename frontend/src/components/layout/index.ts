@@ -1,3 +1,5 @@
-export { MapBackground } from './MapBackground';
-export { AppLayout } from './AppLayout';
-export { ContentOverlay } from './ContentOverlay';
+export { MapBackground } from './MapBackground/MapBackground';
+export { AppLayout } from './AppLayout/AppLayout';
+export { ContentOverlay } from './ContentOverlay/ContentOverlay';
+export { FloatingHeader } from './FloatingHeader/FloatingHeader';
+export { FloatingPanel } from './FloatingPanel/FloatingPanel';

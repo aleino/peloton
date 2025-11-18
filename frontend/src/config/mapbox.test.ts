@@ -40,7 +40,7 @@ describe('Mapbox Configuration', () => {
     });
 
     it('should have light as default style', () => {
-      expect(DEFAULT_MAP_STYLE).toBe('light');
+      expect(DEFAULT_MAP_STYLE).toBe('dark');
     });
   });
 

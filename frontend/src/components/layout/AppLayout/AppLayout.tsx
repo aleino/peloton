@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { MapBackground } from './MapBackground';
-import { Box } from '@mui/material';
+import { MapBackground } from '../MapBackground/MapBackground';
 
 /**
  * Main application layout with persistent map background
@@ -33,26 +32,8 @@ export const AppLayout = () => {
       {/* Fixed map background */}
       <MapBackground />
 
-      {/* Content overlay container */}
-      <Box
-        sx={{
-          position: 'relative',
-          zIndex: 1,
-          width: '100%',
-          height: '100%',
-          pointerEvents: 'none', // Allow map interactions by default
-          '& > *': {
-            pointerEvents: 'auto', // Re-enable for content
-          },
-        }}
-      >
-        {/* Header will be added in Phase 4 */}
-
-        {/* Page content renders here */}
-        <Box component="main" sx={{ width: '100%', height: '100%' }}>
-          <Outlet />
-        </Box>
-      </Box>
+      {/* Route content renders here as floating overlays */}
+      <Outlet />
     </>
   );
 };
