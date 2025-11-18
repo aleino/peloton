@@ -5,3 +5,5 @@
  * React Query client, API client, and error handling utilities.
  */
 export * from './queryClient';
+export * from './api';
+export * from './apiErrors';
