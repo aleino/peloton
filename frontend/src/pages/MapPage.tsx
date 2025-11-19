@@ -1,5 +1,5 @@
-import { FloatingHeader } from '@/components/layout/FloatingHeader';
-import { FloatingPanel } from '@/components/layout/FloatingPanel';
+import { FloatingHeader, FloatingPanel } from '@/components/layout';
+import { MapStyleSwitcher } from '@/features/map';
 import { Typography, Box } from '@mui/material';
 
 /**
@@ -17,9 +17,9 @@ export const MapPage = () => {
       <FloatingHeader
         title="Peloton"
         rightContent={
-          <Typography variant="body2" color="text.secondary">
-            Test Layout
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <MapStyleSwitcher position={{ top: 0, right: 0 }} />
+          </Box>
         }
       />
 

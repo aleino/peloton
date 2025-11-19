@@ -1,6 +1,6 @@
 import { useCallback, type ReactNode } from 'react';
 import { Map, type ViewStateChangeEvent } from 'react-map-gl/mapbox';
-import { useMapContext } from '../hooks/useMapContext';
+import { useMapContext } from '../../hooks/useMapContext';
 import { MAPBOX_CONFIG, MAP_CONSTRAINTS } from '@/config/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 

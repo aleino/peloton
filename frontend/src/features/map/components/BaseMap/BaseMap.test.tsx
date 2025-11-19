@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { BaseMap } from './BaseMap';
-import { MapProvider } from '../context/MapContext';
+import { MapProvider } from '../../context/MapContext';
 import React from 'react';
 
 // Mock react-map-gl to avoid Mapbox GL JS in tests

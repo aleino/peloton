@@ -1,4 +1,4 @@
-import type { MapboxOptions } from 'react-map-gl';
+import type { MapOptions } from 'react-map-gl/mapbox';
 import { env } from './env';
 
 /**
@@ -42,9 +42,8 @@ export const MAPBOX_CONFIG = {
     logoPosition: 'bottom-left' as const,
     cooperativeGestures: false, // Allow single-finger pan
     touchPitch: false, // Disable pitch on mobile
-    dragRotate: false, // Disable map rotation
     touchZoomRotate: true,
-  } satisfies Partial<MapboxOptions>,
+  } satisfies Partial<MapOptions>,
 } as const;
 
 /**

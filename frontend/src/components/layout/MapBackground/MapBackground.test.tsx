@@ -2,13 +2,16 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MapBackground } from './MapBackground';
 
-// Mock BaseMap and MapProvider
-vi.mock('@/features/map/components/BaseMap', () => ({
-  BaseMap: () => <div data-testid="base-map">Map</div>,
-}));
-
-vi.mock('@/features/map/context/MapContext', () => ({
-  MapProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+// Mock the entire map feature module
+vi.mock('@/features/map', () => ({
+  BaseMap: ({ children }: { children?: React.ReactNode }) => (
+    <div data-testid="base-map">
+      Map
+      {children}
+    </div>
+  ),
+  MapControls: () => <div data-testid="map-controls" />,
+  MapResetButton: () => <div data-testid="map-reset-button" />,
 }));
 
 describe('MapBackground', () => {

@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { MapBackground } from '../MapBackground/MapBackground';
+import { MapProvider } from '@/features/map';
 
 /**
  * Main application layout with persistent map background
@@ -28,12 +29,12 @@ import { MapBackground } from '../MapBackground/MapBackground';
  */
 export const AppLayout = () => {
   return (
-    <>
+    <MapProvider>
       {/* Fixed map background */}
       <MapBackground />
 
       {/* Route content renders here as floating overlays */}
       <Outlet />
-    </>
+    </MapProvider>
   );
 };

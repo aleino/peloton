@@ -1,5 +1,4 @@
-import { BaseMap } from '@/features/map/components/BaseMap';
-import { MapProvider } from '@/features/map/context/MapContext';
+import { BaseMap, MapControls } from '@/features/map';
 
 /**
  * Persistent map background container
@@ -26,9 +25,9 @@ export const MapBackground = () => {
         zIndex: 0,
       }}
     >
-      <MapProvider>
-        <BaseMap />
-      </MapProvider>
+      <BaseMap>
+        <MapControls />
+      </BaseMap>
     </div>
   );
 };
