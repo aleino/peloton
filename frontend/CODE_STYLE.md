@@ -4,6 +4,14 @@
 
 ## React
 
+### Component directory structure
+
+- Each component should have its own directory.
+- Component directory can contain:
+  - `<COMPONENT_NAME>.tsx` - main component file
+  - `<COMPONENT_NAME>.styles.tsx` - styled components
+  - `<COMPONENT_NAME>.test.tsx` - unit tests
+
 ### Component styles
 
 - Use can use `sx` syntax for short inline styles.
