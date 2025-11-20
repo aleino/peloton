@@ -4,23 +4,23 @@ import { z } from 'zod';
 
 /**
  * Request configuration options
- * 
+ *
  * @property params - Query parameters to append to URL
  * @property timeout - Request timeout in milliseconds (default: 30000)
  * @property schema - Optional Zod schema for response validation
  * @property strictValidation - If false, validation failures log warnings instead of throwing (default: true)
- * 
+ *
  * @example
  * // Strict validation (throws on mismatch)
- * await get<StationsResponse>('/stations', { 
- *   schema: stationsListResponseBody 
+ * await get<StationsResponse>('/stations', {
+ *   schema: stationsListResponseBody
  * });
- * 
+ *
  * @example
  * // Soft validation (logs warning, returns data anyway)
- * await get<StationsResponse>('/stations', { 
+ * await get<StationsResponse>('/stations', {
  *   schema: stationsListResponseBody,
- *   strictValidation: false 
+ *   strictValidation: false
  * });
  */
 export interface RequestConfig extends RequestInit {
@@ -34,7 +34,15 @@ export interface RequestConfig extends RequestInit {
  * Build full URL with base URL and query parameters
  */
 function buildUrl(endpoint: string, params?: Record<string, string | number | boolean>): string {
-  const url = new URL(endpoint, env.VITE_API_BASE_URL);
+  // Ensure endpoint starts with /
+  const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+
+  // Combine base URL with endpoint
+  const baseUrl = env.VITE_API_BASE_URL.endsWith('/')
+    ? env.VITE_API_BASE_URL.slice(0, -1)
+    : env.VITE_API_BASE_URL;
+
+  const url = new URL(`${baseUrl}${normalizedEndpoint}`);
 
   if (params) {
     Object.entries(params).forEach(([key, value]) => {

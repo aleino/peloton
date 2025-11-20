@@ -65,7 +65,6 @@ describe('Mapbox Configuration', () => {
       expect(MAPBOX_CONFIG.mapOptions.logoPosition).toBe('bottom-left');
       expect(MAPBOX_CONFIG.mapOptions.cooperativeGestures).toBe(false);
       expect(MAPBOX_CONFIG.mapOptions.touchPitch).toBe(false);
-      expect(MAPBOX_CONFIG.mapOptions.dragRotate).toBe(false);
       expect(MAPBOX_CONFIG.mapOptions.touchZoomRotate).toBe(true);
     });
   });

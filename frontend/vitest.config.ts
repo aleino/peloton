@@ -10,6 +10,14 @@ export default mergeConfig(
       environment: 'jsdom',
       setupFiles: './src/test/setup.ts',
       include: ['**/*.test.{ts,tsx}'],
+      env: {
+        VITE_API_BASE_URL: 'http://localhost:3000/api/v1',
+        VITE_MAPBOX_TOKEN: 'pk.test_token',
+        VITE_DEFAULT_LOCALE: 'en',
+        VITE_ENABLE_ANALYTICS: 'false',
+        VITE_ENABLE_DEBUG_MODE: 'false',
+        VITE_ENV: 'test',
+      },
     },
   })
 );

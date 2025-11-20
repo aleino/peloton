@@ -51,3 +51,8 @@ export const MapPage = () => {
   return <LoadingSpinner message="Peloton" />;
 };
 ````
+
+## Maps
+
+- Use `react-map-gl` for Mapbox integration.
+- Use `Source` and `Layer` components from `react-map-gl` to add data

@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
+import { MapProvider } from 'react-map-gl/mapbox';
 import { MapBackground } from '../MapBackground/MapBackground';
-import { MapProvider } from '@/features/map';
 
 /**
  * Main application layout with persistent map background

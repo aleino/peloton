@@ -62,20 +62,3 @@ export const MAP_CONSTRAINTS = {
   maxZoom: 18,
   maxBounds: HELSINKI_BOUNDS,
 } as const;
-
-/**
- * View state for map positioning
- */
-export interface ViewState {
-  longitude: number;
-  latitude: number;
-  zoom: number;
-  pitch?: number;
-  bearing?: number;
-  padding?: {
-    top: number;
-    bottom: number;
-    left: number;
-    right: number;
-  };
-}

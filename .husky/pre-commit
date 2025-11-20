@@ -1,0 +1,6 @@
+# Change to frontend directory and run tests
+cd frontend
+
+echo "Running lint-staged..."
+npx lint-staged
+

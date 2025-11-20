@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Box, Select, MenuItem, Paper, FormControl, InputLabel } from '@mui/material';
-import { useMapContext } from '../../hooks/useMapContext';
+import { useMap } from 'react-map-gl/mapbox';
 import { MAP_STYLES, type MapStyleKey } from '@/config/mapbox';
 
 interface MapStyleSwitcherProps {
@@ -27,14 +27,13 @@ interface MapStyleSwitcherProps {
  * ```
  */
 export const MapStyleSwitcher = ({ position = { top: 10, right: 10 } }: MapStyleSwitcherProps) => {
-  const { mapRef } = useMapContext();
+  const { main } = useMap();
   const [currentStyle, setCurrentStyle] = useState<MapStyleKey>('light');
 
   const handleStyleChange = (style: MapStyleKey) => {
-    const map = mapRef.current?.getMap();
-    if (!map) return;
+    if (!main) return;
 
-    map.setStyle(MAP_STYLES[style]);
+    main.setStyle(MAP_STYLES[style]);
     setCurrentStyle(style);
   };
 

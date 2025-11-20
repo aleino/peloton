@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { filterReducer } from '@/features/filters/filters.store';
 import { settingsReducer } from '@/features/settings/settings.store';
+import { stationsReducer } from '@/features/stations/stations.store';
 
 export const store = configureStore({
   reducer: {
     filters: filterReducer,
     settings: settingsReducer,
+    stations: stationsReducer,
   },
   // Enable Redux DevTools in development
   devTools: import.meta.env.MODE !== 'production',

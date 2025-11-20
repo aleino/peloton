@@ -16,7 +16,7 @@ describe('API Client', () => {
     const mockData = { stations: [] };
 
     server.use(
-      http.get('http://localhost:3000/stations', () => {
+      http.get('http://localhost:3000/api/v1/stations', () => {
         return HttpResponse.json(mockData);
       })
     );
@@ -27,7 +27,7 @@ describe('API Client', () => {
 
   it('should transform API errors correctly', async () => {
     server.use(
-      http.get('http://localhost:3000/stations', () => {
+      http.get('http://localhost:3000/api/v1/stations', () => {
         return HttpResponse.json(
           {
             code: 'INVALID_PARAMS',
@@ -48,7 +48,7 @@ describe('API Client', () => {
 
   it('should handle network errors', async () => {
     server.use(
-      http.get('http://localhost:3000/stations', () => {
+      http.get('http://localhost:3000/api/v1/stations', () => {
         return HttpResponse.error();
       })
     );
@@ -62,7 +62,7 @@ describe('API Client', () => {
 
   it('should handle timeout errors', async () => {
     server.use(
-      http.get('http://localhost:3000/stations', async () => {
+      http.get('http://localhost:3000/api/v1/stations', async () => {
         // Delay longer than timeout
         await new Promise((resolve) => setTimeout(resolve, 200));
         return HttpResponse.json({ stations: [] });
@@ -88,7 +88,7 @@ describe('API Client', () => {
     let requestUrl = '';
 
     server.use(
-      http.get('http://localhost:3000/stations', ({ request }) => {
+      http.get('http://localhost:3000/api/v1/stations', ({ request }) => {
         requestUrl = request.url;
         return HttpResponse.json({ stations: [] });
       })
@@ -106,7 +106,7 @@ describe('API Client', () => {
     });
 
     server.use(
-      http.get('http://localhost:3000/stations', () => {
+      http.get('http://localhost:3000/api/v1/stations', () => {
         return HttpResponse.json({ stations: [{ id: '123' }] });
       })
     );
@@ -121,7 +121,7 @@ describe('API Client', () => {
     });
 
     server.use(
-      http.get('http://localhost:3000/stations', () => {
+      http.get('http://localhost:3000/api/v1/stations', () => {
         // Invalid: id is number instead of string
         return HttpResponse.json({ stations: [{ id: 123 }] });
       })
@@ -136,14 +136,14 @@ describe('API Client', () => {
   });
 
   it('should log warning but return data (soft validation mode)', async () => {
-    const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
+    const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
     const schema = z.object({
       stations: z.array(z.object({ id: z.string() })),
     });
 
     server.use(
-      http.get('http://localhost:3000/stations', () => {
+      http.get('http://localhost:3000/api/v1/stations', () => {
         // Invalid: id is number instead of string
         return HttpResponse.json({ stations: [{ id: 123 }] });
       })

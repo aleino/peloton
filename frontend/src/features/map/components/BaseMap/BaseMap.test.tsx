@@ -1,14 +1,20 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { BaseMap } from './BaseMap';
-import { MapProvider } from '../../context/MapContext';
+import { MapProvider } from 'react-map-gl/mapbox';
 import React from 'react';
 
 // Mock react-map-gl to avoid Mapbox GL JS in tests
 vi.mock('react-map-gl/mapbox', async () => {
   const React = await import('react');
+
+  interface MockMapProps {
+    children?: React.ReactNode;
+    onLoad?: () => void;
+  }
+
   return {
-    Map: React.forwardRef(({ children, onLoad }: any, _ref: any) => {
+    Map: React.forwardRef<unknown, MockMapProps>(({ children, onLoad }) => {
       // Simulate map load after a short delay
       React.useEffect(() => {
         setTimeout(() => onLoad?.(), 10);
@@ -17,6 +23,7 @@ vi.mock('react-map-gl/mapbox', async () => {
     }),
     NavigationControl: () => <div data-testid="navigation-control" />,
     GeolocateControl: () => <div data-testid="geolocate-control" />,
+    MapProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   };
 });
 

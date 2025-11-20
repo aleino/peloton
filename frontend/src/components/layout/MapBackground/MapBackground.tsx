@@ -1,4 +1,6 @@
 import { BaseMap, MapControls } from '@/features/map';
+import { StationsLayer } from '@/features/stations/components/StationsLayer';
+import { StationHoverPopup } from '@/features/stations/components/StationHoverPopup';
 
 /**
  * Persistent map background container
@@ -27,6 +29,8 @@ export const MapBackground = () => {
     >
       <BaseMap>
         <MapControls />
+        <StationsLayer />
+        <StationHoverPopup />
       </BaseMap>
     </div>
   );

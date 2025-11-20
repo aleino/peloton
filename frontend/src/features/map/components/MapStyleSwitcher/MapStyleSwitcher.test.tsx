@@ -3,18 +3,15 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MapStyleSwitcher } from './MapStyleSwitcher';
 
-// Mock useMapContext
-const mockMapRef = {
-  current: {
-    getMap: vi.fn(() => ({
-      setStyle: vi.fn(),
-    })),
-  },
+// Mock react-map-gl useMap hook
+const mockSetStyle = vi.fn();
+const mockMain = {
+  setStyle: mockSetStyle,
 };
 
-vi.mock('../../hooks/useMapContext', () => ({
-  useMapContext: () => ({
-    mapRef: mockMapRef,
+vi.mock('react-map-gl/mapbox', () => ({
+  useMap: () => ({
+    main: mockMain,
   }),
 }));
 
@@ -33,11 +30,6 @@ describe('MapStyleSwitcher', () => {
 
   it('should call setStyle when style is changed', async () => {
     const user = userEvent.setup();
-    const setStyleMock = vi.fn();
-    mockMapRef.current.getMap = vi.fn(() => ({
-      setStyle: setStyleMock,
-    }));
-
     render(<MapStyleSwitcher />);
 
     // Click the combobox to open it
@@ -48,7 +40,7 @@ describe('MapStyleSwitcher', () => {
     const darkOption = screen.getAllByText('Dark').find((el) => el.tagName === 'LI');
     if (darkOption) {
       await user.click(darkOption);
-      expect(setStyleMock).toHaveBeenCalledWith('mapbox://styles/mapbox/dark-v11');
+      expect(mockSetStyle).toHaveBeenCalledWith('mapbox://styles/mapbox/dark-v11');
     }
   });
 

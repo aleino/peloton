@@ -1,0 +1,75 @@
+/* Station Hover Popup Styles */
+
+/* Remove default Mapbox popup styles we don't want */
+.station-hover-popup-container .mapboxgl-popup-content {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.station-hover-popup-container .mapboxgl-popup-tip {
+  display: none;
+}
+
+/* Our custom popup container */
+.station-hover-popup {
+  padding: 12px;
+  min-width: 200px;
+  max-width: 300px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow:
+    0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+
+  /* Smooth fade-in animation */
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Station name */
+.station-hover-popup__name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.87);
+  text-align: center;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Station ID */
+.station-hover-popup__id {
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  margin-top: 4px;
+  line-height: 1.43;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .station-hover-popup {
+    background: #1e1e1e;
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .station-hover-popup__name {
+    color: rgba(255, 255, 255, 0.87);
+  }
+
+  .station-hover-popup__id {
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
