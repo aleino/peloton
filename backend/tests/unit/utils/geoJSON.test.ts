@@ -49,6 +49,7 @@ describe('GeoJSON Utils', () => {
 
       expect(feature).toEqual({
         type: 'Feature',
+        id: '001',
         geometry: location,
         properties: {
           stationId: '001',
@@ -66,12 +67,36 @@ describe('GeoJSON Utils', () => {
 
       expect(feature).toEqual({
         type: 'Feature',
+        id: '002',
         geometry: location,
         properties: {
           stationId: '002',
           name: 'Laivasillankatu',
         },
       });
+    });
+
+    it('should include id field matching stationId', () => {
+      const location = {
+        type: 'Point' as const,
+        coordinates: [24.9, 60.1] as [number, number],
+      };
+      const feature = createStationFeature('001', 'Test Station', location, 1523);
+
+      expect(feature.id).toBe('001');
+      expect(feature.properties.stationId).toBe('001');
+      expect(feature.id).toBe(feature.properties.stationId);
+    });
+
+    it('should include totalDepartures when provided', () => {
+      const location = {
+        type: 'Point' as const,
+        coordinates: [24.9, 60.1] as [number, number],
+      };
+      const feature = createStationFeature('001', 'Test Station', location, 1523);
+
+      expect(feature.properties.totalDepartures).toBe(1523);
+      expect(feature.id).toBe('001');
     });
   });
 

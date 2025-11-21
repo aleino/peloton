@@ -16,30 +16,36 @@ export async function getAllStations(bounds?: BoundingBox): Promise<StationRow[]
     // Query with bounding box filter using PostGIS
     sql = `
       SELECT
-        station_id,
-        name,
-        ST_AsGeoJSON(location)::json as location,
-        created_at,
-        updated_at
-      FROM hsl.stations
+        s.station_id,
+        s.name,
+        ST_AsGeoJSON(s.location)::json as location,
+        s.created_at,
+        s.updated_at,
+        COALESCE(COUNT(t.departure_station_id), 0)::int as total_departures
+      FROM hsl.stations s
+      LEFT JOIN hsl.trips t ON s.station_id = t.departure_station_id
       WHERE ST_Within(
-        location::geometry,
+        s.location::geometry,
         ST_MakeEnvelope($1, $2, $3, $4, 4326)
       )
-      ORDER BY name ASC
+      GROUP BY s.station_id, s.name, s.location, s.created_at, s.updated_at
+      ORDER BY s.name ASC
     `;
     params = [bounds.minLon, bounds.minLat, bounds.maxLon, bounds.maxLat];
   } else {
     // Query without filter - all stations
     sql = `
       SELECT
-        station_id,
-        name,
-        ST_AsGeoJSON(location)::json as location,
-        created_at,
-        updated_at
-      FROM hsl.stations
-      ORDER BY name ASC
+        s.station_id,
+        s.name,
+        ST_AsGeoJSON(s.location)::json as location,
+        s.created_at,
+        s.updated_at,
+        COALESCE(COUNT(t.departure_station_id), 0)::int as total_departures
+      FROM hsl.stations s
+      LEFT JOIN hsl.trips t ON s.station_id = t.departure_station_id
+      GROUP BY s.station_id, s.name, s.location, s.created_at, s.updated_at
+      ORDER BY s.name ASC
     `;
     params = [];
   }

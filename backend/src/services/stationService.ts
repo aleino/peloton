@@ -67,7 +67,7 @@ export async function getStations(
   if (format === 'geojson') {
     const features = dbStations.map((row) => {
       const location = parseLocation(row.location);
-      return createStationFeature(row.stationId, row.name, location);
+      return createStationFeature(row.stationId, row.name, location, row.totalDepartures);
     });
 
     return createStationsFeatureCollection(features);
@@ -80,6 +80,7 @@ export async function getStations(
     location: parseLocation(row.location),
     createdAt: row.createdAt.toISOString(),
     updatedAt: row.updatedAt.toISOString(),
+    totalDepartures: row.totalDepartures,
   }));
 
   return { stations };

@@ -31,19 +31,23 @@ export function parseLocation(location: unknown): PointGeometry {
  * @param stationId - Unique station identifier
  * @param name - Station name
  * @param location - Point geometry with coordinates
+ * @param totalDepartures - Optional total departure count for visualization
  * @returns GeoJSON Feature object
  */
 export function createStationFeature(
   stationId: string,
   name: string,
-  location: PointGeometry
+  location: PointGeometry,
+  totalDepartures?: number
 ): StationFeature {
   return {
     type: 'Feature',
+    id: stationId,
     geometry: location,
     properties: {
       stationId,
       name,
+      ...(totalDepartures !== undefined && { totalDepartures }),
     },
   };
 }

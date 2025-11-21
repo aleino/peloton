@@ -32,6 +32,10 @@ export const station = z
       description: 'Timestamp when the station was last updated (ISO 8601)',
       example: '2024-01-01T00:00:00Z',
     }),
+    totalDepartures: z.number().int().nonnegative().optional().openapi({
+      description: 'Total number of trips departing from this station (for visualization)',
+      example: 1523,
+    }),
   })
   .openapi('Station');
 
@@ -88,6 +92,10 @@ export const stationFeatureProperties = z
   .object({
     stationId,
     name: stationName,
+    totalDepartures: z.number().int().nonnegative().optional().openapi({
+      description: 'Total number of trips departing from this station (for visualization)',
+      example: 1523,
+    }),
   })
   .openapi('StationFeatureProperties');
 
@@ -100,6 +108,10 @@ export const stationFeature = z
     type: z.literal('Feature').openapi({
       description: 'GeoJSON feature type',
       example: 'Feature',
+    }),
+    id: z.string().openapi({
+      description: 'Feature identifier (same as stationId) for Mapbox feature state',
+      example: '001',
     }),
     geometry: pointGeometry.openapi({
       description: 'Point geometry representing station location',

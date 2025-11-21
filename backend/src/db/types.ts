@@ -14,6 +14,7 @@ export interface StationRow {
   };
   createdAt: Date;
   updatedAt: Date;
+  totalDepartures?: number; // Optional for backward compatibility
 }
 
 export interface StationStatisticsRow {

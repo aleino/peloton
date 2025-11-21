@@ -71,6 +71,40 @@ describe('Stations API - Integration Tests', () => {
 
         expect(response.body.features.length).toBeGreaterThanOrEqual(400);
       });
+
+      it('should include totalDepartures in GeoJSON feature properties', async () => {
+        const response = await request(app)
+          .get('/api/v1/stations')
+          .query({ format: 'geojson' })
+          .expect(200);
+
+        expect(response.body.type).toBe('FeatureCollection');
+        expect(response.body.features).toBeDefined();
+        expect(response.body.features.length).toBeGreaterThan(0);
+
+        const firstFeature = response.body.features[0];
+        expect(firstFeature.properties).toHaveProperty('stationId');
+        expect(firstFeature.properties).toHaveProperty('name');
+        expect(firstFeature.properties).toHaveProperty('totalDepartures');
+        expect(typeof firstFeature.properties.totalDepartures).toBe('number');
+        expect(firstFeature.properties.totalDepartures).toBeGreaterThanOrEqual(0);
+      });
+
+      it('should include id field in GeoJSON features', async () => {
+        const response = await request(app)
+          .get('/api/v1/stations')
+          .query({ format: 'geojson' })
+          .expect(200);
+
+        expect(response.body.type).toBe('FeatureCollection');
+        expect(response.body.features).toBeInstanceOf(Array);
+
+        if (response.body.features.length > 0) {
+          const firstFeature = response.body.features[0];
+          expect(firstFeature).toHaveProperty('id');
+          expect(firstFeature.id).toBe(firstFeature.properties.stationId);
+        }
+      });
     });
 
     describe('JSON format', () => {
@@ -91,6 +125,23 @@ describe('Stations API - Integration Tests', () => {
           createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T/),
           updatedAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T/),
         });
+      });
+
+      it('should include totalDepartures in JSON station objects', async () => {
+        const response = await request(app)
+          .get('/api/v1/stations')
+          .query({ format: 'json' })
+          .expect(200);
+
+        expect(response.body).toHaveProperty('stations');
+        expect(response.body.stations.length).toBeGreaterThan(0);
+
+        const firstStation = response.body.stations[0];
+        expect(firstStation).toHaveProperty('stationId');
+        expect(firstStation).toHaveProperty('name');
+        expect(firstStation).toHaveProperty('totalDepartures');
+        expect(typeof firstStation.totalDepartures).toBe('number');
+        expect(firstStation.totalDepartures).toBeGreaterThanOrEqual(0);
       });
     });
 
