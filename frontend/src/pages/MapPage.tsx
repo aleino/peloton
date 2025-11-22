@@ -1,7 +1,6 @@
-import { FloatingHeader } from '@/components/layout';
+import { FloatingHeader } from '@/layouts';
 import { MapStyleSwitcher } from '@/features/map';
 import { StationDetailPanel, useStations } from '@/features/stations';
-import { Box } from '@mui/material';
 
 /**
  * Main map page with floating UI elements
@@ -17,14 +16,7 @@ export const MapPage = () => {
   return (
     <>
       {/* Floating header */}
-      <FloatingHeader
-        title="Peloton"
-        rightContent={
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <MapStyleSwitcher position={{ top: 0, right: 0 }} />
-          </Box>
-        }
-      />
+      <FloatingHeader title="Peloton" rightContent={<MapStyleSwitcher />} />
 
       {/* Station detail panel */}
       <StationDetailPanel

@@ -1,9 +1,9 @@
-import { Box, Typography, Divider, CircularProgress } from '@mui/material';
-import { FloatingPanel } from '@/components/layout';
-import { StationIcon } from '../StationIcon';
+import { Typography, Divider, LinearProgress, Box } from '@mui/material';
+import { FloatingPanel } from '@/layouts';
 import { StationStats } from '../StationStats';
 import { ActivityChart } from '../ActivityChart';
 import { useStationDetail } from '../../api/useStationDetail';
+import { Styled } from './StationDetailPanel.styles';
 
 export interface StationDetailPanelProps {
   stationId: string | null;
@@ -35,6 +35,7 @@ export const StationDetailPanel = ({ stationId, isOpen, onClose }: StationDetail
   const {
     data: station,
     isLoading,
+    isFetching,
     error,
   } = useStationDetail({
     stationId: stationId || '',
@@ -46,74 +47,91 @@ export const StationDetailPanel = ({ stationId, isOpen, onClose }: StationDetail
   }
 
   return (
-    <FloatingPanel position="left" width="39%" top={80} scrollable closable onClose={onClose}>
-      {/* Header */}
-      <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
-        <StationIcon size={48} variant="active" />
-
-        <Box sx={{ flex: 1 }}>
-          <Typography variant="h5" gutterBottom>
-            {station?.name || 'Loading...'}
-          </Typography>
-
-          {station && (
-            <Typography variant="body2" color="text.secondary">
+    <FloatingPanel
+      position="left"
+      width="39%"
+      top={80}
+      scrollable
+      closable
+      onClose={onClose}
+      header={
+        station ? (
+          <Styled.HeaderContent>
+            <Styled.StationName variant="h1">{station.name}</Styled.StationName>
+            <Styled.Coordinates>
               {station.location.coordinates[1].toFixed(4)}°N,{' '}
               {station.location.coordinates[0].toFixed(4)}°E
+            </Styled.Coordinates>
+          </Styled.HeaderContent>
+        ) : null
+      }
+    >
+      {/* Subtle loading indicator at the top */}
+      {isFetching && (
+        <LinearProgress
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 2,
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
+          }}
+        />
+      )}
+
+      <Styled.ContentWrapper>
+        {/* Error State */}
+        {error && !station && (
+          <Styled.ErrorContainer>
+            <Typography color="error" align="center">
+              Failed to load station details
             </Typography>
-          )}
-        </Box>
-      </Box>
+          </Styled.ErrorContainer>
+        )}
 
-      <Divider sx={{ mb: 3 }} />
+        {/* Show loading message only on first load */}
+        {isLoading && !station && (
+          <Box
+            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}
+          >
+            <Typography color="text.secondary">Loading station details...</Typography>
+          </Box>
+        )}
 
-      {/* Loading State */}
-      {isLoading && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
-          <CircularProgress />
-        </Box>
-      )}
+        {/* Station Content - shows even while fetching new data */}
+        {station && (
+          <>
+            {/* Statistics Section */}
+            <Typography variant="h6" gutterBottom>
+              Statistics
+            </Typography>
+            <StationStats statistics={station.statistics} />
 
-      {/* Error State */}
-      {error && (
-        <Box sx={{ py: 4 }}>
-          <Typography color="error" align="center">
-            Failed to load station details
-          </Typography>
-        </Box>
-      )}
+            <Divider sx={{ my: 3 }} />
 
-      {/* Station Content */}
-      {station && (
-        <>
-          {/* Statistics Section */}
-          <Typography variant="h6" gutterBottom>
-            Statistics
-          </Typography>
-          <StationStats statistics={station.statistics} />
+            {/* Activity Section */}
+            <Typography variant="h6" gutterBottom>
+              Activity Patterns
+            </Typography>
+            <ActivityChart
+              busiestHour={station.statistics.busiestHour}
+              busiestDay={station.statistics.busiestDay}
+            />
 
-          <Divider sx={{ my: 3 }} />
+            <Divider sx={{ my: 3 }} />
 
-          {/* Activity Section */}
-          <Typography variant="h6" gutterBottom>
-            Activity Patterns
-          </Typography>
-          <ActivityChart
-            busiestHour={station.statistics.busiestHour}
-            busiestDay={station.statistics.busiestDay}
-          />
-
-          <Divider sx={{ my: 3 }} />
-
-          {/* Additional Info */}
-          <Typography variant="body2" color="text.secondary">
-            Station ID: {station.stationId}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Last updated: {new Date(station.updatedAt).toLocaleDateString()}
-          </Typography>
-        </>
-      )}
+            {/* Additional Info */}
+            <Typography variant="body2" color="text.secondary">
+              Station ID: {station.stationId}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Last updated: {new Date(station.updatedAt).toLocaleDateString('fi-FI')}
+            </Typography>
+          </>
+        )}
+      </Styled.ContentWrapper>
     </FloatingPanel>
   );
 };

@@ -42,7 +42,7 @@ export const FloatingHeader = ({
   sx = {},
 }: FloatingHeaderProps) => {
   return (
-    <Styled.AppBar position="absolute" elevation={2} sx={sx}>
+    <Styled.AppBar elevation={0} sx={sx}>
       <Styled.Toolbar>
         {/* Left section */}
         {leftContent && <Styled.LeftSection>{leftContent}</Styled.LeftSection>}

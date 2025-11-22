@@ -57,7 +57,9 @@ export const StationStats = ({ statistics }: StationStatsProps) => {
   };
 
   const formatDistance = (meters: number) => {
-    return meters < 1000 ? `${Math.round(meters)} m` : `${(meters / 1000).toFixed(1)} km`;
+    return meters < 1000
+      ? `${Math.round(meters).toLocaleString('fi-FI')} m`
+      : `${(meters / 1000).toFixed(1).replace('.', ',')} km`;
   };
 
   return (
@@ -68,7 +70,7 @@ export const StationStats = ({ statistics }: StationStatsProps) => {
             <TrendingUp size={20} />
           </StatIcon>
           <StatContent>
-            <StatValue>{statistics.totalDepartures.toLocaleString()}</StatValue>
+            <StatValue>{statistics.totalDepartures.toLocaleString('fi-FI')}</StatValue>
             <StatLabel>Departures</StatLabel>
           </StatContent>
         </StatCard>
@@ -80,7 +82,7 @@ export const StationStats = ({ statistics }: StationStatsProps) => {
             <TrendingDown size={20} />
           </StatIcon>
           <StatContent>
-            <StatValue>{statistics.totalArrivals.toLocaleString()}</StatValue>
+            <StatValue>{statistics.totalArrivals.toLocaleString('fi-FI')}</StatValue>
             <StatLabel>Arrivals</StatLabel>
           </StatContent>
         </StatCard>

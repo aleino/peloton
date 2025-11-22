@@ -16,9 +16,9 @@ export interface SettingsState {
 }
 
 const initialState: SettingsState = {
-  theme: 'light',
+  theme: 'dark',
   language: 'en',
-  mapStyle: 'light',
+  mapStyle: 'dark',
   colorScaleType: 'quantile',
   sidebarOpen: true,
   visibleLayers: {

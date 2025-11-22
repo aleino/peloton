@@ -33,7 +33,7 @@ export const LoadingSpinner = ({
             flexDirection: 'column',
             alignItems: 'center',
             gap: 2,
-            backgroundColor: 'rgba(255, 255, 255, 0.98)',
+            backgroundColor: 'background.paper',
             backdropFilter: 'blur(10px)',
             borderRadius: 2,
             minWidth: 200,

@@ -30,11 +30,11 @@ interface StyledPaperProps {
 const StyledPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
     prop !== 'width' && prop !== 'maxWidth' && prop !== 'maxHeight' && prop !== 'scrollable',
-})<StyledPaperProps>(({ width, maxWidth, maxHeight, scrollable }) => ({
+})<StyledPaperProps>(({ theme, width, maxWidth, maxHeight, scrollable }) => ({
   width,
   maxWidth,
   maxHeight,
-  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+  backgroundColor: theme.palette.background.paper,
   backdropFilter: 'blur(10px)',
   overflow: scrollable ? 'auto' : 'visible',
   borderRadius: 8,

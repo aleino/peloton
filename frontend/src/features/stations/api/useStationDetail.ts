@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { fetchStationDetail } from './stationsApi';
 import { stationsQueryKeys } from './stationsQueryKeys';
 import type { StationsGetResponseBody } from '@peloton/shared';
@@ -43,5 +43,6 @@ export const useStationDetail = (options: UseStationDetailOptions) => {
     enabled: enabled && !!stationId,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+    placeholderData: keepPreviousData, // Keep previous data while loading new data
   });
 };

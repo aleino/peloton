@@ -28,6 +28,9 @@ interface FloatingPanelProps {
   /** Close button handler */
   onClose?: () => void;
 
+  /** Optional header content (title, etc.) */
+  header?: ReactNode;
+
   /** Additional sx props */
   sx?: SxProps<Theme>;
 }
@@ -59,6 +62,7 @@ export const FloatingPanel = ({
   scrollable = true,
   closable = false,
   onClose,
+  header,
   sx = {},
 }: FloatingPanelProps) => {
   return (
@@ -70,17 +74,27 @@ export const FloatingPanel = ({
       sx={sx}
     >
       <Styled.Paper elevation={3} scrollable={scrollable}>
-        {/* Close button if closable */}
-        {closable && (
-          <Styled.CloseButtonContainer>
-            <IconButton size="small" onClick={onClose} aria-label="Close panel">
-              <CloseIcon />
-            </IconButton>
-          </Styled.CloseButtonContainer>
+        {/* Header with optional close button */}
+        {(header || closable) && (
+          <Styled.HeaderContainer>
+            <Styled.HeaderContent>{header}</Styled.HeaderContent>
+            {closable && (
+              <IconButton
+                size="small"
+                onClick={onClose}
+                aria-label="Close panel"
+                sx={{ flexShrink: 0 }}
+              >
+                <CloseIcon />
+              </IconButton>
+            )}
+          </Styled.HeaderContainer>
         )}
 
         {/* Panel content */}
-        <Styled.ContentContainer>{children}</Styled.ContentContainer>
+        <Styled.ContentContainer hasHeader={!!(header || closable)}>
+          {children}
+        </Styled.ContentContainer>
       </Styled.Paper>
     </Styled.PanelContainer>
   );

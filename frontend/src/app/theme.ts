@@ -5,6 +5,27 @@ const NEUTRAL_SLATE = '#64748b'; // Primary neutral
 const NEUTRAL_GRAY = '#94a3b8'; // Secondary neutral
 const ACCENT_TEAL = '#14b8a6'; // Subtle accent for interactions
 
+// Glassmorphism styles for floating components
+// Subtle glass effect, similar to hover popup
+const glassmorphism = {
+  light: {
+    backgroundColor: 'rgba(255, 255, 255, 0.92)', // Pure white with high opacity
+    backdropFilter: 'blur(12px) saturate(120%)',
+    WebkitBackdropFilter: 'blur(12px) saturate(120%)',
+    border: '1px solid rgba(0, 0, 0, 0.08)',
+    boxShadow:
+      '0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12)',
+  },
+  dark: {
+    backgroundColor: 'rgba(25, 30, 40, 0.95)', // Blend between neutral gray and dark slate
+    backdropFilter: 'blur(32px) saturate(20%)',
+    WebkitBackdropFilter: 'blur(32px) saturate(20%)',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
+    boxShadow:
+      '0px 5px 5px -3px rgba(0, 0, 0, 0.4), 0px 8px 10px 1px rgba(0, 0, 0, 0.28), 0px 3px 14px 2px rgba(0, 0, 0, 0.24)',
+  },
+};
+
 // Common theme options (shared between light/dark)
 const commonThemeOptions: ThemeOptions = {
   typography: {
@@ -123,6 +144,8 @@ export const lightTheme = createTheme({
       default: '#f8fafc', // Very light gray, works with map
       paper: 'rgba(255, 255, 255, 0.95)', // Semi-transparent for overlays
     },
+    // @ts-expect-error - Custom glassmorphism extension
+    glassmorphism: glassmorphism.light,
     text: {
       primary: '#1e293b',
       secondary: '#64748b',
@@ -212,6 +235,8 @@ export const darkTheme = createTheme({
       default: '#0f172a', // Dark slate, matches Mapbox dark
       paper: 'rgba(30, 41, 59, 0.95)', // Semi-transparent for overlays
     },
+    // @ts-expect-error - Custom glassmorphism extension
+    glassmorphism: glassmorphism.dark,
     text: {
       primary: '#f1f5f9',
       secondary: '#94a3b8',
