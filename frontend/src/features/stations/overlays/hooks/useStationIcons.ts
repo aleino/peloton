@@ -14,7 +14,9 @@ export const useStationIcons = () => {
   const loadedRef = useRef(false);
 
   useEffect(() => {
-    if (!map || loadingRef.current || loadedRef.current) return;
+    if (!map || loadingRef.current || loadedRef.current) {
+      return;
+    }
 
     loadingRef.current = true;
 

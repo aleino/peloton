@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { useStationIcons } from './useStationIcons';
+import { useStationIcons } from '../overlays/hooks/useStationIcons';
 import * as ReactMapGL from 'react-map-gl/mapbox';
-import * as generateIconSVG from '../utils/generateStationIconSVG';
+import * as generateIconSVG from '../overlays/utils/generateStationIconSVG';
 
 // Mock react-map-gl
 vi.mock('react-map-gl/mapbox', () => ({
@@ -10,7 +10,7 @@ vi.mock('react-map-gl/mapbox', () => ({
 }));
 
 // Mock icon generator
-vi.mock('../utils/generateStationIconSVG', () => ({
+vi.mock('../overlay/utils/generateStationIconSVG', () => ({
   generateAllStationIcons: vi.fn(),
 }));
 

@@ -33,7 +33,7 @@ export const MapStyleSwitcher = ({ position = { top: 10, right: 10 } }: MapStyle
   const handleStyleChange = (style: MapStyleKey) => {
     if (!main) return;
 
-    main.setStyle(MAP_STYLES[style]);
+    main.getMap().setStyle(MAP_STYLES[style]);
     setCurrentStyle(style);
   };
 

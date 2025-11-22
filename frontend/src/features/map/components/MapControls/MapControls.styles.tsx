@@ -1,6 +1,6 @@
-import { styled } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-const Container = styled('div')(({ theme }) => ({
+const Container = styled('div')(() => ({
   position: 'absolute',
   right: 24,
   top: '50%',

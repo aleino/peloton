@@ -35,13 +35,14 @@ describe('useStationsQuery', () => {
     features: [
       {
         type: 'Feature',
+        id: '001',
         geometry: {
           type: 'Point',
           coordinates: [24.9384, 60.1699],
         },
         properties: {
           stationId: '001',
-          name: 'Kaivopuisto',
+          name: 'Test Station',
         },
       },
     ],

@@ -7,7 +7,6 @@ import {
   MAP_CONSTRAINTS,
   DEFAULT_MAP_STYLE,
   type MapStyleKey,
-  type ViewState,
 } from './mapbox';
 
 describe('Mapbox Configuration', () => {
@@ -117,7 +116,7 @@ describe('Mapbox Configuration', () => {
     });
 
     it('should define ViewState interface with required fields', () => {
-      const viewState: ViewState = {
+      const viewState = {
         longitude: 24.9384,
         latitude: 60.1699,
         zoom: 11,
@@ -128,7 +127,7 @@ describe('Mapbox Configuration', () => {
     });
 
     it('should allow optional fields in ViewState', () => {
-      const viewState: ViewState = {
+      const viewState = {
         longitude: 24.9384,
         latitude: 60.1699,
         zoom: 11,

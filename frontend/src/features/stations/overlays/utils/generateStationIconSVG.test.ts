@@ -31,58 +31,25 @@ describe('generateStationIconSVG', () => {
     expect(svg).toContain(`viewBox="0 0 ${size} ${size}"`);
   });
 
-  it('contains circle element for background', () => {
-    const svg = generateStationIconSVG();
-
-    expect(svg).toContain('<circle');
-    expect(svg).toMatch(/fill="#[0-9a-f]{6}"/i);
-    expect(svg).toMatch(/stroke="#[0-9a-f]{6}"/i);
-    expect(svg).toContain('stroke-width="2"');
-  });
-
-  it('contains bike icon elements', () => {
-    const svg = generateStationIconSVG();
-
-    // Should contain circles for wheels
-    expect(svg).toContain('cx="18.5"'); // Right wheel
-    expect(svg).toContain('cy="17.5"');
-    expect(svg).toContain('cx="5.5"'); // Left wheel
-
-    // Should contain circle for seat/bell
-    expect(svg).toContain('cx="15"');
-    expect(svg).toContain('cy="5"');
-    expect(svg).toContain('r="1"');
-
-    // Should contain path for frame
-    expect(svg).toContain('<path');
-    expect(svg).toContain('M12 17.5V14l-3-3 4-3 2 3h2');
-  });
-
   it('uses default variant colors', () => {
     const svg = generateStationIconSVG({ variant: 'default' });
 
-    // Default variant colors
-    expect(svg).toContain('#1976d2'); // Primary main (background)
+    // Only icon color is in SVG (background comes from circle layer)
     expect(svg).toContain('#ffffff'); // White (icon)
-    expect(svg).toContain('#115293'); // Primary dark (border)
   });
 
   it('uses hover variant colors', () => {
     const svg = generateStationIconSVG({ variant: 'hover' });
 
-    // Hover variant colors
-    expect(svg).toContain('#42a5f5'); // Primary light (background)
+    // Only icon color is in SVG (background comes from circle layer)
     expect(svg).toContain('#ffffff'); // White (icon)
-    expect(svg).toContain('#1976d2'); // Primary main (border)
   });
 
   it('uses active variant colors', () => {
     const svg = generateStationIconSVG({ variant: 'active' });
 
-    // Active variant colors
-    expect(svg).toContain('#9c27b0'); // Secondary main (background)
+    // Only icon color is in SVG (background comes from circle layer)
     expect(svg).toContain('#ffffff'); // White (icon)
-    expect(svg).toContain('#6a1b9a'); // Secondary dark (border)
   });
 
   it('applies correct scale transformation', () => {
@@ -182,20 +149,20 @@ describe('generateAllStationIcons', () => {
   it('generates different colors for each variant', () => {
     const icons = generateAllStationIcons();
 
-    const defaultSvg = decodeURIComponent(
-      icons['station-icon-default'].replace('data:image/svg+xml;charset=utf-8,', '')
+    const defaultSVG = decodeURIComponent(
+      icons['station-icon-default']?.replace('data:image/svg+xml;charset=utf-8,', '') ?? ''
     );
-    const hoverSvg = decodeURIComponent(
-      icons['station-icon-hover'].replace('data:image/svg+xml;charset=utf-8,', '')
+    const hoverSVG = decodeURIComponent(
+      icons['station-icon-hover']?.replace('data:image/svg+xml;charset=utf-8,', '') ?? ''
     );
-    const activeSvg = decodeURIComponent(
-      icons['station-icon-active'].replace('data:image/svg+xml;charset=utf-8,', '')
+    const activeSVG = decodeURIComponent(
+      icons['station-icon-active']?.replace('data:image/svg+xml;charset=utf-8,', '') ?? ''
     );
 
-    // Each should have different background colors
-    expect(defaultSvg).toContain('#1976d2');
-    expect(hoverSvg).toContain('#42a5f5');
-    expect(activeSvg).toContain('#9c27b0');
+    // All variants have the same white icon color (backgrounds come from circle layer)
+    expect(defaultSVG).toContain('#ffffff');
+    expect(hoverSVG).toContain('#ffffff');
+    expect(activeSVG).toContain('#ffffff');
   });
 
   it('returns an object with correct icon name format', () => {

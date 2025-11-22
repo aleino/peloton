@@ -23,24 +23,26 @@ describe('stationsApi', () => {
       features: [
         {
           type: 'Feature',
+          id: '001',
           geometry: {
             type: 'Point',
             coordinates: [24.9384, 60.1699],
           },
           properties: {
             stationId: '001',
-            name: 'Kaivopuisto',
+            name: 'Test Station 1',
           },
         },
         {
           type: 'Feature',
+          id: '002',
           geometry: {
             type: 'Point',
-            coordinates: [24.9502, 60.1621],
+            coordinates: [24.9414, 60.1689],
           },
           properties: {
             stationId: '002',
-            name: 'Toolonlahti',
+            name: 'Test Station 2',
           },
         },
       ],

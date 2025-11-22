@@ -1,5 +1,5 @@
 import { BaseMap, MapControls } from '@/features/map';
-import { StationsLayer } from '@/features/stations/components/StationsLayer';
+import { StationsLayer } from '@/features/stations/overlays';
 import { StationHoverPopup } from '@/features/stations/components/StationHoverPopup';
 
 /**

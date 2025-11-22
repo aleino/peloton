@@ -2,6 +2,19 @@
 
 ## General
 
+### Early return on their own line
+
+- Use early return statements on their own line for better readability. Example:
+
+```tsx
+// ❌ NOT allowed
+if (!data) return null;
+// ✅ Allowed
+if (!data) {
+  return null;
+}
+```
+
 ## React
 
 ### Component directory structure
@@ -54,5 +67,5 @@ export const MapPage = () => {
 
 ## Maps
 
-- Use `react-map-gl` for Mapbox integration.
+- Use `react-map-gl` for Mapbox integration. Most map components can be imported from `react-map-gl/mapbox-gl`.
 - Use `Source` and `Layer` components from `react-map-gl` to add data

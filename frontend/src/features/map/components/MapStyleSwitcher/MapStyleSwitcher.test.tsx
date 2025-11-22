@@ -6,7 +6,9 @@ import { MapStyleSwitcher } from './MapStyleSwitcher';
 // Mock react-map-gl useMap hook
 const mockSetStyle = vi.fn();
 const mockMain = {
-  setStyle: mockSetStyle,
+  getMap: () => ({
+    setStyle: mockSetStyle,
+  }),
 };
 
 vi.mock('react-map-gl/mapbox', () => ({

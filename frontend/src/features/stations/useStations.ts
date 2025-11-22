@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   setHoveredStation,
@@ -19,21 +20,30 @@ export const useStations = () => {
   );
   const selectedReturnStationId = useAppSelector((state) => state.stations.selectedReturnStationId);
 
-  const handleSetHoveredStation = (station: StationMapEventData | null) => {
-    dispatch(setHoveredStation(station));
-  };
+  const handleSetHoveredStation = useCallback(
+    (station: StationMapEventData | null) => {
+      dispatch(setHoveredStation(station));
+    },
+    [dispatch]
+  );
 
-  const handleSetSelectedDepartureStationId = (stationId: string | null) => {
-    dispatch(setSelectedDepartureStationId(stationId));
-  };
+  const handleSetSelectedDepartureStationId = useCallback(
+    (stationId: string | null) => {
+      dispatch(setSelectedDepartureStationId(stationId));
+    },
+    [dispatch]
+  );
 
-  const handleSetSelectedReturnStationId = (stationId: string | null) => {
-    dispatch(setSelectedReturnStationId(stationId));
-  };
+  const handleSetSelectedReturnStationId = useCallback(
+    (stationId: string | null) => {
+      dispatch(setSelectedReturnStationId(stationId));
+    },
+    [dispatch]
+  );
 
-  const handleClearStationSelections = () => {
+  const handleClearStationSelections = useCallback(() => {
     dispatch(clearStationSelections());
-  };
+  }, [dispatch]);
 
   return {
     hoveredStation,

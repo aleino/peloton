@@ -1,129 +1,22 @@
-import { scaleSequential } from 'd3-scale';
-import { interpolateViridis } from 'd3-scale-chromatic';
+import { scaleLinear, scaleLog, scaleQuantile } from 'd3-scale';
+import type { ExpressionSpecification } from 'mapbox-gl';
 
 /**
- * Transformation type for normalizing skewed data distributions
- *
- * - `'linear'`: Direct mapping, best for normally distributed data
- * - `'log'`: Logarithmic scale, recommended when a few outliers dominate the range
- * - `'sqrt'`: Square root scale, moderate compression for less extreme skew
+ * Viridis color scale as a simple array for Mapbox expressions
+ * Order: 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 1.0
  */
-export type ScaleTransformation = 'linear' | 'log' | 'sqrt';
-
-/**
- * Apply transformation to a value to handle skewed distributions
- *
- * @param value - Value to transform
- * @param transformation - Type of transformation to apply
- * @returns Transformed value
- */
-function applyTransformation(value: number, transformation: ScaleTransformation): number {
-  switch (transformation) {
-    case 'log':
-      // log(x + 1) to handle zero values
-      return Math.log(value + 1);
-    case 'sqrt':
-      return Math.sqrt(value);
-    case 'linear':
-    default:
-      return value;
-  }
-}
-
-/**
- * Normalize a value to 0-1 range based on min/max
- *
- * @param value - Value to normalize
- * @param min - Minimum value in dataset
- * @param max - Maximum value in dataset
- * @returns Normalized value between 0 and 1
- */
-export function normalizeValue(value: number, min: number, max: number): number {
-  if (max === min) {
-    return 0.5; // Middle value if no variance
-  }
-  return (value - min) / (max - min);
-}
-
-/**
- * Create a Viridis color scale for station departures
- *
- * Returns a function that maps departure counts to Viridis colors.
- * **Always uses the full Viridis spectrum**: min value → purple, max value → yellow
- *
- * Supports transformations to handle skewed distributions:
- * - 'linear': Direct mapping (default)
- * - 'log': Logarithmic scale - useful when a few stations have extremely high traffic
- * - 'sqrt': Square root scale - moderate compression of outliers
- *
- * The transformation is applied before normalizing to [0, 1], ensuring the full
- * color range is always utilized regardless of the data distribution.
- *
- * @param minDepartures - Minimum departure count across all stations
- * @param maxDepartures - Maximum departure count across all stations
- * @param transformation - Type of scale transformation to apply (default: 'linear')
- * @returns Function that takes a departure count and returns a hex color
- *
- * @example
- * ```typescript
- * // Linear scale
- * const linearScale = createViridisScale(0, 5000);
- * const color1 = linearScale(0);    // "#440154" (purple)
- * const color2 = linearScale(2500); // "#21918c" (teal)
- * const color3 = linearScale(5000); // "#fde725" (yellow)
- *
- * // Logarithmic scale for skewed data (e.g., 10 to 100,000 departures)
- * // Still uses full purple-to-yellow range, but distributed logarithmically
- * const logScale = createViridisScale(10, 100000, 'log');
- * const color4 = logScale(10);     // "#440154" (purple - min value)
- * const color5 = logScale(1000);   // "#21918c" (teal - middle of log scale)
- * const color6 = logScale(100000); // "#fde725" (yellow - max value)
- * ```
- */
-export function createViridisScale(
-  minDepartures: number,
-  maxDepartures: number,
-  transformation: ScaleTransformation = 'linear'
-): (departures: number) => string {
-  // Apply transformation to domain bounds
-  const transformedMin = applyTransformation(minDepartures, transformation);
-  const transformedMax = applyTransformation(maxDepartures, transformation);
-
-  // Always use full [0, 1] color range for Viridis interpolator
-  const scale = scaleSequential(interpolateViridis).domain([0, 1]);
-
-  return (departures: number): string => {
-    // Clamp value to domain range before transformation
-    const clampedValue = Math.max(minDepartures, Math.min(maxDepartures, departures));
-    // Apply transformation to the input value
-    const transformedValue = applyTransformation(clampedValue, transformation);
-    // Normalize to [0, 1] range to use full color spectrum
-    const normalized = normalizeValue(transformedValue, transformedMin, transformedMax);
-    return scale(normalized);
-  };
-}
-
-/**
- * Get Viridis color for a specific normalized value (0-1)
- *
- * Useful when you've already normalized your data or want direct control
- * over the interpolation parameter.
- *
- * @param t - Normalized value between 0 and 1
- * @returns Hex color string
- *
- * @example
- * ```typescript
- * const purple = getViridisColor(0);    // "#440154" (low)
- * const green = getViridisColor(0.5);   // "#21918c" (medium)
- * const yellow = getViridisColor(1);    // "#fde725" (high)
- * ```
- */
-export function getViridisColor(t: number): string {
-  // Clamp t to [0, 1]
-  const clampedT = Math.max(0, Math.min(1, t));
-  return interpolateViridis(clampedT);
-}
+export const VIRIDIS_COLOR_ARRAY = [
+  '#440154', // 0.0 - deep purple
+  '#48186a', // 0.1
+  '#3f4a8a', // 0.2
+  '#31688e', // 0.3
+  '#26838f', // 0.4
+  '#1f9d88', // 0.5
+  '#35b779', // 0.6
+  '#6ece58', // 0.7
+  '#b5de2b', // 0.8
+  '#fde725', // 1.0 - bright yellow-green
+] as const;
 
 /**
  * Calculate min and max departure counts from station data
@@ -163,12 +56,12 @@ export function getDepartureRange(
   if (usePercentiles) {
     // Sort and use percentiles to exclude extreme outliers
     const sorted = [...departures].sort((a, b) => a - b);
-    const p2Index = Math.max(0, Math.floor(sorted.length * 0.02));
-    const p98Index = Math.min(sorted.length - 1, Math.floor(sorted.length * 0.98));
+    const p5Index = Math.max(0, Math.floor(sorted.length * 0.05));
+    const p95Index = Math.min(sorted.length - 1, Math.floor(sorted.length * 0.95));
 
     return {
-      minDepartures: sorted[p2Index] ?? 0,
-      maxDepartures: sorted[p98Index] ?? 0,
+      minDepartures: sorted[p5Index] ?? 0,
+      maxDepartures: sorted[p95Index] ?? 0,
     };
   }
 
@@ -179,18 +72,123 @@ export function getDepartureRange(
 }
 
 /**
- * Viridis color scale constants
- * Useful for legends, documentation, or reference
+ * Create a Mapbox interpolate expression for linear scale
+ *
+ * Uses D3's scaleLinear to map values to colors from the Viridis color scale.
+ * Distributes colors evenly across the value range.
+ *
+ * @param minValue - Minimum value in the dataset
+ * @param maxValue - Maximum value in the dataset
+ * @param inputValue - Mapbox expression to use as input (e.g., ['get', 'totalDepartures'])
+ * @returns Mapbox interpolate expression for linear color mapping
  */
-export const VIRIDIS_COLORS = {
-  /** Purple (low values) */
-  MIN: '#440154',
-  /** Blue-purple (25%) */
-  QUARTER: '#31688e',
-  /** Teal (50%) */
-  MIDDLE: '#21918c',
-  /** Green-yellow (75%) */
-  THREE_QUARTER: '#5ec962',
-  /** Yellow (high values) */
-  MAX: '#fde725',
-} as const;
+export function createLinearColorExpression(
+  minValue: number,
+  maxValue: number,
+  inputValue: ExpressionSpecification
+): string | ExpressionSpecification {
+  // Handle edge case where all values are the same
+  if (minValue === maxValue) {
+    return VIRIDIS_COLOR_ARRAY[5]!; // Middle color (teal)
+  }
+
+  // Create D3 linear scale
+  const scale = scaleLinear<number>().domain([minValue, maxValue]).range([0, 1]).clamp(true);
+
+  // Map normalized t-values to actual data values
+  const VIRIDIS_T_STOPS = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 1.0];
+
+  return [
+    'interpolate',
+    ['linear'],
+    inputValue,
+    ...VIRIDIS_T_STOPS.flatMap((t) => {
+      const value = scale.invert(t);
+      return [value, VIRIDIS_COLOR_ARRAY[Math.round(t * 10)]!];
+    }),
+  ] as ExpressionSpecification;
+}
+
+/**
+ * Create a Mapbox interpolate expression for logarithmic scale
+ *
+ * Uses D3's scaleLog to map values to colors from the Viridis color scale.
+ * Useful for data with exponential distributions or wide ranges.
+ * Small values get more color resolution than large values.
+ *
+ * @param minValue - Minimum value in the dataset (must be > 0)
+ * @param maxValue - Maximum value in the dataset
+ * @param inputValue - Mapbox expression to use as input (e.g., ['get', 'totalDepartures'])
+ * @returns Mapbox interpolate expression for logarithmic color mapping
+ */
+export function createLogColorExpression(
+  minValue: number,
+  maxValue: number,
+  inputValue: ExpressionSpecification
+): string | ExpressionSpecification {
+  // Handle edge cases
+  if (minValue === maxValue) {
+    return VIRIDIS_COLOR_ARRAY[5]!; // Middle color (teal)
+  }
+
+  // Ensure minValue is positive for log scale
+  const safeMin = Math.max(minValue, 1);
+
+  // Create D3 log scale
+  const scale = scaleLog<number>().domain([safeMin, maxValue]).range([0, 1]).clamp(true);
+
+  // Map normalized t-values to actual data values using log scale
+  const VIRIDIS_T_STOPS = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 1.0];
+
+  return [
+    'interpolate',
+    ['linear'],
+    inputValue,
+    ...VIRIDIS_T_STOPS.flatMap((t) => {
+      const value = scale.invert(t);
+      return [value, VIRIDIS_COLOR_ARRAY[Math.round(t * 10)]!];
+    }),
+  ] as ExpressionSpecification;
+}
+
+/**
+ * Create a Mapbox step expression for quantile (decile) scale
+ *
+ * Uses D3's scaleQuantile to divide data into equal-sized buckets (deciles).
+ * Each bucket gets a distinct color from the Viridis scale.
+ * Ensures equal number of data points in each color bin.
+ *
+ * @param values - Array of all values in the dataset
+ * @param inputValue - Mapbox expression to use as input (e.g., ['get', 'totalDepartures'])
+ * @returns Mapbox step expression for quantile color mapping
+ */
+export function createQuantileColorExpression(
+  values: number[],
+  inputValue: ExpressionSpecification
+): string | ExpressionSpecification {
+  // Handle edge cases
+  if (values.length === 0) {
+    return '#cccccc'; // Fallback color
+  }
+
+  if (values.length === 1 || Math.min(...values) === Math.max(...values)) {
+    return VIRIDIS_COLOR_ARRAY[5]!; // Middle color (teal)
+  }
+
+  // Create D3 quantile scale (deciles)
+  const scale = scaleQuantile<string>().domain(values).range(VIRIDIS_COLOR_ARRAY);
+
+  // Get quantile thresholds (breakpoints between deciles)
+  const quantiles = scale.quantiles();
+
+  // Build Mapbox step expression
+  // Format: ['step', input, color0, threshold1, color1, threshold2, color2, ...]
+  const stepExpression: ExpressionSpecification = [
+    'step',
+    inputValue,
+    VIRIDIS_COLOR_ARRAY[0]!, // Base color for values below first threshold
+    ...quantiles.flatMap((threshold, i) => [threshold, VIRIDIS_COLOR_ARRAY[i + 1]!]),
+  ] as ExpressionSpecification;
+
+  return stepExpression;
+}

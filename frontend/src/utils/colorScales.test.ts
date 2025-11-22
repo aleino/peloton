@@ -1,219 +1,234 @@
 import { describe, it, expect } from 'vitest';
 import {
-  normalizeValue,
-  createViridisScale,
-  getViridisColor,
   getDepartureRange,
-  VIRIDIS_COLORS,
+  createLinearColorExpression,
+  createLogColorExpression,
+  createQuantileColorExpression,
+  VIRIDIS_COLOR_ARRAY,
 } from './colorScales';
+import type { ExpressionSpecification } from 'mapbox-gl';
 
 describe('colorScales', () => {
-  describe('normalizeValue', () => {
-    it('should normalize value to 0-1 range', () => {
-      expect(normalizeValue(50, 0, 100)).toBe(0.5);
-      expect(normalizeValue(0, 0, 100)).toBe(0);
-      expect(normalizeValue(100, 0, 100)).toBe(1);
-    });
-
-    it('should handle min === max', () => {
-      expect(normalizeValue(50, 50, 50)).toBe(0.5);
-    });
-
-    it('should handle negative ranges', () => {
-      expect(normalizeValue(0, -100, 100)).toBe(0.5);
-      expect(normalizeValue(-50, -100, 100)).toBe(0.25);
-    });
-  });
-
-  describe('createViridisScale', () => {
-    it('should create a color scale function', () => {
-      const scale = createViridisScale(0, 1000);
-      expect(typeof scale).toBe('function');
-    });
-
-    it('should return different colors for different values', () => {
-      const scale = createViridisScale(0, 1000);
-      const color1 = scale(0);
-      const color2 = scale(500);
-      const color3 = scale(1000);
-
-      expect(color1).not.toBe(color2);
-      expect(color2).not.toBe(color3);
-      expect(color1).toMatch(/^#[0-9a-f]{6}$/i);
-    });
-
-    it('should clamp values outside domain', () => {
-      const scale = createViridisScale(0, 100);
-      const belowMin = scale(-50);
-      const aboveMax = scale(200);
-      const minColor = scale(0);
-      const maxColor = scale(100);
-
-      expect(belowMin).toBe(minColor);
-      expect(aboveMax).toBe(maxColor);
-    });
-
-    it('should handle min === max gracefully', () => {
-      const scale = createViridisScale(100, 100);
-      expect(() => scale(100)).not.toThrow();
-      expect(scale(100)).toMatch(/^#[0-9a-f]{6}$/i);
-    });
-
-    it('should apply logarithmic transformation for skewed data', () => {
-      const linearScale = createViridisScale(1, 10000, 'linear');
-      const logScale = createViridisScale(1, 10000, 'log');
-
-      // With log scale, middle values should get darker colors (more purple/blue)
-      // than with linear scale, providing better color distribution
-      const linearColor = linearScale(100);
-      const logColor = logScale(100);
-
-      expect(linearColor).toMatch(/^#[0-9a-f]{6}$/i);
-      expect(logColor).toMatch(/^#[0-9a-f]{6}$/i);
-      expect(linearColor).not.toBe(logColor);
-    });
-
-    it('should apply square root transformation', () => {
-      const linearScale = createViridisScale(0, 10000, 'linear');
-      const sqrtScale = createViridisScale(0, 10000, 'sqrt');
-
-      const linearColor = linearScale(100);
-      const sqrtColor = sqrtScale(100);
-
-      expect(linearColor).toMatch(/^#[0-9a-f]{6}$/i);
-      expect(sqrtColor).toMatch(/^#[0-9a-f]{6}$/i);
-      expect(linearColor).not.toBe(sqrtColor);
-    });
-
-    it('should default to linear transformation', () => {
-      const defaultScale = createViridisScale(0, 1000);
-      const linearScale = createViridisScale(0, 1000, 'linear');
-
-      expect(defaultScale(500)).toBe(linearScale(500));
-    });
-
-    it('should always use full Viridis color range from min to max', () => {
-      // Test with any data range - should always get purple at min, yellow at max
-      const scale = createViridisScale(10, 1000, 'log');
-
-      const minColor = scale(10);
-      const maxColor = scale(1000);
-
-      // Min should be purple (near #440154)
-      expect(minColor).toBe(VIRIDIS_COLORS.MIN);
-      // Max should be yellow (near #fde725)
-      expect(maxColor).toBe(VIRIDIS_COLORS.MAX);
-    });
-
-    it('should distribute colors evenly across transformed range', () => {
-      const scale = createViridisScale(1, 10000, 'log');
-
-      // Get colors at different points
-      const colors = [
-        scale(1), // min - purple
-        scale(10), // ~16% log scale
-        scale(100), // ~33% log scale
-        scale(1000), // ~67% log scale
-        scale(10000), // max - yellow
-      ];
-
-      // All should be different colors
-      const uniqueColors = new Set(colors);
-      expect(uniqueColors.size).toBe(5);
-
-      // First should be purple, last should be yellow
-      expect(colors[0]).toBe(VIRIDIS_COLORS.MIN);
-      expect(colors[4]).toBe(VIRIDIS_COLORS.MAX);
-    });
-  });
-
-  describe('getViridisColor', () => {
-    it('should return purple for t=0', () => {
-      const color = getViridisColor(0);
-      expect(color).toBe(VIRIDIS_COLORS.MIN);
-    });
-
-    it('should return yellow for t=1', () => {
-      const color = getViridisColor(1);
-      expect(color).toBe(VIRIDIS_COLORS.MAX);
-    });
-
-    it('should return intermediate color for t=0.5', () => {
-      const color = getViridisColor(0.5);
-      expect(color).toMatch(/^#[0-9a-f]{6}$/i);
-      expect(color).not.toBe(VIRIDIS_COLORS.MIN);
-      expect(color).not.toBe(VIRIDIS_COLORS.MAX);
-    });
-
-    it('should clamp t to [0, 1]', () => {
-      expect(getViridisColor(-0.5)).toBe(getViridisColor(0));
-      expect(getViridisColor(1.5)).toBe(getViridisColor(1));
-    });
-
-    it('should return hex color format', () => {
-      const colors = [0, 0.25, 0.5, 0.75, 1].map(getViridisColor);
-      colors.forEach((color) => {
-        expect(color).toMatch(/^#[0-9a-f]{6}$/i);
-      });
-    });
-  });
-
   describe('getDepartureRange', () => {
-    it('should calculate min and max from station data', () => {
+    it('should return min and max departure values', () => {
       const stations = [
         { properties: { totalDepartures: 100 } },
         { properties: { totalDepartures: 500 } },
-        { properties: { totalDepartures: 1000 } },
+        { properties: { totalDepartures: 200 } },
       ];
 
-      const range = getDepartureRange(stations);
-      expect(range.minDepartures).toBe(100);
-      expect(range.maxDepartures).toBe(1000);
+      const result = getDepartureRange(stations);
+
+      expect(result.minDepartures).toBe(100);
+      expect(result.maxDepartures).toBe(500);
     });
 
-    it('should handle missing totalDepartures', () => {
+    it('should handle missing totalDepartures values', () => {
       const stations = [
         { properties: { totalDepartures: 100 } },
         { properties: {} },
         { properties: { totalDepartures: 200 } },
       ];
 
-      const range = getDepartureRange(stations);
-      expect(range.minDepartures).toBe(0);
-      expect(range.maxDepartures).toBe(200);
+      const result = getDepartureRange(stations);
+
+      expect(result.minDepartures).toBe(0);
+      expect(result.maxDepartures).toBe(200);
     });
 
-    it('should handle empty array', () => {
-      const range = getDepartureRange([]);
-      expect(range.minDepartures).toBe(0);
-      expect(range.maxDepartures).toBe(0);
+    it('should return zeros for empty array', () => {
+      const result = getDepartureRange([]);
+
+      expect(result.minDepartures).toBe(0);
+      expect(result.maxDepartures).toBe(0);
     });
 
-    it('should handle all stations with 0 departures', () => {
+    it('should use percentiles when requested', () => {
+      // Create a dataset with clear outliers
       const stations = [
-        { properties: { totalDepartures: 0 } },
-        { properties: { totalDepartures: 0 } },
+        { properties: { totalDepartures: 1 } }, // Low outlier
+        ...Array.from({ length: 20 }, (_, i) => ({
+          properties: { totalDepartures: 100 + i * 10 },
+        })),
+        { properties: { totalDepartures: 9999 } }, // High outlier
       ];
 
-      const range = getDepartureRange(stations);
-      expect(range.minDepartures).toBe(0);
-      expect(range.maxDepartures).toBe(0);
+      const result = getDepartureRange(stations, true);
+      const resultWithoutPercentiles = getDepartureRange(stations, false);
+
+      // Percentile range should be narrower than absolute range
+      expect(result.maxDepartures - result.minDepartures).toBeLessThan(
+        resultWithoutPercentiles.maxDepartures - resultWithoutPercentiles.minDepartures
+      );
+
+      // Should exclude extreme values
+      expect(result.minDepartures).toBeGreaterThan(1);
+      expect(result.maxDepartures).toBeLessThan(9999);
     });
   });
 
-  describe('VIRIDIS_COLORS constants', () => {
-    it('should have all color constants defined', () => {
-      expect(VIRIDIS_COLORS.MIN).toBeDefined();
-      expect(VIRIDIS_COLORS.QUARTER).toBeDefined();
-      expect(VIRIDIS_COLORS.MIDDLE).toBeDefined();
-      expect(VIRIDIS_COLORS.THREE_QUARTER).toBeDefined();
-      expect(VIRIDIS_COLORS.MAX).toBeDefined();
+  describe('createLinearColorExpression', () => {
+    const inputValue: ExpressionSpecification = ['get', 'totalDepartures'];
+
+    it('should create interpolate expression with correct structure', () => {
+      const expression = createLinearColorExpression(0, 1000, inputValue);
+
+      expect(Array.isArray(expression)).toBe(true);
+      expect(expression[0]).toBe('interpolate');
+      expect(expression[1]).toEqual(['linear']);
+      expect(expression[2]).toEqual(inputValue);
     });
 
-    it('should have valid hex colors', () => {
-      Object.values(VIRIDIS_COLORS).forEach((color) => {
-        expect(color).toMatch(/^#[0-9a-f]{6}$/i);
-      });
+    it('should return middle color when min equals max', () => {
+      const expression = createLinearColorExpression(500, 500, inputValue);
+
+      expect(expression).toBe(VIRIDIS_COLOR_ARRAY[5]);
+    });
+
+    it('should distribute colors evenly across the range', () => {
+      const expression = createLinearColorExpression(
+        0,
+        1000,
+        inputValue
+      ) as ExpressionSpecification;
+
+      // Check that we have value-color pairs
+      expect(expression.length).toBeGreaterThan(10);
+
+      // First value should be near 0
+      expect(expression[3]).toBeLessThanOrEqual(10);
+      // Last value should be near 1000
+      expect(expression[expression.length - 2]).toBeGreaterThanOrEqual(990);
+    });
+  });
+
+  describe('createLogColorExpression', () => {
+    const inputValue: ExpressionSpecification = ['get', 'totalDepartures'];
+
+    it('should create interpolate expression with correct structure', () => {
+      const expression = createLogColorExpression(1, 1000, inputValue);
+
+      expect(Array.isArray(expression)).toBe(true);
+      expect(expression[0]).toBe('interpolate');
+      expect(expression[1]).toEqual(['linear']);
+      expect(expression[2]).toEqual(inputValue);
+    });
+
+    it('should return middle color when min equals max', () => {
+      const expression = createLogColorExpression(500, 500, inputValue);
+
+      expect(expression).toBe(VIRIDIS_COLOR_ARRAY[5]);
+    });
+
+    it('should handle zero min value by using 1', () => {
+      const expression = createLogColorExpression(0, 1000, inputValue) as ExpressionSpecification;
+
+      // Should still create a valid expression
+      expect(Array.isArray(expression)).toBe(true);
+      expect(expression[0]).toBe('interpolate');
+    });
+
+    it('should use logarithmic distribution', () => {
+      const expression = createLogColorExpression(1, 1000, inputValue) as ExpressionSpecification;
+
+      // Check that we have value-color pairs
+      expect(expression.length).toBeGreaterThan(10);
+
+      // Values should be distributed logarithmically
+      // (smaller values should have smaller gaps)
+      const firstValue = expression[3] as number;
+      const secondValue = expression[5] as number;
+      const lastValue = expression[expression.length - 2] as number;
+
+      expect(secondValue - firstValue).toBeLessThan(lastValue - secondValue);
+    });
+  });
+
+  describe('createQuantileColorExpression', () => {
+    const inputValue: ExpressionSpecification = ['get', 'totalDepartures'];
+
+    it('should create step expression with correct structure', () => {
+      const values = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+      const expression = createQuantileColorExpression(values, inputValue);
+
+      expect(Array.isArray(expression)).toBe(true);
+      expect(expression[0]).toBe('step');
+      expect(expression[1]).toEqual(inputValue);
+      expect(expression[2]).toBe(VIRIDIS_COLOR_ARRAY[0]); // Base color
+    });
+
+    it('should return fallback color for empty array', () => {
+      const expression = createQuantileColorExpression([], inputValue);
+
+      expect(expression).toBe('#cccccc');
+    });
+
+    it('should return middle color when all values are the same', () => {
+      const values = [100, 100, 100, 100, 100];
+      const expression = createQuantileColorExpression(values, inputValue);
+
+      expect(expression).toBe(VIRIDIS_COLOR_ARRAY[5]);
+    });
+
+    it('should create quantile thresholds', () => {
+      const values = Array.from({ length: 100 }, (_, i) => i + 1); // 1 to 100
+      const expression = createQuantileColorExpression(
+        values,
+        inputValue
+      ) as ExpressionSpecification;
+
+      // Should have threshold-color pairs after the base color
+      expect(expression.length).toBeGreaterThan(10);
+
+      // Thresholds should be in ascending order
+      const thresholds: number[] = [];
+      for (let i = 3; i < expression.length; i += 2) {
+        thresholds.push(expression[i] as number);
+      }
+
+      for (let i = 1; i < thresholds.length; i++) {
+        expect(thresholds[i]).toBeGreaterThan(thresholds[i - 1]!);
+      }
+    });
+
+    it('should divide data into equal-sized bins', () => {
+      // Create 100 values for easy calculation
+      const values = Array.from({ length: 100 }, (_, i) => i + 1);
+      const expression = createQuantileColorExpression(
+        values,
+        inputValue
+      ) as ExpressionSpecification;
+
+      // Extract thresholds
+      const thresholds: number[] = [];
+      for (let i = 3; i < expression.length; i += 2) {
+        thresholds.push(expression[i] as number);
+      }
+
+      // Each bin should contain approximately the same number of values
+      // For 100 values and 10 colors, we expect ~10 values per bin
+      // Thresholds should be roughly at 10, 20, 30, etc.
+      expect(thresholds.length).toBeGreaterThan(5); // At least some quantiles
+      expect(thresholds[0]).toBeLessThan(20);
+      expect(thresholds[thresholds.length - 1]).toBeGreaterThan(80);
+    });
+  });
+
+  describe('VIRIDIS_COLOR_ARRAY', () => {
+    it('should have 10 colors', () => {
+      expect(VIRIDIS_COLOR_ARRAY).toHaveLength(10);
+    });
+
+    it('should start with deep purple', () => {
+      expect(VIRIDIS_COLOR_ARRAY[0]).toBe('#440154');
+    });
+
+    it('should end with bright yellow-green', () => {
+      expect(VIRIDIS_COLOR_ARRAY[9]).toBe('#fde725');
+    });
+
+    it('should have middle color as teal', () => {
+      expect(VIRIDIS_COLOR_ARRAY[5]).toBe('#1f9d88');
     });
   });
 });

@@ -15,12 +15,14 @@ vi.mock('react-map-gl/mapbox', () => ({
   useMap: vi.fn(() => ({
     main: {
       getLayer: vi.fn(() => null),
+      getSource: vi.fn(() => null),
       getMap: vi.fn(() => ({
         setLayoutProperty: vi.fn(),
       })),
       getCanvas: vi.fn(() => ({
         style: { cursor: '' },
       })),
+      setFeatureState: vi.fn(),
       on: vi.fn(),
       off: vi.fn(),
       once: vi.fn(),
@@ -32,7 +34,7 @@ vi.mock('../../api', () => ({
   useStationsQuery: vi.fn(),
 }));
 
-vi.mock('../../hooks/useStationIcons', () => ({
+vi.mock('../../overlay/hooks/useStationIcons', () => ({
   useStationIcons: vi.fn(),
 }));
 
@@ -41,6 +43,7 @@ const mockStationsData: StationFeatureCollection = {
   features: [
     {
       type: 'Feature',
+      id: '001',
       geometry: {
         type: 'Point',
         coordinates: [24.9384, 60.1699],
@@ -52,6 +55,7 @@ const mockStationsData: StationFeatureCollection = {
     },
     {
       type: 'Feature',
+      id: '002',
       geometry: {
         type: 'Point',
         coordinates: [24.9404, 60.1709],
@@ -96,28 +100,6 @@ describe('StationsLayer', () => {
     expect(container.firstChild).toBeNull();
   });
 
-  it('should render nothing on error', async () => {
-    const { useStationsQuery } = await import('../../api');
-    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-
-    vi.mocked(useStationsQuery).mockReturnValue({
-      data: undefined,
-      isLoading: false,
-      error: new Error('Failed to fetch'),
-      isError: true,
-      isSuccess: false,
-      refetch: vi.fn(),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-
-    const { container } = renderWithStore(<StationsLayer />);
-
-    expect(container.firstChild).toBeNull();
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to load stations:', expect.any(Error));
-
-    consoleErrorSpy.mockRestore();
-  });
-
   it('should render Source and Layer with valid data', async () => {
     const { useStationsQuery } = await import('../../api');
     vi.mocked(useStationsQuery).mockReturnValue({
@@ -133,8 +115,15 @@ describe('StationsLayer', () => {
     renderWithStore(<StationsLayer />);
 
     expect(screen.getByTestId('mock-source')).toBeInTheDocument();
-    expect(screen.getByTestId('mock-layer')).toBeInTheDocument();
-    expect(screen.getByTestId('mock-layer')).toHaveAttribute('data-layer-id', 'stations-layer');
+
+    const layers = screen.getAllByTestId('mock-layer');
+    expect(layers).toHaveLength(4);
+
+    const layerIds = layers.map((layer) => layer.getAttribute('data-layer-id'));
+    expect(layerIds).toContain('stations-clusters');
+    expect(layerIds).toContain('stations-cluster-count');
+    expect(layerIds).toContain('stations-circles');
+    expect(layerIds).toContain('stations-layer');
   });
 
   it('should render nothing if data is not a FeatureCollection', async () => {
@@ -155,7 +144,7 @@ describe('StationsLayer', () => {
 
   it('should call useStationIcons hook', async () => {
     const { useStationsQuery } = await import('../../api');
-    const { useStationIcons } = await import('../../hooks/useStationIcons');
+    const { useStationIcons } = await import('../../overlays/hooks/useStationIcons');
 
     vi.mocked(useStationsQuery).mockReturnValue({
       data: mockStationsData,

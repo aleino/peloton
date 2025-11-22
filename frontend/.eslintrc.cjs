@@ -48,6 +48,14 @@ module.exports = {
     'no-console': ['warn', { allow: ['warn', 'error'] }],
     'prefer-const': 'error',
     'no-var': 'error',
+
+    // Padding lines - removes extra blank lines between functions
+    'padding-line-between-statements': [
+      'error',
+      { blankLine: 'never', prev: 'function', next: 'function' },
+      { blankLine: 'never', prev: 'export', next: 'export' },
+    ],
+    'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0, maxBOF: 0 }],
   },
   ignorePatterns: ['dist', 'node_modules', '.eslintrc.cjs', 'vite.config.ts', 'vitest.config.ts'],
 };
