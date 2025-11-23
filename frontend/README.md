@@ -1,73 +1,188 @@
-# React + TypeScript + Vite
+# Peloton Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React 18 + TypeScript + Vite web application for visualizing HSL city bike trip data.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 18** with TypeScript
+- **Vite** for build tool and dev server
+- **Material-UI (MUI)** for UI components
+- **React Router** for routing
+- **Redux Toolkit** for state management
+- **Mapbox GL JS** for map visualization
+- **TanStack Query (React Query)** for API data fetching
+- **Vitest** for testing
 
-## React Compiler
+## 🚀 Quick Start
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
 
-## Expanding the ESLint configuration
+- Node.js v22 or higher
+- npm or yarn
+- Mapbox API token (for map visualization)
+- Backend API running (see `backend/README.md`)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Setup
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. **Install Dependencies**
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. **Configure Environment**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Copy `.env.example` to `.env` and update values:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env.example .env
+```
+
+Required environment variables:
+
+```env
+VITE_API_BASE_URL=http://localhost:3000/api/v1
+VITE_MAPBOX_TOKEN=your_mapbox_token_here
+VITE_ENV=development
+```
+
+3. **Run Development Server**
+
+```bash
+npm run dev
+```
+
+Application will be available at `http://localhost:5173`
+
+## Development
+
+### Available Scripts
+
+```bash
+npm run dev          # Start development server with hot reload
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm test             # Run tests
+npm run test:watch   # Run tests in watch mode
+npm run test:coverage # Generate coverage report
+npm run lint         # Lint code
+npm run format       # Format code with Prettier
+```
+
+### Project Structure
+
+```
+frontend/
+├── src/
+│   ├── app/                  # App configuration (router, theme, providers)
+│   │   ├── router.tsx
+│   │   ├── theme.ts
+│   │   └── ThemeProvider.tsx
+│   ├── components/           # Reusable components
+│   │   └── ui/               # UI components
+│   ├── config/               # Configuration files
+│   │   ├── env.ts
+│   │   ├── layout.ts
+│   │   └── mapbox.ts
+│   ├── features/             # Feature-based modules
+│   │   ├── stations/         # Station feature module
+│   │   │   ├── api/          # Station API hooks
+│   │   │   ├── components/   # Station-specific components
+│   │   │   ├── config/       # Station configuration
+│   │   │   ├── hooks/        # Station-specific hooks
+│   │   │   └── overlays/     # Map overlays
+│   │   ├── filters/          # Filter components and logic
+│   │   ├── map/              # Map components and controls
+│   │   └── settings/         # Settings components
+│   ├── layouts/              # Layout components
+│   │   ├── AppLayout/
+│   │   ├── ContentOverlay/
+│   │   ├── FloatingHeader/
+│   │   ├── FloatingPanel/
+│   │   └── MapBackground/
+│   ├── pages/                # Page components
+│   │   ├── MapPage.tsx
+│   │   └── NotFoundPage.tsx
+│   ├── services/             # API client and query configuration
+│   ├── store/                # Redux store configuration
+│   ├── types/                # TypeScript types
+│   ├── utils/                # Utility functions
+│   ├── test/                 # Test utilities
+│   ├── App.tsx               # Main App component
+│   ├── main.tsx              # Entry point
+│   └── assets/               # Static assets
+├── public/                   # Public static assets
+├── CODE_STYLE.md             # Frontend code style guide
+└── README.md
+```
+
+## Component Styling
+
+- **MUI styled()** utility for component styling
+- **Style files**: Named `<ComponentName>.styles.tsx`
+- **Export pattern**: Export all styled components in a single `Styled` object
+
+See `CODE_STYLE.md` for detailed styling guidelines.
+
+## Testing
+
+### Run All Tests
+
+```bash
+npm test
+```
+
+### Run with Coverage
+
+```bash
+npm run test:coverage
+```
+
+Coverage reports are generated in `coverage/` directory.
+
+**Target Coverage**: >80%
+
+## Building for Production
+
+```bash
+npm run build
+```
+
+Build output will be in `dist/` directory.
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## Configuration
+
+### Environment Variables
+
+| Variable            | Description             | Default                        |
+| ------------------- | ----------------------- | ------------------------------ |
+| `VITE_API_BASE_URL` | Backend API base URL    | `http://localhost:3000/api/v1` |
+| `VITE_MAPBOX_TOKEN` | Mapbox API access token | **required**                   |
+| `VITE_ENV`          | Environment (dev/prod)  | `development`                  |
+
+## Troubleshooting
+
+### Backend Connection Failed
+
+1. Ensure backend is running: `cd ../backend && npm run dev`
+2. Verify `VITE_API_BASE_URL` in `.env`
+3. Check CORS configuration in backend
+
+### Map Not Loading
+
+1. Verify `VITE_MAPBOX_TOKEN` is set in `.env`
+2. Check token validity at [Mapbox Account](https://account.mapbox.com/)
+
+### Port Already in Use
+
+Change port in `vite.config.ts` or kill existing process:
+
+```bash
+lsof -ti:5173 | xargs kill -9
 ```

@@ -130,17 +130,11 @@ export * from './stations.schema.js';
 ```
 packages/shared/
 ├── src/
-│   ├── schemas/
-│   │   ├── common.schema.ts     # Common response patterns
-│   │   ├── health.schema.ts     # Health endpoint schema
-│   │   └── index.ts
-│   ├── types/
-│   │   └── index.ts             # Exported TypeScript types
-│   └── index.ts                 # Main entry point
-├── tests/
-│   └── *.test.ts                # Schema validation tests
+│   ├── schemas/      # Zod schema definitions (health, stations, geospatial, etc.)
+│   ├── types/        # TypeScript type definitions
+│   └── index.ts      # Main exports
+├── tests/            # Test files
 ├── package.json
-├── tsconfig.json
 └── README.md
 ```
 

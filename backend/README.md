@@ -99,13 +99,45 @@ npm run format       # Format code with Prettier
 backend/
 ├── src/
 │   ├── config/          # Configuration (DB, env, OpenAPI)
-│   ├── routes/          # API route handlers
-│   ├── middleware/      # Express middleware
-│   ├── utils/           # Utilities (logger, etc.)
+│   │   ├── database.ts
+│   │   ├── env.ts
+│   │   └── openapi.ts
+│   ├── routes/          # API route handlers (organized by resource)
+│   │   ├── health/      # Health check endpoints
+│   │   │   ├── health.routes.ts
+│   │   │   └── health.openapi.ts
+│   │   ├── stations/    # Station endpoints
+│   │   │   ├── stations.routes.ts
+│   │   │   └── stations.openapi.ts
+│   │   └── docs.ts      # OpenAPI documentation route
+│   ├── services/        # Business logic layer
+│   │   └── stationService.ts
+│   ├── middleware/      # Express middleware (CORS, validation, error handling)
+│   │   ├── cors.ts
+│   │   ├── errorHandler.ts
+│   │   └── validation.ts
+│   ├── db/              # Database queries and types
+│   │   ├── types.ts
+│   │   └── queries/
+│   │       └── stationQueries.ts
+│   ├── utils/           # Utilities (logger, GeoJSON helpers)
+│   │   ├── logger.ts
+│   │   └── geoJSON.ts
 │   ├── app.ts           # Express app setup
 │   └── server.ts        # Server entry point
 ├── tests/
-│   └── integration/     # Integration tests
+│   ├── integration/     # Integration tests
+│   │   ├── database.test.ts
+│   │   ├── health.test.ts
+│   │   ├── stations.test.ts
+│   │   └── logs/
+│   └── unit/            # Unit tests
+│       ├── db/
+│       ├── middleware/
+│       ├── services/
+│       └── utils/
+├── docs/                # Additional documentation
+├── logs/                # Application logs
 ├── dist/                # Compiled output
 ├── package.json
 ├── tsconfig.json
