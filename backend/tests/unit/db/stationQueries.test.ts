@@ -25,6 +25,38 @@ describe('Station Queries', () => {
       expect(station).toHaveProperty('createdAt');
       expect(station).toHaveProperty('updatedAt');
 
+      // Verify trip statistics fields
+      expect(station).toHaveProperty('departureTripsCount');
+      expect(station).toHaveProperty('departureDurationSecondsAvg');
+      expect(station).toHaveProperty('departureDistanceMetersAvg');
+      expect(station).toHaveProperty('returnTripsCount');
+      expect(station).toHaveProperty('returnDurationSecondsAvg');
+      expect(station).toHaveProperty('returnDistanceMetersAvg');
+
+      // Verify statistics are numbers
+      expect(typeof station.departureTripsCount).toBe('number');
+      expect(typeof station.departureDurationSecondsAvg).toBe('number');
+      expect(typeof station.departureDistanceMetersAvg).toBe('number');
+      expect(typeof station.returnTripsCount).toBe('number');
+      expect(typeof station.returnDurationSecondsAvg).toBe('number');
+      expect(typeof station.returnDistanceMetersAvg).toBe('number');
+
+      // Verify statistics are integers
+      expect(Number.isInteger(station.departureTripsCount)).toBe(true);
+      expect(Number.isInteger(station.departureDurationSecondsAvg)).toBe(true);
+      expect(Number.isInteger(station.departureDistanceMetersAvg)).toBe(true);
+      expect(Number.isInteger(station.returnTripsCount)).toBe(true);
+      expect(Number.isInteger(station.returnDurationSecondsAvg)).toBe(true);
+      expect(Number.isInteger(station.returnDistanceMetersAvg)).toBe(true);
+
+      // Verify statistics are non-negative
+      expect(station.departureTripsCount).toBeGreaterThanOrEqual(0);
+      expect(station.departureDurationSecondsAvg).toBeGreaterThanOrEqual(0);
+      expect(station.departureDistanceMetersAvg).toBeGreaterThanOrEqual(0);
+      expect(station.returnTripsCount).toBeGreaterThanOrEqual(0);
+      expect(station.returnDurationSecondsAvg).toBeGreaterThanOrEqual(0);
+      expect(station.returnDistanceMetersAvg).toBeGreaterThanOrEqual(0);
+
       // Verify GeoJSON structure
       expect(station.location).toHaveProperty('type', 'Point');
       expect(station.location).toHaveProperty('coordinates');

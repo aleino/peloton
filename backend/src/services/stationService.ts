@@ -1,7 +1,8 @@
 import type {
   StationDetail,
   StationStatistics,
-  StationsListResponseBody,
+  StationFeatureCollection,
+  StationTripStatistics,
   Station,
 } from '@peloton/shared';
 import { stationStatistics } from '@peloton/shared';
@@ -19,53 +20,40 @@ import {
 } from '../utils/geoJSON.js';
 
 /**
- * Parse bounds string to BoundingBox object
- * Format: "minLat,minLon,maxLat,maxLon"
+ * Get all stations as GeoJSON FeatureCollection with trip statistics
  *
- * @param boundsStr - Comma-separated bounds string
- * @returns Parsed bounding box object
- * @throws Error if bounds format is invalid
+ * Fetches stations from database with aggregated trip statistics and transforms
+ * to GeoJSON format. Database automatically returns camelCase column names.
+ *
+ * @param bounds - Optional bounding box (already parsed by route middleware)
+ * @returns Stations as GeoJSON FeatureCollection with optional trip statistics
  */
-function parseBounds(boundsStr: string): BoundingBox {
-  const [minLat, minLon, maxLat, maxLon] = boundsStr.split(',').map(Number);
-
-  if ([minLat, minLon, maxLat, maxLon].some(isNaN)) {
-    throw new Error('Invalid bounds format. Expected: minLat,minLon,maxLat,maxLon');
-  }
-
-  if (minLat >= maxLat || minLon >= maxLon) {
-    throw new Error('Invalid bounds: min values must be less than max values');
-  }
-
-  return { minLat, minLon, maxLat, maxLon };
-}
-
-/**
- * Get all stations as GeoJSON FeatureCollection
- *
- * Fetches stations from database and transforms to GeoJSON format.
- * Database automatically returns camelCase column names.
- *
- * @param options - Query options (bounds filter)
- * @returns Stations as GeoJSON FeatureCollection
- */
-export async function getStations(
-  options: {
-    bounds?: string;
-  } = {}
-): Promise<StationsListResponseBody> {
-  const { bounds: boundsStr } = options;
-
-  // Parse bounds if provided
-  const bounds = boundsStr ? parseBounds(boundsStr) : undefined;
-
+export async function getStations(bounds?: BoundingBox): Promise<StationFeatureCollection> {
   // Fetch from database (returns camelCase automatically)
   const dbStations = await dbGetAllStations(bounds);
 
-  // Transform to GeoJSON format
+  // Transform to GeoJSON features
   const features = dbStations.map((row) => {
     const location = parseLocation(row.location);
-    return createStationFeature(row.stationId, row.name, location, row.totalDepartures);
+
+    // Build trip statistics if station has trips
+    const tripStatistics: StationTripStatistics | undefined =
+      row.departureTripsCount > 0 || row.returnTripsCount > 0
+        ? {
+            departures: {
+              tripsCount: row.departureTripsCount,
+              durationSecondsAvg: row.departureDurationSecondsAvg,
+              distanceMetersAvg: row.departureDistanceMetersAvg,
+            },
+            returns: {
+              tripsCount: row.returnTripsCount,
+              durationSecondsAvg: row.returnDurationSecondsAvg,
+              distanceMetersAvg: row.returnDistanceMetersAvg,
+            },
+          }
+        : undefined;
+
+    return createStationFeature(row.stationId, row.name, location, tripStatistics);
   });
 
   return createStationsFeatureCollection(features);

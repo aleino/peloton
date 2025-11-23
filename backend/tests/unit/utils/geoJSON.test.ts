@@ -81,22 +81,44 @@ describe('GeoJSON Utils', () => {
         type: 'Point' as const,
         coordinates: [24.9, 60.1] as [number, number],
       };
-      const feature = createStationFeature('001', 'Test Station', location, 1523);
+      const feature = createStationFeature('001', 'Test Station', location);
 
       expect(feature.id).toBe('001');
       expect(feature.properties.stationId).toBe('001');
       expect(feature.id).toBe(feature.properties.stationId);
     });
 
-    it('should include totalDepartures when provided', () => {
+    it('should include tripStatistics when provided', () => {
       const location = {
         type: 'Point' as const,
         coordinates: [24.9, 60.1] as [number, number],
       };
-      const feature = createStationFeature('001', 'Test Station', location, 1523);
+      const tripStatistics = {
+        departures: {
+          tripsCount: 1523,
+          durationSecondsAvg: 895,
+          distanceMetersAvg: 2340,
+        },
+        returns: {
+          tripsCount: 1489,
+          durationSecondsAvg: 912,
+          distanceMetersAvg: 2298,
+        },
+      };
+      const feature = createStationFeature('001', 'Test Station', location, tripStatistics);
 
-      expect(feature.properties.totalDepartures).toBe(1523);
+      expect(feature.properties.tripStatistics).toEqual(tripStatistics);
       expect(feature.id).toBe('001');
+    });
+
+    it('should not include tripStatistics when undefined', () => {
+      const location = {
+        type: 'Point' as const,
+        coordinates: [24.9, 60.1] as [number, number],
+      };
+      const feature = createStationFeature('001', 'Test Station', location, undefined);
+
+      expect(feature.properties).not.toHaveProperty('tripStatistics');
     });
   });
 

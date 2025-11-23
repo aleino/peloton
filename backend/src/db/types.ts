@@ -14,9 +14,15 @@ export interface StationRow {
   };
   createdAt: Date;
   updatedAt: Date;
-  totalDepartures?: number; // Optional for backward compatibility
-}
 
+  // Trip statistics
+  departureTripsCount: number;
+  departureDurationSecondsAvg: number;
+  departureDistanceMetersAvg: number;
+  returnTripsCount: number;
+  returnDurationSecondsAvg: number;
+  returnDistanceMetersAvg: number;
+}
 export interface StationStatisticsRow {
   stationId: string;
   totalDepartures: number; // bigint from COUNT, parsed as number
@@ -26,7 +32,6 @@ export interface StationStatisticsRow {
   busiestHour: number;
   busiestDay: number; // 0=Sunday, 1=Monday, etc.
 }
-
 /**
  * Helper type for query parameters
  */
@@ -36,6 +41,5 @@ export interface BoundingBox {
   maxLat: number;
   maxLon: number;
 }
-
 export type DbPool = Pool;
 export type DbQueryResult<T extends Record<string, unknown>> = QueryResult<T>;

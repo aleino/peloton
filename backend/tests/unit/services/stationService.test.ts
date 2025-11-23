@@ -8,7 +8,7 @@ vi.mock('../../../src/db/queries/stationQueries.js');
 
 describe('StationService', () => {
   describe('getStations', () => {
-    it('should return GeoJSON format by default', async () => {
+    it('should transform database rows to GeoJSON features with statistics', async () => {
       const mockDbStations = [
         {
           stationId: '001',
@@ -16,6 +16,12 @@ describe('StationService', () => {
           location: { type: 'Point' as const, coordinates: [24.9384, 60.1699] as [number, number] },
           createdAt: new Date('2024-01-01'),
           updatedAt: new Date('2024-01-01'),
+          departureTripsCount: 1523,
+          departureDurationSecondsAvg: 895,
+          departureDistanceMetersAvg: 2340,
+          returnTripsCount: 1489,
+          returnDurationSecondsAvg: 912,
+          returnDistanceMetersAvg: 2298,
         },
       ];
 
@@ -23,33 +29,33 @@ describe('StationService', () => {
 
       const result = await getStations();
 
-      expect(result).toHaveProperty('type', 'FeatureCollection');
-      expect(result).toHaveProperty('features');
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      expect((result as any).features).toHaveLength(1);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      expect((result as any).features[0]).toMatchObject({
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [24.9384, 60.1699],
-        },
-        properties: {
-          stationId: '001',
-          name: 'Kaivopuisto',
-        },
-      });
+      expect(result.type).toBe('FeatureCollection');
+      expect(result.features).toHaveLength(1);
+
+      const feature = result.features[0];
+      expect(feature.properties.tripStatistics).toBeDefined();
+      expect(feature.properties.tripStatistics?.departures.tripsCount).toBe(1523);
+      expect(feature.properties.tripStatistics?.departures.durationSecondsAvg).toBe(895);
+      expect(feature.properties.tripStatistics?.departures.distanceMetersAvg).toBe(2340);
+      expect(feature.properties.tripStatistics?.returns.tripsCount).toBe(1489);
+      expect(feature.properties.tripStatistics?.returns.durationSecondsAvg).toBe(912);
+      expect(feature.properties.tripStatistics?.returns.distanceMetersAvg).toBe(2298);
     });
 
-    it('should include totalDepartures in GeoJSON properties when provided', async () => {
+    it('should return undefined tripStatistics for stations with no trips', async () => {
       const mockDbStations = [
         {
-          stationId: '001',
-          name: 'Kaivopuisto',
-          location: { type: 'Point' as const, coordinates: [24.9384, 60.1699] as [number, number] },
+          stationId: '999',
+          name: 'Empty Station',
+          location: { type: 'Point' as const, coordinates: [24.9502, 60.1672] as [number, number] },
           createdAt: new Date('2024-01-01'),
           updatedAt: new Date('2024-01-01'),
-          totalDepartures: 1523,
+          departureTripsCount: 0,
+          departureDurationSecondsAvg: 0,
+          departureDistanceMetersAvg: 0,
+          returnTripsCount: 0,
+          returnDurationSecondsAvg: 0,
+          returnDistanceMetersAvg: 0,
         },
       ];
 
@@ -57,35 +63,72 @@ describe('StationService', () => {
 
       const result = await getStations();
 
-      expect(result).toHaveProperty('type', 'FeatureCollection');
-      expect(result).toHaveProperty('features');
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      expect((result as any).features[0].properties).toHaveProperty('totalDepartures', 1523);
+      expect(result.features[0].properties.tripStatistics).toBeUndefined();
     });
 
-    it('should parse and pass bounds to database query', async () => {
+    it('should include tripStatistics if only departures exist', async () => {
+      const mockDbStations = [
+        {
+          stationId: '002',
+          name: 'Station With Only Departures',
+          location: { type: 'Point' as const, coordinates: [24.9502, 60.1672] as [number, number] },
+          createdAt: new Date('2024-01-01'),
+          updatedAt: new Date('2024-01-01'),
+          departureTripsCount: 100,
+          departureDurationSecondsAvg: 600,
+          departureDistanceMetersAvg: 1500,
+          returnTripsCount: 0,
+          returnDurationSecondsAvg: 0,
+          returnDistanceMetersAvg: 0,
+        },
+      ];
+
+      vi.mocked(stationQueries.getAllStations).mockResolvedValue(mockDbStations);
+
+      const result = await getStations();
+
+      expect(result.features[0].properties.tripStatistics).toBeDefined();
+      expect(result.features[0].properties.tripStatistics?.departures.tripsCount).toBe(100);
+      expect(result.features[0].properties.tripStatistics?.returns.tripsCount).toBe(0);
+    });
+
+    it('should pass bounds to database query', async () => {
+      const bounds = {
+        minLon: 24.9,
+        minLat: 60.15,
+        maxLon: 25.0,
+        maxLat: 60.2,
+      };
+
       vi.mocked(stationQueries.getAllStations).mockResolvedValue([]);
 
-      await getStations({ bounds: '60.16,24.93,60.17,24.94' });
+      await getStations(bounds);
 
-      expect(stationQueries.getAllStations).toHaveBeenCalledWith({
-        minLat: 60.16,
-        minLon: 24.93,
-        maxLat: 60.17,
-        maxLon: 24.94,
-      });
+      expect(stationQueries.getAllStations).toHaveBeenCalledWith(bounds);
     });
 
-    it('should throw error for invalid bounds format', async () => {
-      await expect(getStations({ bounds: 'invalid' })).rejects.toThrow(
-        'Invalid bounds format. Expected: minLat,minLon,maxLat,maxLon'
-      );
-    });
+    it('should not have totalDepartures in feature properties', async () => {
+      const mockDbStations = [
+        {
+          stationId: '001',
+          name: 'Kaivopuisto',
+          location: { type: 'Point' as const, coordinates: [24.9502, 60.1672] as [number, number] },
+          createdAt: new Date('2024-01-01'),
+          updatedAt: new Date('2024-01-01'),
+          departureTripsCount: 1523,
+          departureDurationSecondsAvg: 895,
+          departureDistanceMetersAvg: 2340,
+          returnTripsCount: 1489,
+          returnDurationSecondsAvg: 912,
+          returnDistanceMetersAvg: 2298,
+        },
+      ];
 
-    it('should throw error for invalid bounds values (min >= max)', async () => {
-      await expect(getStations({ bounds: '60.17,24.94,60.16,24.93' })).rejects.toThrow(
-        'Invalid bounds: min values must be less than max values'
-      );
+      vi.mocked(stationQueries.getAllStations).mockResolvedValue(mockDbStations);
+
+      const result = await getStations();
+
+      expect(result.features[0].properties).not.toHaveProperty('totalDepartures');
     });
 
     it('should handle empty station list', async () => {
@@ -93,9 +136,8 @@ describe('StationService', () => {
 
       const result = await getStations();
 
-      expect(result).toHaveProperty('type', 'FeatureCollection');
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      expect((result as any).features).toHaveLength(0);
+      expect(result.type).toBe('FeatureCollection');
+      expect(result.features).toHaveLength(0);
     });
   });
 
@@ -107,6 +149,12 @@ describe('StationService', () => {
         location: { type: 'Point' as const, coordinates: [24.9384, 60.1699] as [number, number] },
         createdAt: new Date('2024-01-01'),
         updatedAt: new Date('2024-01-01'),
+        departureTripsCount: 0,
+        departureDurationSecondsAvg: 0,
+        departureDistanceMetersAvg: 0,
+        returnTripsCount: 0,
+        returnDurationSecondsAvg: 0,
+        returnDistanceMetersAvg: 0,
       };
 
       const mockStats = {
@@ -157,6 +205,12 @@ describe('StationService', () => {
         location: { type: 'Point' as const, coordinates: [24.9384, 60.1699] as [number, number] },
         createdAt: new Date('2024-01-01'),
         updatedAt: new Date('2024-01-01'),
+        departureTripsCount: 0,
+        departureDurationSecondsAvg: 0,
+        departureDistanceMetersAvg: 0,
+        returnTripsCount: 0,
+        returnDurationSecondsAvg: 0,
+        returnDistanceMetersAvg: 0,
       };
 
       vi.mocked(stationQueries.getStationById).mockResolvedValue(mockStation);
@@ -175,6 +229,12 @@ describe('StationService', () => {
         location: { type: 'Point' as const, coordinates: [25.0, 60.2] as [number, number] },
         createdAt: testDate,
         updatedAt: testDate,
+        departureTripsCount: 0,
+        departureDurationSecondsAvg: 0,
+        departureDistanceMetersAvg: 0,
+        returnTripsCount: 0,
+        returnDurationSecondsAvg: 0,
+        returnDistanceMetersAvg: 0,
       };
 
       const mockStats = {

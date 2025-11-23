@@ -71,7 +71,7 @@ describe('Stations API - Integration Tests', () => {
         expect(response.body.features.length).toBeGreaterThanOrEqual(400);
       });
 
-      it('should include totalDepartures in GeoJSON feature properties', async () => {
+      it('should include tripStatistics in GeoJSON feature properties', async () => {
         const response = await request(app).get('/api/v1/stations').expect(200);
 
         expect(response.body.type).toBe('FeatureCollection');
@@ -81,9 +81,27 @@ describe('Stations API - Integration Tests', () => {
         const firstFeature = response.body.features[0];
         expect(firstFeature.properties).toHaveProperty('stationId');
         expect(firstFeature.properties).toHaveProperty('name');
-        expect(firstFeature.properties).toHaveProperty('totalDepartures');
-        expect(typeof firstFeature.properties.totalDepartures).toBe('number');
-        expect(firstFeature.properties.totalDepartures).toBeGreaterThanOrEqual(0);
+
+        // Trip statistics should be present for stations with trips
+        if (firstFeature.properties.tripStatistics) {
+          expect(firstFeature.properties.tripStatistics).toHaveProperty('departures');
+          expect(firstFeature.properties.tripStatistics).toHaveProperty('returns');
+
+          expect(firstFeature.properties.tripStatistics.departures).toHaveProperty('tripsCount');
+          expect(firstFeature.properties.tripStatistics.departures).toHaveProperty(
+            'durationSecondsAvg'
+          );
+          expect(firstFeature.properties.tripStatistics.departures).toHaveProperty(
+            'distanceMetersAvg'
+          );
+
+          expect(typeof firstFeature.properties.tripStatistics.departures.tripsCount).toBe(
+            'number'
+          );
+          expect(
+            firstFeature.properties.tripStatistics.departures.tripsCount
+          ).toBeGreaterThanOrEqual(0);
+        }
       });
 
       it('should include id field in GeoJSON features', async () => {

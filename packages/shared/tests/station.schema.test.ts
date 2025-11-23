@@ -9,6 +9,12 @@ import {
   stationsGetPathParams,
   stationsListResponseBody,
   stationsGetResponseBody,
+  tripDirectionStatistics,
+  stationTripStatistics,
+  stationFeatureProperties,
+  type TripDirectionStatistics,
+  type StationTripStatistics,
+  type StationFeatureProperties,
 } from '../src/schemas/station.schema';
 import { location } from '../src/schemas/geospatial.schema';
 
@@ -299,7 +305,7 @@ describe('stationFeatureCollection', () => {
         type: 'Feature',
         geometry: {
           type: 'Point',
-          coordinates: [24.9500, 60.1800],
+          coordinates: [24.95, 60.18],
         },
         properties: {
           stationId: '002',
@@ -476,5 +482,272 @@ describe('stationsGetResponseBody', () => {
     };
     const result = stationsGetResponseBody.safeParse(response);
     expect(result.success).toBe(true);
+  });
+});
+
+describe('tripDirectionStatistics', () => {
+  it('should validate correct trip direction statistics', () => {
+    const validData = {
+      tripsCount: 1523,
+      durationSecondsAvg: 895,
+      distanceMetersAvg: 2340,
+    };
+    expect(() => tripDirectionStatistics.parse(validData)).not.toThrow();
+  });
+
+  it('should reject negative trip count', () => {
+    const invalidData = {
+      tripsCount: -1,
+      durationSecondsAvg: 895,
+      distanceMetersAvg: 2340,
+    };
+    expect(() => tripDirectionStatistics.parse(invalidData)).toThrow();
+  });
+
+  it('should reject non-integer trip count', () => {
+    const invalidData = {
+      tripsCount: 1523.5,
+      durationSecondsAvg: 895,
+      distanceMetersAvg: 2340,
+    };
+    expect(() => tripDirectionStatistics.parse(invalidData)).toThrow();
+  });
+
+  it('should accept zero values', () => {
+    const validData = {
+      tripsCount: 0,
+      durationSecondsAvg: 0,
+      distanceMetersAvg: 0,
+    };
+    expect(() => tripDirectionStatistics.parse(validData)).not.toThrow();
+  });
+
+  it('should round decimal averages to integers', () => {
+    const dataWithDecimals = {
+      tripsCount: 100,
+      durationSecondsAvg: 895.7,
+      distanceMetersAvg: 2340.4,
+    };
+    const result = tripDirectionStatistics.parse(dataWithDecimals);
+    expect(result.durationSecondsAvg).toBe(896);
+    expect(result.distanceMetersAvg).toBe(2340);
+  });
+
+  it('should require all fields', () => {
+    const incompleteData = {
+      tripsCount: 1523,
+      durationSecondsAvg: 895,
+      // Missing distanceMetersAvg
+    };
+    expect(() => tripDirectionStatistics.parse(incompleteData)).toThrow();
+  });
+});
+
+describe('stationTripStatistics', () => {
+  it('should validate complete station trip statistics', () => {
+    const validData = {
+      departures: {
+        tripsCount: 1523,
+        durationSecondsAvg: 895,
+        distanceMetersAvg: 2340,
+      },
+      returns: {
+        tripsCount: 1489,
+        durationSecondsAvg: 912,
+        distanceMetersAvg: 2298,
+      },
+    };
+    expect(() => stationTripStatistics.parse(validData)).not.toThrow();
+  });
+
+  it('should require both departures and returns', () => {
+    const invalidData = {
+      departures: {
+        tripsCount: 1523,
+        durationSecondsAvg: 895,
+        distanceMetersAvg: 2340,
+      },
+      // Missing returns
+    };
+    expect(() => stationTripStatistics.parse(invalidData)).toThrow();
+  });
+
+  it('should require departures field', () => {
+    const invalidData = {
+      // Missing departures
+      returns: {
+        tripsCount: 1489,
+        durationSecondsAvg: 912,
+        distanceMetersAvg: 2298,
+      },
+    };
+    expect(() => stationTripStatistics.parse(invalidData)).toThrow();
+  });
+
+  it('should allow zero values for all statistics', () => {
+    const validData = {
+      departures: {
+        tripsCount: 0,
+        durationSecondsAvg: 0,
+        distanceMetersAvg: 0,
+      },
+      returns: {
+        tripsCount: 0,
+        durationSecondsAvg: 0,
+        distanceMetersAvg: 0,
+      },
+    };
+    expect(() => stationTripStatistics.parse(validData)).not.toThrow();
+  });
+});
+
+describe('stationFeatureProperties', () => {
+  it('should validate feature properties with trip statistics', () => {
+    const validData = {
+      stationId: '001',
+      name: 'Kaivopuisto',
+      tripStatistics: {
+        departures: {
+          tripsCount: 1523,
+          durationSecondsAvg: 895,
+          distanceMetersAvg: 2340,
+        },
+        returns: {
+          tripsCount: 1489,
+          durationSecondsAvg: 912,
+          distanceMetersAvg: 2298,
+        },
+      },
+    };
+    expect(() => stationFeatureProperties.parse(validData)).not.toThrow();
+  });
+
+  it('should validate feature properties without trip statistics', () => {
+    const validData = {
+      stationId: '001',
+      name: 'Kaivopuisto',
+      // tripStatistics is optional
+    };
+    expect(() => stationFeatureProperties.parse(validData)).not.toThrow();
+  });
+
+  it('should reject if tripStatistics is incomplete', () => {
+    const invalidData = {
+      stationId: '001',
+      name: 'Kaivopuisto',
+      tripStatistics: {
+        departures: {
+          tripsCount: 1523,
+          durationSecondsAvg: 895,
+          distanceMetersAvg: 2340,
+        },
+        // Missing returns
+      },
+    };
+    expect(() => stationFeatureProperties.parse(invalidData)).toThrow();
+  });
+
+  it('should not have totalDepartures field', () => {
+    const data = {
+      stationId: '001',
+      name: 'Kaivopuisto',
+      totalDepartures: 1523, // Old field should not exist
+    };
+    const result = stationFeatureProperties.parse(data);
+    expect(result).not.toHaveProperty('totalDepartures');
+  });
+
+  it('should require stationId and name', () => {
+    const invalidData = {
+      // Missing stationId and name
+      tripStatistics: {
+        departures: {
+          tripsCount: 1523,
+          durationSecondsAvg: 895,
+          distanceMetersAvg: 2340,
+        },
+        returns: {
+          tripsCount: 1489,
+          durationSecondsAvg: 912,
+          distanceMetersAvg: 2298,
+        },
+      },
+    };
+    expect(() => stationFeatureProperties.parse(invalidData)).toThrow();
+  });
+
+  it('should allow undefined tripStatistics', () => {
+    const validData = {
+      stationId: '001',
+      name: 'Kaivopuisto',
+      tripStatistics: undefined,
+    };
+    const result = stationFeatureProperties.parse(validData);
+    expect(result.tripStatistics).toBeUndefined();
+  });
+});
+
+// Type checking tests
+describe('TypeScript type inference', () => {
+  it('should correctly infer TripDirectionStatistics type', () => {
+    const directionStats: TripDirectionStatistics = {
+      tripsCount: 1523,
+      durationSecondsAvg: 895,
+      distanceMetersAvg: 2340,
+    };
+
+    // Type assertions to ensure proper typing
+    const count: number = directionStats.tripsCount;
+    const duration: number = directionStats.durationSecondsAvg;
+    const distance: number = directionStats.distanceMetersAvg;
+
+    expect(count).toBe(1523);
+    expect(duration).toBe(895);
+    expect(distance).toBe(2340);
+  });
+
+  it('should correctly infer StationTripStatistics type', () => {
+    const stationStats: StationTripStatistics = {
+      departures: {
+        tripsCount: 1523,
+        durationSecondsAvg: 895,
+        distanceMetersAvg: 2340,
+      },
+      returns: {
+        tripsCount: 1489,
+        durationSecondsAvg: 912,
+        distanceMetersAvg: 2298,
+      },
+    };
+
+    expect(stationStats.departures.tripsCount).toBe(1523);
+    expect(stationStats.returns.tripsCount).toBe(1489);
+  });
+
+  it('should correctly infer StationFeatureProperties type with optional tripStatistics', () => {
+    const featurePropsWithStats: StationFeatureProperties = {
+      stationId: '001',
+      name: 'Kaivopuisto',
+      tripStatistics: {
+        departures: {
+          tripsCount: 1523,
+          durationSecondsAvg: 895,
+          distanceMetersAvg: 2340,
+        },
+        returns: {
+          tripsCount: 1489,
+          durationSecondsAvg: 912,
+          distanceMetersAvg: 2298,
+        },
+      },
+    };
+
+    const featurePropsWithoutStats: StationFeatureProperties = {
+      stationId: '001',
+      name: 'Kaivopuisto',
+    };
+
+    expect(featurePropsWithStats.tripStatistics).toBeDefined();
+    expect(featurePropsWithoutStats.tripStatistics).toBeUndefined();
   });
 });

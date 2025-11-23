@@ -39,6 +39,46 @@ export const station = z
   .openapi('Station');
 
 /**
+ * Trip statistics for one direction (departure or return)
+ *
+ * Contains aggregated metrics for trips going in one direction from/to a station.
+ * All averages are rounded to integers at the database level.
+ */
+export const tripDirectionStatistics = z
+  .object({
+    tripsCount: z.number().int().nonnegative().openapi({
+      description: 'Total number of trips in this direction',
+      example: 1523,
+    }),
+    durationSecondsAvg: duration.openapi({
+      description: 'Average trip duration in seconds (rounded to integer)',
+      example: 895,
+    }),
+    distanceMetersAvg: distance.openapi({
+      description: 'Average trip distance in meters (rounded to integer)',
+      example: 2340,
+    }),
+  })
+  .openapi('TripDirectionStatistics');
+
+/**
+ * Complete trip statistics for a station (departures + returns)
+ *
+ * Provides comprehensive view of station activity including both
+ * trips departing from and returning to this station.
+ */
+export const stationTripStatistics = z
+  .object({
+    departures: tripDirectionStatistics.openapi({
+      description: 'Statistics for trips departing from this station',
+    }),
+    returns: tripDirectionStatistics.openapi({
+      description: 'Statistics for trips returning to this station',
+    }),
+  })
+  .openapi('StationTripStatistics');
+
+/**
  * Station statistics
  * Aggregated statistics for a specific station
  */
@@ -85,15 +125,17 @@ export const stationDetail = station
 
 /**
  * GeoJSON Feature properties for stations
- * Properties included in a station GeoJSON Feature
+ *
+ * Properties included in station GeoJSON Features for map visualization.
+ * Trip statistics are optional as some stations may have no trip data.
  */
 export const stationFeatureProperties = z
   .object({
     stationId,
     name: stationName,
-    totalDepartures: z.number().int().nonnegative().optional().openapi({
-      description: 'Total number of trips departing from this station (for visualization)',
-      example: 1523,
+    tripStatistics: stationTripStatistics.optional().openapi({
+      description:
+        'Aggregated trip statistics for departures and returns. Undefined if station has no trips.',
     }),
   })
   .openapi('StationFeatureProperties');
@@ -182,6 +224,8 @@ export const stationsGetResponseBody = stationDetail.openapi('StationsGetRespons
 export type StationId = z.infer<typeof stationId>;
 export type StationName = z.infer<typeof stationName>;
 export type Station = z.infer<typeof station>;
+export type TripDirectionStatistics = z.infer<typeof tripDirectionStatistics>;
+export type StationTripStatistics = z.infer<typeof stationTripStatistics>;
 export type StationStatistics = z.infer<typeof stationStatistics>;
 export type StationDetail = z.infer<typeof stationDetail>;
 export type StationFeature = z.infer<typeof stationFeature>;

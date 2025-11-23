@@ -7,11 +7,30 @@ import {
 import { Router, Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
+import type { BoundingBox } from '../../db/types.js';
 import { validateQuery, validateParams } from '../../middleware/validation.js';
 import { getStations, getStationDetail } from '../../services/stationService.js';
 import { logger } from '../../utils/logger.js';
 
 const router = Router();
+
+/**
+ * Parse bounds string to BoundingBox object
+ * Format: "minLon,minLat,maxLon,maxLat"
+ */
+function parseBounds(boundsStr: string): BoundingBox {
+  const [minLon, minLat, maxLon, maxLat] = boundsStr.split(',').map(Number);
+
+  if ([minLon, minLat, maxLon, maxLat].some(isNaN)) {
+    throw new Error('Invalid bounds format. Expected: minLon,minLat,maxLon,maxLat');
+  }
+
+  if (minLat >= maxLat || minLon >= maxLon) {
+    throw new Error('Invalid bounds: min values must be less than max values');
+  }
+
+  return { minLon, minLat, maxLon, maxLat };
+}
 
 router.get(
   '/',
@@ -20,9 +39,12 @@ router.get(
     void (async () => {
       try {
         // Query params are already validated by middleware
-        const { bounds } = req.query as StationsGetQueryParams;
+        const { bounds: boundsStr } = req.query as StationsGetQueryParams;
 
-        const result = await getStations({ bounds });
+        // Parse bounds if provided
+        const bounds = boundsStr ? parseBounds(boundsStr) : undefined;
+
+        const result = await getStations(bounds);
 
         logger.debug('Successfully fetched stations as GeoJSON', {
           count: result.features.length,

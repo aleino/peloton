@@ -17,11 +17,14 @@ export function registerStationsEndpoints(registry: OpenAPIRegistry) {
     method: 'get',
     path: '/stations',
     tags: ['Stations'],
-    summary: 'Get all bike stations',
+    summary: 'Get all stations with trip statistics',
     description: `
-Retrieve all HSL bike stations as GeoJSON FeatureCollection.
+Retrieve all HSL bike stations as GeoJSON FeatureCollection with optional trip statistics.
 
-Returns geographic data optimized for map visualization with Mapbox GL.
+Returns geographic data optimized for map visualization with Mapbox GL, including aggregated
+trip statistics for departures and returns. Statistics include trip counts, average duration,
+and average distance.
+
 Use the \`bounds\` parameter to filter stations within a geographic area.
 
 **Examples:**
@@ -31,7 +34,8 @@ Use the \`bounds\` parameter to filter stations within a geographic area.
 **Response Format:**
 - Type: GeoJSON FeatureCollection
 - Geometry: Point (lon, lat)
-- Properties: stationId, name, totalDepartures
+- Properties: stationId, name, tripStatistics (optional)
+- Trip Statistics: departures and returns with count, average duration, and average distance
     `.trim(),
     request: {
       query: stationsGetQueryParams,

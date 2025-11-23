@@ -15,36 +15,92 @@ export async function getAllStations(bounds?: BoundingBox): Promise<StationRow[]
   if (bounds) {
     // Query with bounding box filter using PostGIS
     sql = `
+      WITH departure_stats AS (
+        SELECT
+          departure_station_id as station_id,
+          COUNT(*) as departure_trips_count,
+          ROUND(AVG(duration_seconds))::int as departure_duration_seconds_avg,
+          ROUND(AVG(distance_meters))::int as departure_distance_meters_avg
+        FROM hsl.trips
+        GROUP BY departure_station_id
+      ),
+      return_stats AS (
+        SELECT
+          return_station_id as station_id,
+          COUNT(*) as return_trips_count,
+          ROUND(AVG(duration_seconds))::int as return_duration_seconds_avg,
+          ROUND(AVG(distance_meters))::int as return_distance_meters_avg
+        FROM hsl.trips
+        GROUP BY return_station_id
+      )
       SELECT
         s.station_id,
         s.name,
         ST_AsGeoJSON(s.location)::json as location,
         s.created_at,
         s.updated_at,
-        COALESCE(COUNT(t.departure_station_id), 0)::int as total_departures
+        
+        -- Departure statistics
+        COALESCE(d.departure_trips_count, 0)::int as departure_trips_count,
+        COALESCE(d.departure_duration_seconds_avg, 0)::int as departure_duration_seconds_avg,
+        COALESCE(d.departure_distance_meters_avg, 0)::int as departure_distance_meters_avg,
+        
+        -- Return statistics
+        COALESCE(r.return_trips_count, 0)::int as return_trips_count,
+        COALESCE(r.return_duration_seconds_avg, 0)::int as return_duration_seconds_avg,
+        COALESCE(r.return_distance_meters_avg, 0)::int as return_distance_meters_avg
+        
       FROM hsl.stations s
-      LEFT JOIN hsl.trips t ON s.station_id = t.departure_station_id
+      LEFT JOIN departure_stats d ON s.station_id = d.station_id
+      LEFT JOIN return_stats r ON s.station_id = r.station_id
       WHERE ST_Within(
         s.location::geometry,
         ST_MakeEnvelope($1, $2, $3, $4, 4326)
       )
-      GROUP BY s.station_id, s.name, s.location, s.created_at, s.updated_at
       ORDER BY s.name ASC
     `;
     params = [bounds.minLon, bounds.minLat, bounds.maxLon, bounds.maxLat];
   } else {
     // Query without filter - all stations
     sql = `
+      WITH departure_stats AS (
+        SELECT
+          departure_station_id as station_id,
+          COUNT(*) as departure_trips_count,
+          ROUND(AVG(duration_seconds))::int as departure_duration_seconds_avg,
+          ROUND(AVG(distance_meters))::int as departure_distance_meters_avg
+        FROM hsl.trips
+        GROUP BY departure_station_id
+      ),
+      return_stats AS (
+        SELECT
+          return_station_id as station_id,
+          COUNT(*) as return_trips_count,
+          ROUND(AVG(duration_seconds))::int as return_duration_seconds_avg,
+          ROUND(AVG(distance_meters))::int as return_distance_meters_avg
+        FROM hsl.trips
+        GROUP BY return_station_id
+      )
       SELECT
         s.station_id,
         s.name,
         ST_AsGeoJSON(s.location)::json as location,
         s.created_at,
         s.updated_at,
-        COALESCE(COUNT(t.departure_station_id), 0)::int as total_departures
+        
+        -- Departure statistics
+        COALESCE(d.departure_trips_count, 0)::int as departure_trips_count,
+        COALESCE(d.departure_duration_seconds_avg, 0)::int as departure_duration_seconds_avg,
+        COALESCE(d.departure_distance_meters_avg, 0)::int as departure_distance_meters_avg,
+        
+        -- Return statistics
+        COALESCE(r.return_trips_count, 0)::int as return_trips_count,
+        COALESCE(r.return_duration_seconds_avg, 0)::int as return_duration_seconds_avg,
+        COALESCE(r.return_distance_meters_avg, 0)::int as return_distance_meters_avg
+        
       FROM hsl.stations s
-      LEFT JOIN hsl.trips t ON s.station_id = t.departure_station_id
-      GROUP BY s.station_id, s.name, s.location, s.created_at, s.updated_at
+      LEFT JOIN departure_stats d ON s.station_id = d.station_id
+      LEFT JOIN return_stats r ON s.station_id = r.station_id
       ORDER BY s.name ASC
     `;
     params = [];
@@ -53,7 +109,6 @@ export async function getAllStations(bounds?: BoundingBox): Promise<StationRow[]
   const result = await query<StationRow>(sql, params);
   return result.rows;
 }
-
 export async function getStationById(stationId: string): Promise<StationRow | null> {
   const sql = `
     SELECT
@@ -69,7 +124,6 @@ export async function getStationById(stationId: string): Promise<StationRow | nu
   const result = await query<StationRow>(sql, [stationId]);
   return result.rows[0] || null;
 }
-
 /**
  * Calculate statistics for a specific station
  * Includes total departures/arrivals, average duration, busiest hour and day
@@ -118,7 +172,6 @@ export async function getStationStatistics(
 
   return result.rows[0];
 }
-
 /**
  * Verify a station exists (for validation)
  *
