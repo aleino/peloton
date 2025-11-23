@@ -1,8 +1,9 @@
-import { useCallback, useRef, useMemo } from 'react';
+import { useCallback, useRef, useMemo, useEffect } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import type { MapMouseEvent, MapTouchEvent } from 'mapbox-gl';
 import { useLayerEvents } from '@/features/map/hooks';
 import { useStations } from '@/features/stations';
+import { useStationCentering } from '@/features/stations/hooks/useStationCentering';
 import type { StationMapEventData } from '@/features/stations/types';
 
 /**
@@ -17,20 +18,42 @@ import type { StationMapEventData } from '@/features/stations/types';
  * useStationEventHandlers(STATIONS_CIRCLES_LAYER_ID, STATIONS_SOURCE_ID);
  */
 export const useStationEventHandlers = (layerId: string, sourceId: string): void => {
-  const { setHoveredStation, setSelectedDepartureStationId } = useStations();
+  const { setHoveredStation, setSelectedDepartureStationId, selectedDepartureStationId } =
+    useStations();
   const { main: map } = useMap();
+  const { centerOnStation } = useStationCentering({ panelPosition: 'left' });
   const lastHoveredFeatureIdRef = useRef<string | number | null>(null);
+  const lastSelectedFeatureIdRef = useRef<string | number | null>(null);
 
   const onClick = useCallback(
     (e: MapMouseEvent | MapTouchEvent) => {
+      if (!map) {
+        return;
+      }
+
       const feature = e.features?.[0];
       const stationId = feature?.properties?.['stationId'];
+      const featureId = feature?.id;
+      const coordinates = (feature?.geometry as GeoJSON.Point)?.coordinates as [number, number];
 
-      if (stationId) {
+      if (stationId && coordinates && featureId !== undefined) {
+        // Clear previous selection feature-state
+        if (lastSelectedFeatureIdRef.current !== null) {
+          map.setFeatureState(
+            { source: sourceId, id: lastSelectedFeatureIdRef.current },
+            { selected: false }
+          );
+        }
+
+        // Set new selection feature-state
+        map.setFeatureState({ source: sourceId, id: featureId }, { selected: true });
+        lastSelectedFeatureIdRef.current = featureId;
+
         setSelectedDepartureStationId(stationId);
+        centerOnStation(coordinates);
       }
     },
-    [setSelectedDepartureStationId]
+    [map, sourceId, setSelectedDepartureStationId, centerOnStation]
   );
 
   const onMouseMove = useCallback(
@@ -93,6 +116,22 @@ export const useStationEventHandlers = (layerId: string, sourceId: string): void
     map.getCanvas().style.cursor = '';
     setHoveredStation(null);
   }, [map, sourceId, setHoveredStation]);
+
+  // Clear selection feature-state when Redux state is cleared
+  useEffect(() => {
+    if (!map || selectedDepartureStationId !== null) {
+      return;
+    }
+
+    // Selection was cleared in Redux, clear feature-state
+    if (lastSelectedFeatureIdRef.current !== null) {
+      map.setFeatureState(
+        { source: sourceId, id: lastSelectedFeatureIdRef.current },
+        { selected: false }
+      );
+      lastSelectedFeatureIdRef.current = null;
+    }
+  }, [map, sourceId, selectedDepartureStationId]);
 
   // Memoize handlers object to prevent unnecessary re-renders in useLayerEvents
   const handlers = useMemo(

@@ -1,6 +1,8 @@
 import { BaseMap, MapControls } from '@/features/map';
 import { StationsLayer } from '@/features/stations/overlays';
 import { StationHoverPopup } from '@/features/stations/components/StationHoverPopup';
+import { StationAllTooltips } from '@/features/stations/components/StationAllTooltips';
+import { useAllTooltipsOnPress } from '@/features/stations/hooks/useAllTooltipsOnPress';
 
 /**
  * Persistent map background container
@@ -16,6 +18,9 @@ import { StationHoverPopup } from '@/features/stations/components/StationHoverPo
  * ```
  */
 export const MapBackground = () => {
+  // Enable showing all tooltips when mouse button is pressed
+  useAllTooltipsOnPress();
+
   return (
     <div
       style={{
@@ -31,6 +36,7 @@ export const MapBackground = () => {
         <MapControls />
         <StationsLayer />
         <StationHoverPopup />
+        <StationAllTooltips />
       </BaseMap>
     </div>
   );

@@ -2,18 +2,18 @@ import { describe, it, expect } from 'vitest';
 import {
   MAPBOX_CONFIG,
   MAP_STYLES,
-  INITIAL_VIEW_STATE,
   HELSINKI_BOUNDS,
   MAP_CONSTRAINTS,
   DEFAULT_MAP_STYLE,
   type MapStyleKey,
 } from './mapbox';
+import { INITIAL_VIEW_STATE } from '@/features/map/map.config';
 
 describe('Mapbox Configuration', () => {
   describe('INITIAL_VIEW_STATE', () => {
     it('should have valid initial view state for Helsinki', () => {
       expect(INITIAL_VIEW_STATE.longitude).toBe(24.9384);
-      expect(INITIAL_VIEW_STATE.latitude).toBe(60.1699);
+      expect(INITIAL_VIEW_STATE.latitude).toBe(60.2149);
       expect(INITIAL_VIEW_STATE.zoom).toBe(11);
     });
 

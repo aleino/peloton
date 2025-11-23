@@ -5,6 +5,8 @@ import {
   setSelectedDepartureStationId,
   setSelectedReturnStationId,
   clearStationSelections,
+  setShowAllTooltips,
+  setVisibleStationsForTooltips,
 } from './stations.store';
 import type { StationMapEventData } from './types';
 
@@ -19,6 +21,10 @@ export const useStations = () => {
     (state) => state.stations.selectedDepartureStationId
   );
   const selectedReturnStationId = useAppSelector((state) => state.stations.selectedReturnStationId);
+  const showAllTooltips = useAppSelector((state) => state.stations.showAllTooltips);
+  const visibleStationsForTooltips = useAppSelector(
+    (state) => state.stations.visibleStationsForTooltips
+  );
 
   const handleSetHoveredStation = useCallback(
     (station: StationMapEventData | null) => {
@@ -45,13 +51,31 @@ export const useStations = () => {
     dispatch(clearStationSelections());
   }, [dispatch]);
 
+  const handleSetShowAllTooltips = useCallback(
+    (show: boolean) => {
+      dispatch(setShowAllTooltips(show));
+    },
+    [dispatch]
+  );
+
+  const handleSetVisibleStationsForTooltips = useCallback(
+    (stations: StationMapEventData[]) => {
+      dispatch(setVisibleStationsForTooltips(stations));
+    },
+    [dispatch]
+  );
+
   return {
     hoveredStation,
     selectedDepartureStationId,
     selectedReturnStationId,
+    showAllTooltips,
+    visibleStationsForTooltips,
     setHoveredStation: handleSetHoveredStation,
     setSelectedDepartureStationId: handleSetSelectedDepartureStationId,
     setSelectedReturnStationId: handleSetSelectedReturnStationId,
     clearStationSelections: handleClearStationSelections,
+    setShowAllTooltips: handleSetShowAllTooltips,
+    setVisibleStationsForTooltips: handleSetVisibleStationsForTooltips,
   };
 };

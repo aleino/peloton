@@ -29,6 +29,10 @@ describe('StationSymbolsLayer', () => {
       setSelectedDepartureStationId: vi.fn(),
       setSelectedReturnStationId: vi.fn(),
       clearStationSelections: vi.fn(),
+      showAllTooltips: false,
+      visibleStationsForTooltips: [],
+      setShowAllTooltips: vi.fn(),
+      setVisibleStationsForTooltips: vi.fn(),
     });
   });
 
@@ -65,6 +69,10 @@ describe('StationSymbolsLayer', () => {
       setSelectedDepartureStationId: vi.fn(),
       setSelectedReturnStationId: vi.fn(),
       clearStationSelections: vi.fn(),
+      showAllTooltips: false,
+      visibleStationsForTooltips: [],
+      setShowAllTooltips: vi.fn(),
+      setVisibleStationsForTooltips: vi.fn(),
     });
 
     render(<StationSymbolsLayer />);

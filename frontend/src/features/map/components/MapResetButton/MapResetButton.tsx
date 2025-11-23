@@ -2,7 +2,7 @@ import { IconButton, Tooltip, Paper } from '@mui/material';
 import { Home as HomeIcon } from '@mui/icons-material';
 import { useMap } from 'react-map-gl/mapbox';
 import { resetView } from '../../utils';
-import { INITIAL_VIEW_STATE } from '@/config/mapbox';
+import { INITIAL_VIEW_STATE } from '@/features/map/map.config';
 
 export const MapResetButton = () => {
   const { main } = useMap();

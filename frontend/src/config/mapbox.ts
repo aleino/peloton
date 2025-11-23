@@ -1,16 +1,6 @@
 import type { MapOptions } from 'react-map-gl/mapbox';
 import { env } from './env';
-
-/**
- * Initial view state for map centered on Helsinki
- */
-export const INITIAL_VIEW_STATE = {
-  longitude: 24.9384, // Helsinki center
-  latitude: 60.1699,
-  zoom: 11,
-  pitch: 0,
-  bearing: 0,
-} as const;
+import { INITIAL_VIEW_STATE } from '@/features/map/map.config';
 
 /**
  * Available Mapbox map styles

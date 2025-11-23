@@ -33,6 +33,7 @@ const StatValue = styled(Typography)(() => ({
   fontWeight: 600,
   fontSize: '1.25rem',
   lineHeight: 1.2,
+  fontFamily: 'monospace',
 }));
 
 const StatLabel = styled(Typography)(({ theme }) => ({

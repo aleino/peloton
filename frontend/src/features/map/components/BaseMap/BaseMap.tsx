@@ -1,6 +1,7 @@
 import { useCallback, type ReactNode } from 'react';
 import { Map, type ErrorEvent } from 'react-map-gl/mapbox';
-import { MAPBOX_CONFIG, MAP_CONSTRAINTS, INITIAL_VIEW_STATE } from '@/config/mapbox';
+import { MAPBOX_CONFIG, MAP_CONSTRAINTS } from '@/config/mapbox';
+import { INITIAL_VIEW_STATE } from '@/features/map/map.config';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 interface BaseMapProps {

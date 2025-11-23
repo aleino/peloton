@@ -8,12 +8,16 @@ export interface StationsState {
   hoveredStation: StationMapEventData | null;
   selectedDepartureStationId: string | null;
   selectedReturnStationId: string | null;
+  showAllTooltips: boolean;
+  visibleStationsForTooltips: StationMapEventData[];
 }
 
 const initialState: StationsState = {
   hoveredStation: null,
   selectedDepartureStationId: null,
   selectedReturnStationId: null,
+  showAllTooltips: false,
+  visibleStationsForTooltips: [],
 };
 
 const stationsSlice = createSlice({
@@ -33,6 +37,12 @@ const stationsSlice = createSlice({
       state.selectedDepartureStationId = null;
       state.selectedReturnStationId = null;
     },
+    setShowAllTooltips: (state, action: PayloadAction<boolean>) => {
+      state.showAllTooltips = action.payload;
+    },
+    setVisibleStationsForTooltips: (state, action: PayloadAction<StationMapEventData[]>) => {
+      state.visibleStationsForTooltips = action.payload;
+    },
   },
 });
 
@@ -41,6 +51,8 @@ export const {
   setSelectedDepartureStationId,
   setSelectedReturnStationId,
   clearStationSelections,
+  setShowAllTooltips,
+  setVisibleStationsForTooltips,
 } = stationsSlice.actions;
 
 export const stationsReducer = stationsSlice.reducer;
