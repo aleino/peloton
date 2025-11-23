@@ -1,8 +1,8 @@
 import type {
-  Station,
   StationDetail,
   StationStatistics,
   StationsListResponseBody,
+  Station,
 } from '@peloton/shared';
 import { stationStatistics } from '@peloton/shared';
 
@@ -21,7 +21,7 @@ import {
 /**
  * Parse bounds string to BoundingBox object
  * Format: "minLat,minLon,maxLat,maxLon"
- * 
+ *
  * @param boundsStr - Comma-separated bounds string
  * @returns Parsed bounding box object
  * @throws Error if bounds format is invalid
@@ -41,21 +41,20 @@ function parseBounds(boundsStr: string): BoundingBox {
 }
 
 /**
- * Get all stations in the specified format
- * 
- * Fetches stations from database and transforms to either GeoJSON or JSON format.
+ * Get all stations as GeoJSON FeatureCollection
+ *
+ * Fetches stations from database and transforms to GeoJSON format.
  * Database automatically returns camelCase column names.
- * 
- * @param options - Query options (bounds filter, format)
- * @returns Stations in requested format (GeoJSON FeatureCollection or JSON array)
+ *
+ * @param options - Query options (bounds filter)
+ * @returns Stations as GeoJSON FeatureCollection
  */
 export async function getStations(
   options: {
     bounds?: string;
-    format?: 'geojson' | 'json';
   } = {}
 ): Promise<StationsListResponseBody> {
-  const { bounds: boundsStr, format = 'geojson' } = options;
+  const { bounds: boundsStr } = options;
 
   // Parse bounds if provided
   const bounds = boundsStr ? parseBounds(boundsStr) : undefined;
@@ -64,41 +63,24 @@ export async function getStations(
   const dbStations = await dbGetAllStations(bounds);
 
   // Transform to GeoJSON format
-  if (format === 'geojson') {
-    const features = dbStations.map((row) => {
-      const location = parseLocation(row.location);
-      return createStationFeature(row.stationId, row.name, location, row.totalDepartures);
-    });
+  const features = dbStations.map((row) => {
+    const location = parseLocation(row.location);
+    return createStationFeature(row.stationId, row.name, location, row.totalDepartures);
+  });
 
-    return createStationsFeatureCollection(features);
-  }
-
-  // Transform to JSON format
-  const stations: Station[] = dbStations.map((row) => ({
-    stationId: row.stationId,
-    name: row.name,
-    location: parseLocation(row.location),
-    createdAt: row.createdAt.toISOString(),
-    updatedAt: row.updatedAt.toISOString(),
-    totalDepartures: row.totalDepartures,
-  }));
-
-  return { stations };
+  return createStationsFeatureCollection(features);
 }
-
 /**
  * Get station by ID with statistics
- * 
+ *
  * Fetches detailed station information including aggregated trip statistics.
  * Returns null if station doesn't exist, throws error if station exists but has no trips.
- * 
+ *
  * @param stationId - Unique station identifier
  * @returns Station detail with statistics, or null if not found
  * @throws Error if station exists but has no trip statistics
  */
-export async function getStationDetail(
-  stationId: string
-): Promise<StationDetail | null> {
+export async function getStationDetail(stationId: string): Promise<StationDetail | null> {
   // Fetch station data
   const stationRow = await dbGetStationById(stationId);
 
@@ -137,10 +119,9 @@ export async function getStationDetail(
     statistics,
   };
 }
-
 /**
  * Check if a station exists
- * 
+ *
  * @param stationId - Station identifier to check
  * @returns True if station exists, false otherwise
  */

@@ -8,7 +8,7 @@ import {
 
 /**
  * Register station-related endpoints in the OpenAPI registry
- * 
+ *
  * @param registry - OpenAPI registry instance
  */
 export function registerStationsEndpoints(registry: OpenAPIRegistry) {
@@ -19,16 +19,19 @@ export function registerStationsEndpoints(registry: OpenAPIRegistry) {
     tags: ['Stations'],
     summary: 'Get all bike stations',
     description: `
-Retrieve all HSL bike stations with optional bounding box filter.
-Returns GeoJSON FeatureCollection by default.
+Retrieve all HSL bike stations as GeoJSON FeatureCollection.
 
+Returns geographic data optimized for map visualization with Mapbox GL.
 Use the \`bounds\` parameter to filter stations within a geographic area.
-Use the \`format\` parameter to choose between GeoJSON (for maps) or JSON (for lists).
 
 **Examples:**
-- Get all stations as GeoJSON: \`GET /stations\`
+- Get all stations: \`GET /stations\`
 - Get stations in a bounding box: \`GET /stations?bounds=24.9,60.15,25.0,60.20\`
-- Get stations as JSON: \`GET /stations?format=json\`
+
+**Response Format:**
+- Type: GeoJSON FeatureCollection
+- Geometry: Point (lon, lat)
+- Properties: stationId, name, totalDepartures
     `.trim(),
     request: {
       query: stationsGetQueryParams,
@@ -53,7 +56,10 @@ Use the \`format\` parameter to choose between GeoJSON (for maps) or JSON (for l
                   type: 'object',
                   properties: {
                     code: { type: 'string', example: 'INVALID_BOUNDS' },
-                    message: { type: 'string', example: 'Invalid bounds format. Expected: minLat,minLon,maxLat,maxLon' },
+                    message: {
+                      type: 'string',
+                      example: 'Invalid bounds format. Expected: minLat,minLon,maxLat,maxLon',
+                    },
                   },
                   required: ['code', 'message'],
                 },

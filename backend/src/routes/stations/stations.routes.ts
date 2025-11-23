@@ -13,70 +13,78 @@ import { logger } from '../../utils/logger.js';
 
 const router = Router();
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.get('/', validateQuery(stationsGetQueryParams), async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    // Query params are already validated by middleware
-    const { bounds, format } = req.query as StationsGetQueryParams;
+router.get(
+  '/',
+  validateQuery(stationsGetQueryParams),
+  (req: Request, res: Response, next: NextFunction) => {
+    void (async () => {
+      try {
+        // Query params are already validated by middleware
+        const { bounds } = req.query as StationsGetQueryParams;
 
-    const result = await getStations({ bounds, format });
+        const result = await getStations({ bounds });
 
-    logger.debug('Successfully fetched stations', {
-      count: 'features' in result ? result.features.length : result.stations.length,
-      format,
-      hasBounds: !!bounds,
-    });
+        logger.debug('Successfully fetched stations as GeoJSON', {
+          count: result.features.length,
+          hasBounds: !!bounds,
+        });
 
-    res.status(StatusCodes.OK).json(result);
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('Invalid bounds')) {
-      logger.warn('Invalid bounds parameter', { error: error.message });
+        res.status(StatusCodes.OK).json(result);
+      } catch (error) {
+        if (error instanceof Error && error.message.includes('Invalid bounds')) {
+          logger.warn('Invalid bounds parameter', { error: error.message });
 
-      res.status(StatusCodes.BAD_REQUEST).json({
-        error: {
-          code: 'INVALID_BOUNDS',
-          message: error.message,
-        },
-      });
-      return;
-    }
+          res.status(StatusCodes.BAD_REQUEST).json({
+            error: {
+              code: 'INVALID_BOUNDS',
+              message: error.message,
+            },
+          });
+          return;
+        }
 
-    logger.error('Error fetching stations:', error);
-    next(error);
+        logger.error('Error fetching stations:', error);
+        next(error);
+      }
+    })();
   }
-});
+);
 
+router.get(
+  '/:stationId',
+  validateParams(stationsGetPathParams),
+  (req: Request, res: Response, next: NextFunction) => {
+    void (async () => {
+      try {
+        // Params are already validated by middleware
+        const { stationId } = req.params as StationsGetPathParams;
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.get('/:stationId', validateParams(stationsGetPathParams), async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    // Params are already validated by middleware
-    const { stationId } = req.params as StationsGetPathParams;
+        const station = await getStationDetail(stationId);
 
-    const station = await getStationDetail(stationId);
+        if (!station) {
+          logger.debug(`Station not found: ${stationId}`);
 
-    if (!station) {
-      logger.debug(`Station not found: ${stationId}`);
+          res.status(StatusCodes.NOT_FOUND).json({
+            error: {
+              code: 'STATION_NOT_FOUND',
+              message: `Station with ID "${stationId}" not found`,
+            },
+          });
+          return;
+        }
 
-      res.status(StatusCodes.NOT_FOUND).json({
-        error: {
-          code: 'STATION_NOT_FOUND',
-          message: `Station with ID "${stationId}" not found`,
-        },
-      });
-      return;
-    }
+        logger.debug(`Successfully fetched station detail`, {
+          stationId,
+          name: station.name,
+        });
 
-    logger.debug(`Successfully fetched station detail`, {
-      stationId,
-      name: station.name,
-    });
-
-    res.status(StatusCodes.OK).json(station);
-  } catch (error) {
-    logger.error(`Error fetching station ${req.params.stationId}:`, error);
-    next(error);
+        res.status(StatusCodes.OK).json(station);
+      } catch (error) {
+        logger.error(`Error fetching station ${req.params.stationId}:`, error);
+        next(error);
+      }
+    })();
   }
-});
+);
 
 export default router;

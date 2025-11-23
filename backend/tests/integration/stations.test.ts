@@ -2,14 +2,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-import type { StationDetail, Station } from '@peloton/shared';
+import type { StationDetail } from '@peloton/shared';
 import type { Application } from 'express';
 import request from 'supertest';
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 
 import { createApp } from '../../src/app.js';
 import { closeDatabasePool } from '../../src/config/database.js';
-
 
 describe('Stations API - Integration Tests', () => {
   let app: Application;
@@ -20,9 +19,9 @@ describe('Stations API - Integration Tests', () => {
     app = createApp();
 
     // Get a valid station ID for tests
-    const response = await request(app).get('/api/v1/stations?format=json');
-    if (response.body.stations && response.body.stations.length > 0) {
-      validStationId = response.body.stations[0].stationId;
+    const response = await request(app).get('/api/v1/stations');
+    if (response.body.features && response.body.features.length > 0) {
+      validStationId = response.body.features[0].properties.stationId;
     }
   });
 
@@ -31,7 +30,7 @@ describe('Stations API - Integration Tests', () => {
   });
 
   describe('GET /api/v1/stations', () => {
-    describe('Default behavior (GeoJSON format)', () => {
+    describe('GeoJSON Response', () => {
       it('should return GeoJSON FeatureCollection', async () => {
         const response = await request(app)
           .get('/api/v1/stations')
@@ -73,10 +72,7 @@ describe('Stations API - Integration Tests', () => {
       });
 
       it('should include totalDepartures in GeoJSON feature properties', async () => {
-        const response = await request(app)
-          .get('/api/v1/stations')
-          .query({ format: 'geojson' })
-          .expect(200);
+        const response = await request(app).get('/api/v1/stations').expect(200);
 
         expect(response.body.type).toBe('FeatureCollection');
         expect(response.body.features).toBeDefined();
@@ -91,10 +87,7 @@ describe('Stations API - Integration Tests', () => {
       });
 
       it('should include id field in GeoJSON features', async () => {
-        const response = await request(app)
-          .get('/api/v1/stations')
-          .query({ format: 'geojson' })
-          .expect(200);
+        const response = await request(app).get('/api/v1/stations').expect(200);
 
         expect(response.body.type).toBe('FeatureCollection');
         expect(response.body.features).toBeInstanceOf(Array);
@@ -104,44 +97,6 @@ describe('Stations API - Integration Tests', () => {
           expect(firstFeature).toHaveProperty('id');
           expect(firstFeature.id).toBe(firstFeature.properties.stationId);
         }
-      });
-    });
-
-    describe('JSON format', () => {
-      it('should return stations array when format=json', async () => {
-        const response = await request(app).get('/api/v1/stations?format=json').expect(200);
-
-        expect(response.body).toHaveProperty('stations');
-        expect(Array.isArray(response.body.stations)).toBe(true);
-
-        const station: Station = response.body.stations[0];
-        expect(station).toMatchObject({
-          stationId: expect.any(String),
-          name: expect.any(String),
-          location: {
-            type: 'Point',
-            coordinates: expect.arrayContaining([expect.any(Number), expect.any(Number)]),
-          },
-          createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T/),
-          updatedAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T/),
-        });
-      });
-
-      it('should include totalDepartures in JSON station objects', async () => {
-        const response = await request(app)
-          .get('/api/v1/stations')
-          .query({ format: 'json' })
-          .expect(200);
-
-        expect(response.body).toHaveProperty('stations');
-        expect(response.body.stations.length).toBeGreaterThan(0);
-
-        const firstStation = response.body.stations[0];
-        expect(firstStation).toHaveProperty('stationId');
-        expect(firstStation).toHaveProperty('name');
-        expect(firstStation).toHaveProperty('totalDepartures');
-        expect(typeof firstStation.totalDepartures).toBe('number');
-        expect(firstStation.totalDepartures).toBeGreaterThanOrEqual(0);
       });
     });
 
@@ -197,12 +152,6 @@ describe('Stations API - Integration Tests', () => {
         const response = await request(app)
           .get('/api/v1/stations?bounds=60.16,24.93,60.17')
           .expect(400);
-
-        expect(response.body.error.code).toBe('INVALID_QUERY_PARAMS');
-      });
-
-      it('should return 400 for invalid format parameter', async () => {
-        const response = await request(app).get('/api/v1/stations?format=xml').expect(400);
 
         expect(response.body.error.code).toBe('INVALID_QUERY_PARAMS');
       });
@@ -331,29 +280,30 @@ describe('Stations API - Integration Tests', () => {
 
     describe('Data consistency', () => {
       it('should return consistent data between list and detail endpoints', async () => {
-        // Get station from list
-        const listResponse = await request(app).get('/api/v1/stations?format=json');
+        // Get station from list (GeoJSON format)
+        const listResponse = await request(app).get('/api/v1/stations');
 
-        const stationFromList: Station = listResponse.body.stations[0];
+        const firstFeature = listResponse.body.features[0];
+        const stationId = firstFeature.properties.stationId;
 
         // Get same station from detail endpoint
-        const detailResponse = await request(app)
-          .get(`/api/v1/stations/${stationFromList.stationId}`)
-          .expect(200);
+        const detailResponse = await request(app).get(`/api/v1/stations/${stationId}`).expect(200);
 
         const stationDetail: StationDetail = detailResponse.body;
 
         // Verify core fields match
-        expect(stationDetail.stationId).toBe(stationFromList.stationId);
-        expect(stationDetail.name).toBe(stationFromList.name);
-        expect(stationDetail.location).toEqual(stationFromList.location);
+        expect(stationDetail.stationId).toBe(stationId);
+        expect(stationDetail.name).toBe(firstFeature.properties.name);
+        expect(stationDetail.location.coordinates).toEqual(firstFeature.geometry.coordinates);
       });
     });
   });
 
   describe('Response format consistency', () => {
     it('should return proper content-type headers', async () => {
-      await request(app).get('/api/v1/stations').expect('Content-Type', /application\/json/);
+      await request(app)
+        .get('/api/v1/stations')
+        .expect('Content-Type', /application\/json/);
     });
 
     it('should not expose internal error details in production', async () => {

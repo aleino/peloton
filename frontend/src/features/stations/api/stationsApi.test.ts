@@ -48,13 +48,13 @@ describe('stationsApi', () => {
       ],
     };
 
-    it('should fetch stations with default params', async () => {
+    it('should fetch all stations as GeoJSON', async () => {
       vi.mocked(api.get).mockResolvedValue(mockGeoJSONResponse);
 
       const result = await fetchStations();
 
       expect(api.get).toHaveBeenCalledWith('/stations', {
-        params: { format: 'geojson' },
+        params: {},
       });
       expect(result).toEqual(mockGeoJSONResponse);
     });
@@ -66,41 +66,7 @@ describe('stationsApi', () => {
       const result = await fetchStations({ bounds });
 
       expect(api.get).toHaveBeenCalledWith('/stations', {
-        params: { bounds, format: 'geojson' },
-      });
-      expect(result).toEqual(mockGeoJSONResponse);
-    });
-
-    it('should fetch stations with format parameter', async () => {
-      const mockJSONResponse = {
-        stations: [
-          {
-            stationId: '001',
-            name: 'Kaivopuisto',
-            location: { type: 'Point' as const, coordinates: [24.9384, 60.1699] },
-            createdAt: '2024-01-01T00:00:00Z',
-            updatedAt: '2024-01-01T00:00:00Z',
-          },
-        ],
-      };
-      vi.mocked(api.get).mockResolvedValue(mockJSONResponse);
-
-      const result = await fetchStations({ format: 'json' });
-
-      expect(api.get).toHaveBeenCalledWith('/stations', {
-        params: { format: 'json' },
-      });
-      expect(result).toEqual(mockJSONResponse);
-    });
-
-    it('should fetch stations with both bounds and format', async () => {
-      const bounds = '24.9,60.15,25.0,60.20';
-      vi.mocked(api.get).mockResolvedValue(mockGeoJSONResponse);
-
-      const result = await fetchStations({ bounds, format: 'geojson' });
-
-      expect(api.get).toHaveBeenCalledWith('/stations', {
-        params: { bounds, format: 'geojson' },
+        params: { bounds },
       });
       expect(result).toEqual(mockGeoJSONResponse);
     });

@@ -55,45 +55,12 @@ describe('StationService', () => {
 
       vi.mocked(stationQueries.getAllStations).mockResolvedValue(mockDbStations);
 
-      const result = await getStations({ format: 'geojson' });
+      const result = await getStations();
 
       expect(result).toHaveProperty('type', 'FeatureCollection');
       expect(result).toHaveProperty('features');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       expect((result as any).features[0].properties).toHaveProperty('totalDepartures', 1523);
-    });
-
-    it('should return JSON format when specified', async () => {
-      const mockDbStations = [
-        {
-          stationId: '001',
-          name: 'Kaivopuisto',
-          location: { type: 'Point' as const, coordinates: [24.9384, 60.1699] as [number, number] },
-          createdAt: new Date('2024-01-01'),
-          updatedAt: new Date('2024-01-01'),
-          totalDepartures: 1523,
-        },
-      ];
-
-      vi.mocked(stationQueries.getAllStations).mockResolvedValue(mockDbStations);
-
-      const result = await getStations({ format: 'json' });
-
-      expect(result).toHaveProperty('stations');
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      expect((result as any).stations).toHaveLength(1);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      expect((result as any).stations[0]).toMatchObject({
-        stationId: '001',
-        name: 'Kaivopuisto',
-        location: {
-          type: 'Point',
-          coordinates: [24.9384, 60.1699],
-        },
-        createdAt: '2024-01-01T00:00:00.000Z',
-        updatedAt: '2024-01-01T00:00:00.000Z',
-        totalDepartures: 1523,
-      });
     });
 
     it('should parse and pass bounds to database query', async () => {

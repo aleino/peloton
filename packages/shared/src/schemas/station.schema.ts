@@ -6,7 +6,6 @@ import { distance, duration } from './common.schema.js';
 // Extend Zod with OpenAPI capabilities
 extendZodWithOpenApi(z);
 
-
 export const stationId = z.string().min(1).max(50).openapi({
   description: 'Unique station identifier',
   example: '001',
@@ -152,11 +151,6 @@ export const stationsGetQueryParams = z
         description: 'Bounding box to filter stations: "minLon,minLat,maxLon,maxLat"',
         example: '24.9,60.15,25.0,60.20',
       }),
-
-    format: z.enum(['geojson', 'json']).default('geojson').openapi({
-      description: 'Response format: geojson or json',
-      example: 'geojson',
-    }),
   })
   .openapi('StationsGetQueryParams');
 
@@ -174,12 +168,9 @@ export const stationsGetPathParams = z
  * HTTP Response schemas
  * For GET /stations (collection)
  */
-export const stationsListResponseBody = z
-  .union([
-    stationFeatureCollection, // for format=geojson
-    z.object({ stations: z.array(station) }), // for format=json
-  ])
-  .openapi('StationsListResponseBody');
+export const stationsListResponseBody = stationFeatureCollection.openapi(
+  'StationsListResponseBody'
+);
 
 /**
  * For GET /stations/:id (single resource)

@@ -6,19 +6,18 @@ import type { StationsListResponseBody, StationsGetResponseBody } from '@peloton
  */
 interface FetchStationsParams {
   bounds?: string;
-  format?: 'geojson' | 'json';
 }
 
 /**
- * Fetch all stations from API
- * Returns GeoJSON FeatureCollection by default
+ * Fetch all stations from API as GeoJSON FeatureCollection
+ * Returns geographic data optimized for map visualization
  *
  * @param params - Query parameters for filtering stations
- * @returns Promise resolving to stations list response
+ * @returns Promise resolving to GeoJSON FeatureCollection
  *
  * @example
  * ```typescript
- * // Fetch all stations as GeoJSON
+ * // Fetch all stations
  * const stations = await fetchStations();
  *
  * // Fetch stations within bounds
@@ -30,10 +29,10 @@ interface FetchStationsParams {
 export async function fetchStations(
   params: FetchStationsParams = {}
 ): Promise<StationsListResponseBody> {
-  const { bounds, format = 'geojson' } = params;
+  const { bounds } = params;
 
   return get<StationsListResponseBody>('/stations', {
-    params: { ...(bounds && { bounds }), format },
+    params: { ...(bounds && { bounds }) },
   });
 }
 

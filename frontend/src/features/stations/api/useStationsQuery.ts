@@ -8,21 +8,19 @@ import type { StationsListResponseBody } from '@peloton/shared';
  */
 interface useStationsQueryOptions {
   bounds?: string;
-  format?: 'geojson' | 'json';
   enabled?: boolean;
 }
 
 /**
- * Hook to fetch all stations
+ * Hook to fetch all stations as GeoJSON
  *
  * @param options - Query options
- * @returns React Query result with stations data
+ * @returns React Query result with stations GeoJSON data
  *
  * @example
  * ```tsx
  * const { data, isLoading, error } = useStationsQuery({
- *   bounds: '24.9,60.15,25.0,60.20',
- *   format: 'geojson'
+ *   bounds: '24.9,60.15,25.0,60.20'
  * });
  *
  * if (isLoading) return <Spinner />;
@@ -32,11 +30,11 @@ interface useStationsQueryOptions {
  * ```
  */
 export const useStationsQuery = (options: useStationsQueryOptions = {}) => {
-  const { bounds, format = 'geojson', enabled = true } = options;
+  const { bounds, enabled = true } = options;
 
   return useQuery<StationsListResponseBody>({
-    queryKey: stationsQueryKeys.list(bounds, format),
-    queryFn: () => fetchStations({ ...(bounds && { bounds }), format }),
+    queryKey: stationsQueryKeys.list(bounds),
+    queryFn: () => fetchStations({ ...(bounds && { bounds }) }),
     enabled,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)

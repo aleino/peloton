@@ -104,31 +104,18 @@ describe('useStationsQuery', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(fetchStations).toHaveBeenCalledWith({ bounds, format: 'geojson' });
-  });
-
-  it('should call fetchStations with format parameter', async () => {
-    vi.mocked(fetchStations).mockResolvedValue(mockGeoJSONResponse);
-
-    const { result } = renderHook(() => useStationsQuery({ format: 'json' }), {
-      wrapper,
-    });
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-    expect(fetchStations).toHaveBeenCalledWith({ format: 'json' });
+    expect(fetchStations).toHaveBeenCalledWith({ bounds });
   });
 
   it('should use correct query key', async () => {
     vi.mocked(fetchStations).mockResolvedValue(mockGeoJSONResponse);
 
     const bounds = '24.9,60.15,25.0,60.20';
-    const format = 'geojson';
 
-    renderHook(() => useStationsQuery({ bounds, format }), { wrapper });
+    renderHook(() => useStationsQuery({ bounds }), { wrapper });
 
     await waitFor(() => {
-      const queryData = queryClient.getQueryData(stationsQueryKeys.list(bounds, format));
+      const queryData = queryClient.getQueryData(stationsQueryKeys.list(bounds));
       expect(queryData).toBeDefined();
     });
   });
@@ -148,15 +135,5 @@ describe('useStationsQuery', () => {
     rerender({ bounds: '25.0,60.20,25.1,60.25' });
 
     await waitFor(() => expect(fetchStations).toHaveBeenCalledTimes(2));
-  });
-
-  it('should use default format of geojson', async () => {
-    vi.mocked(fetchStations).mockResolvedValue(mockGeoJSONResponse);
-
-    renderHook(() => useStationsQuery(), { wrapper });
-
-    await waitFor(() => expect(fetchStations).toHaveBeenCalled());
-
-    expect(fetchStations).toHaveBeenCalledWith({ format: 'geojson' });
   });
 });
