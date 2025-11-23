@@ -5,6 +5,12 @@
 - DO NOT use ambiguous word `data`. Use more descriptive names like `stations`, `trips`, `routes`, etc...
 - DO NOT use words that can be easily misspelled e.g. `produciton` or `developemnt`. Instead use simpler words like `dev` and `prod`.
 
+### Trips and stations
+
+- Use words `departure`/`return` in the code instead of words like `origin`, `destination` or `arrival`
+  - ✅ `departureStation`, `returnStation`
+  - ❌ `originStation`, `destinationStation`
+
 ### Environment-Related Naming
 
 - **File names**: Use `dev` and `prod` (e.g., `.env.dev`, `config.prod.ts`)
