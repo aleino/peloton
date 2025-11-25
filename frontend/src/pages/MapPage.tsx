@@ -1,5 +1,5 @@
 import { FloatingHeader } from '@/layouts';
-import { MapStyleSwitcher } from '@/features/map';
+import { MapStyleSwitcher, MapControls, MapZoomControls } from '@/features/map';
 import { StationDetailPanel, useStations } from '@/features/stations';
 
 /**
@@ -7,6 +7,8 @@ import { StationDetailPanel, useStations } from '@/features/stations';
  *
  * Layout:
  * - FloatingHeader at top
+ * - MapControls at top right (below header)
+ * - MapZoomControls at middle right (zoom in/out, compass, home)
  * - StationDetailPanel on left (39% width, opens on station click)
  * - Map remains interactive in all other areas
  */
@@ -17,6 +19,12 @@ export const MapPage = () => {
     <>
       {/* Floating header */}
       <FloatingHeader title="Peloton" rightContent={<MapStyleSwitcher />} />
+
+      {/* Map controls */}
+      <MapControls />
+
+      {/* Map zoom controls */}
+      <MapZoomControls />
 
       {/* Station detail panel */}
       <StationDetailPanel

@@ -1,9 +1,10 @@
 import { Layer } from 'react-map-gl/mapbox';
 import { useClusterEventHandlers, useColorScaleExpression } from '../hooks';
-import { useMapSource } from '@/features/map/hooks';
+import { getClusterPropertyName } from '../utils';
+import { useMapSource, useMapControls } from '@/features/map/hooks';
 import type { LayerProps } from 'react-map-gl/mapbox';
 import type { ExpressionSpecification } from 'mapbox-gl';
-import type { StationFeatureCollection } from '@peloton/shared';
+import type { FlattenedStationFeatureCollection } from '@/features/stations/api/useStationsQuery';
 import {
   STATIONS_SOURCE_ID,
   STATIONS_CLUSTERS_LAYER_ID,
@@ -12,23 +13,40 @@ import {
 
 /**
  * Cluster layer component for station markers
- * Displays clustered markers at low zoom levels for better performance
+ * Displays clustered markers at low zoom levels with dynamic coloring
+ *
+ * Color represents average metric value across all stations in cluster:
+ * - Metric: tripCount, durationAvg, distanceAvg
+ * - Direction: departures, arrivals, diff
  *
  * Responsibilities:
  * - Display cluster circles at low zoom levels
  * - Display cluster count labels
  * - Automatically show/hide based on zoom level
- * - Apply Viridis colors to clusters based on average departures
+ * - Apply Viridis colors to clusters based on selected metric
  * - Handle click to zoom into cluster
  */
 export const StationClustersLayer = () => {
-  const geojsonData = useMapSource<StationFeatureCollection>(STATIONS_SOURCE_ID);
+  const geojsonData = useMapSource<FlattenedStationFeatureCollection>(STATIONS_SOURCE_ID);
 
-  // Generate color scale expression based on average departures
-  // Average = sumDepartures / point_count
+  // Read metric and direction from map controls
+  const { metric, direction } = useMapControls();
+
+  // Determine which cluster property to use for coloring
+  const clusterPropertyName = getClusterPropertyName(metric, direction);
+
+  // Generate dynamic Mapbox expression: average = sum / point_count
+  // Use coalesce to provide a fallback value of 0 if the property is null/undefined
+  const inputValue: ExpressionSpecification = [
+    '/',
+    ['coalesce', ['get', clusterPropertyName], 0],
+    ['get', 'point_count'],
+  ];
+
+  // Generate color scale expression based on average metric value
   const clusterColor = useColorScaleExpression({
     geojsonData,
-    inputValue: ['/', ['get', 'sumDepartures'], ['get', 'point_count']],
+    inputValue,
   });
 
   // Attach cluster event handlers (click to zoom)

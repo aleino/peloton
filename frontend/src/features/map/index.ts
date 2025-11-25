@@ -1,6 +1,7 @@
 // Components
 export { BaseMap } from './components/BaseMap/BaseMap';
 export { MapControls } from './components/MapControls/MapControls';
+export { MapZoomControls } from './components/MapZoomControls/MapZoomControls';
 export { MapStyleSwitcher } from './components/MapStyleSwitcher/MapStyleSwitcher';
 export { MapResetButton } from './components/MapResetButton/MapResetButton';
 

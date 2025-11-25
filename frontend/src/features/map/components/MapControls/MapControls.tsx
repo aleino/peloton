@@ -1,146 +1,151 @@
-import { useState, useEffect } from 'react';
-import { useMap } from 'react-map-gl/mapbox';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import { Navigation2, Home } from 'lucide-react';
-import { useAppDispatch } from '../../../../store/hooks';
-import { clearStationSelections } from '../../../stations/stations.store';
-import { MAP_ANIMATION, INITIAL_VIEW_STATE } from '../../map.config';
+import { Collapse } from '@mui/material';
 import { Styled } from './MapControls.styles';
+import { ControlButton } from './ControlButton';
+import { ControlMenu } from './ControlMenu';
+import { StyleMenu } from './StyleMenu';
+import { DirectionMenu } from './DirectionMenu';
+import { MetricMenu } from './MetricMenu';
+import { VisualizationMenu } from './VisualizationMenu';
+import { useControlMenus } from './useControlMenus';
+import {
+  getStyleOption,
+  getDirectionOption,
+  getMetricOption,
+  getVisualizationOption,
+  CONTROL_BUTTON_ICON_SIZE,
+} from './config';
+
+// Material Design standard easing for menu transitions
+const MENU_TRANSITION_EASING = 'cubic-bezier(0.4, 0, 0.2, 1)';
+const MENU_TRANSITION_DURATION = 100;
 
 /**
- * Custom map controls with glassmorphic design
+ * Map controls with submenu options
  *
  * Features:
- * - Zoom in/out controls (primary panel)
- * - Compass control synced to map bearing (secondary panel)
- * - Home button to reset map to initial state (secondary panel)
- * - Theme-aware glassmorphic styling
+ * - Map style menu (dark, light, satellite, streets)
+ * - Direction filter (departures, arrivals, diff)
+ * - Data metric selection (total trips, avg duration, avg distance)
+ * - Station visualization (points, voronoi)
+ * - Rectangular button design with glassmorphic styling
+ * - Expandable submenus with square option buttons
+ *
+ * Mock data for initial phase - will be connected to actual state later
  */
 export const MapControls = () => {
-  const { main } = useMap();
-  const dispatch = useAppDispatch();
-  const [bearing, setBearing] = useState(0);
+  const {
+    openMenu,
+    selectedStyle,
+    selectedDirection,
+    selectedMetric,
+    selectedVisualization,
+    handleMenuToggle,
+    handleStyleSelect,
+    handleDirectionSelect,
+    handleMetricSelect,
+    handleVisualizationSelect,
+  } = useControlMenus();
 
-  useEffect(() => {
-    if (!main) {
-      return;
-    }
-
-    const map = main.getMap();
-
-    // Listen for bearing changes
-    const handleRotate = () => {
-      setBearing(map.getBearing());
-    };
-
-    // Set initial bearing after effect is mounted
-    handleRotate();
-
-    map.on('rotate', handleRotate);
-
-    return () => {
-      map.off('rotate', handleRotate);
-    };
-  }, [main]);
-
-  const handleZoomIn = () => {
-    if (!main) {
-      return;
-    }
-    main.getMap().zoomIn();
-  };
-
-  const handleZoomOut = () => {
-    if (!main) {
-      return;
-    }
-    main.getMap().zoomOut();
-  };
-
-  const handleCompass = () => {
-    if (!main) {
-      return;
-    }
-    const map = main.getMap();
-    const currentBearing = map.getBearing();
-    const currentPitch = map.getPitch();
-
-    // If already at north (bearing 0 and pitch 0), rotate to south
-    if (Math.abs(currentBearing) < 1 && currentPitch < 1) {
-      map.easeTo({
-        bearing: 180,
-        pitch: 0,
-        duration: MAP_ANIMATION.compassDuration,
-      });
-    } else {
-      // Otherwise reset to north
-      map.easeTo({
-        bearing: 0,
-        pitch: 0,
-        duration: MAP_ANIMATION.compassDuration,
-      });
-    }
-  };
-
-  const handleHome = () => {
-    if (!main) {
-      return;
-    }
-    // Clear selected stations
-    dispatch(clearStationSelections());
-
-    // Reset map to initial view
-    const map = main.getMap();
-    map.easeTo({
-      center: [INITIAL_VIEW_STATE.longitude, INITIAL_VIEW_STATE.latitude],
-      zoom: INITIAL_VIEW_STATE.zoom,
-      bearing: INITIAL_VIEW_STATE.bearing,
-      pitch: INITIAL_VIEW_STATE.pitch,
-      duration: MAP_ANIMATION.defaultDuration,
-    });
-  };
+  const StyleIcon = getStyleOption(selectedStyle).icon;
+  const DirectionIcon = getDirectionOption(selectedDirection).icon;
+  const MetricIcon = getMetricOption(selectedMetric).icon;
+  const VisualizationIcon = getVisualizationOption(selectedVisualization).icon;
 
   return (
-    <Styled.Container data-testid="map-controls-container">
-      {/* Primary zoom controls */}
-      <Styled.ZoomPanel data-testid="zoom-controls-panel">
-        <Styled.ZoomButton onClick={handleZoomIn} aria-label="Zoom in" data-testid="zoom-in-button">
-          <AddIcon fontSize="large" />
-        </Styled.ZoomButton>
-        <Styled.ZoomButton
-          onClick={handleZoomOut}
-          aria-label="Zoom out"
-          data-testid="zoom-out-button"
-        >
-          <RemoveIcon fontSize="large" />
-        </Styled.ZoomButton>
-      </Styled.ZoomPanel>
+    <Styled.Container>
+      <Styled.InnerContainer>
+        <Styled.ButtonGroup>
+          <Styled.ButtonWithMenuRow>
+            <ControlButton
+              icon={<StyleIcon size={CONTROL_BUTTON_ICON_SIZE} />}
+              isOpen={openMenu === 'style'}
+              onClick={() => handleMenuToggle('style')}
+              ariaLabel="Map style"
+            />
+            <Styled.CollapsedMenuWrapper isFirst>
+              <Collapse
+                in={openMenu === 'style'}
+                timeout={MENU_TRANSITION_DURATION}
+                easing={MENU_TRANSITION_EASING}
+                orientation="horizontal"
+              >
+                <ControlMenu label="Map style">
+                  <StyleMenu selectedStyle={selectedStyle} onSelect={handleStyleSelect} />
+                </ControlMenu>
+              </Collapse>
+            </Styled.CollapsedMenuWrapper>
+          </Styled.ButtonWithMenuRow>
 
-      {/* Secondary controls: compass and home */}
-      <Styled.SecondaryPanel data-testid="secondary-controls-panel">
-        <Styled.SecondaryButton
-          onClick={handleHome}
-          aria-label="Reset map to initial position"
-          data-testid="home-button"
-        >
-          <Home size={20} />
-        </Styled.SecondaryButton>
+          <Styled.ButtonWithMenuRow>
+            <ControlButton
+              icon={<VisualizationIcon size={CONTROL_BUTTON_ICON_SIZE} />}
+              isOpen={openMenu === 'visualization'}
+              onClick={() => handleMenuToggle('visualization')}
+              ariaLabel="Station visualization"
+            />
+            <Styled.CollapsedMenuWrapper>
+              <Collapse
+                in={openMenu === 'visualization'}
+                timeout={MENU_TRANSITION_DURATION}
+                easing={MENU_TRANSITION_EASING}
+                orientation="horizontal"
+              >
+                <ControlMenu label="Station visualization">
+                  <VisualizationMenu
+                    selectedVisualization={selectedVisualization}
+                    onSelect={handleVisualizationSelect}
+                  />
+                </ControlMenu>
+              </Collapse>
+            </Styled.CollapsedMenuWrapper>
+          </Styled.ButtonWithMenuRow>
 
-        <Styled.SecondaryButton
-          onClick={handleCompass}
-          aria-label="Reset map orientation"
-          data-testid="compass-button"
-        >
-          <Navigation2
-            size={20}
-            style={{
-              transform: `rotate(${-bearing}deg)`,
-              transition: 'transform 0.3s ease-out',
-            }}
-          />
-        </Styled.SecondaryButton>
-      </Styled.SecondaryPanel>
+          <Styled.ButtonWithMenuRow>
+            <ControlButton
+              icon={<DirectionIcon size={CONTROL_BUTTON_ICON_SIZE} />}
+              isOpen={openMenu === 'direction'}
+              onClick={() => handleMenuToggle('direction')}
+              ariaLabel="Direction filter"
+            />
+            <Styled.CollapsedMenuWrapper>
+              <Collapse
+                in={openMenu === 'direction'}
+                timeout={MENU_TRANSITION_DURATION}
+                easing={MENU_TRANSITION_EASING}
+                orientation="horizontal"
+              >
+                <ControlMenu label="Trip direction">
+                  <DirectionMenu
+                    selectedDirection={selectedDirection}
+                    onSelect={handleDirectionSelect}
+                  />
+                </ControlMenu>
+              </Collapse>
+            </Styled.CollapsedMenuWrapper>
+          </Styled.ButtonWithMenuRow>
+
+          <Styled.ButtonWithMenuRow>
+            <ControlButton
+              icon={<MetricIcon size={CONTROL_BUTTON_ICON_SIZE} />}
+              isOpen={openMenu === 'parameter'}
+              onClick={() => handleMenuToggle('parameter')}
+              ariaLabel="Data metric"
+            />
+            <Styled.CollapsedMenuWrapper>
+              <Collapse
+                in={openMenu === 'parameter'}
+                timeout={MENU_TRANSITION_DURATION}
+                easing={MENU_TRANSITION_EASING}
+                orientation="horizontal"
+              >
+                <ControlMenu label="Data metric">
+                  <MetricMenu selectedMetric={selectedMetric} onSelect={handleMetricSelect} />
+                </ControlMenu>
+              </Collapse>
+            </Styled.CollapsedMenuWrapper>
+          </Styled.ButtonWithMenuRow>
+        </Styled.ButtonGroup>
+      </Styled.InnerContainer>
     </Styled.Container>
   );
 };

@@ -4,7 +4,7 @@ import {
   createLinearColorExpression,
   createLogColorExpression,
   createQuantileColorExpression,
-  VIRIDIS_COLOR_ARRAY,
+  VIRIDIS_SCALE,
 } from './colorScales';
 import type { ExpressionSpecification } from 'mapbox-gl';
 
@@ -82,7 +82,7 @@ describe('colorScales', () => {
     it('should return middle color when min equals max', () => {
       const expression = createLinearColorExpression(500, 500, inputValue);
 
-      expect(expression).toBe(VIRIDIS_COLOR_ARRAY[5]);
+      expect(expression).toBe(VIRIDIS_SCALE.stops[5]!.color);
     });
 
     it('should distribute colors evenly across the range', () => {
@@ -117,7 +117,7 @@ describe('colorScales', () => {
     it('should return middle color when min equals max', () => {
       const expression = createLogColorExpression(500, 500, inputValue);
 
-      expect(expression).toBe(VIRIDIS_COLOR_ARRAY[5]);
+      expect(expression).toBe(VIRIDIS_SCALE.stops[5]!.color);
     });
 
     it('should handle zero min value by using 1', () => {
@@ -154,7 +154,7 @@ describe('colorScales', () => {
       expect(Array.isArray(expression)).toBe(true);
       expect(expression[0]).toBe('step');
       expect(expression[1]).toEqual(inputValue);
-      expect(expression[2]).toBe(VIRIDIS_COLOR_ARRAY[0]); // Base color
+      expect(expression[2]).toBe(VIRIDIS_SCALE.colors[0]); // Base color
     });
 
     it('should return fallback color for empty array', () => {
@@ -167,7 +167,7 @@ describe('colorScales', () => {
       const values = [100, 100, 100, 100, 100];
       const expression = createQuantileColorExpression(values, inputValue);
 
-      expect(expression).toBe(VIRIDIS_COLOR_ARRAY[5]);
+      expect(expression).toBe(VIRIDIS_SCALE.stops[5]!.color);
     });
 
     it('should create quantile thresholds', () => {
@@ -214,21 +214,39 @@ describe('colorScales', () => {
     });
   });
 
-  describe('VIRIDIS_COLOR_ARRAY', () => {
-    it('should have 10 colors', () => {
-      expect(VIRIDIS_COLOR_ARRAY).toHaveLength(10);
+  describe('VIRIDIS_SCALE', () => {
+    it('should have 11 stops (t=0.0 to t=1.0 with 0.1 increments)', () => {
+      expect(VIRIDIS_SCALE.stops).toHaveLength(11);
+    });
+
+    it('should have correct t-values', () => {
+      const tValues = VIRIDIS_SCALE.tValues;
+      expect(tValues[0]).toBe(0.0);
+      expect(tValues[5]).toBe(0.5);
+      expect(tValues[10]).toBe(1.0);
     });
 
     it('should start with deep purple', () => {
-      expect(VIRIDIS_COLOR_ARRAY[0]).toBe('#440154');
+      expect(VIRIDIS_SCALE.stops[0]!.color).toBe('#440154');
+      expect(VIRIDIS_SCALE.colors[0]).toBe('#440154');
     });
 
     it('should end with bright yellow-green', () => {
-      expect(VIRIDIS_COLOR_ARRAY[9]).toBe('#fde725');
+      expect(VIRIDIS_SCALE.stops[10]!.color).toBe('#fde725');
+      expect(VIRIDIS_SCALE.colors[10]).toBe('#fde725');
     });
 
     it('should have middle color as teal', () => {
-      expect(VIRIDIS_COLOR_ARRAY[5]).toBe('#1f9d88');
+      expect(VIRIDIS_SCALE.stops[5]!.color).toBe('#1f9d88');
+      expect(VIRIDIS_SCALE.colors[5]).toBe('#1f9d88');
+    });
+
+    it('should have paired t-values and colors', () => {
+      VIRIDIS_SCALE.stops.forEach((stop, i) => {
+        expect(stop.t).toBeCloseTo(i * 0.1, 10);
+        expect(stop.color).toBeTruthy();
+        expect(stop.color).toMatch(/^#[0-9a-f]{6}$/i);
+      });
     });
   });
 });

@@ -5,6 +5,57 @@ const NEUTRAL_SLATE = '#64748b'; // Primary neutral
 const NEUTRAL_GRAY = '#94a3b8'; // Secondary neutral
 const ACCENT_TEAL = '#14b8a6'; // Subtle accent for interactions
 
+// Extend MUI theme types for custom properties
+declare module '@mui/material/styles' {
+  interface Palette {
+    glassmorphism: {
+      backgroundColor: string;
+      backdropFilter: string;
+      WebkitBackdropFilter: string;
+      border: string;
+      boxShadow: string;
+    };
+    alpha: {
+      8: string;
+      12: string;
+      16: string;
+      24: string;
+      38: string;
+      60: string;
+    };
+  }
+  interface PaletteOptions {
+    glassmorphism?: {
+      backgroundColor: string;
+      backdropFilter: string;
+      WebkitBackdropFilter: string;
+      border: string;
+      boxShadow: string;
+    };
+    alpha?: {
+      8: string;
+      12: string;
+      16: string;
+      24: string;
+      38: string;
+      60: string;
+    };
+  }
+  interface TypeBackground {
+    glassmorphism?: {
+      backgroundColor: string;
+      backdropFilter: string;
+      WebkitBackdropFilter: string;
+      border: string;
+      boxShadow: string;
+    };
+  }
+  interface Duration {
+    filterMenu?: number;
+    filterButton?: number;
+  }
+}
+
 // Glassmorphism styles for floating components
 // Subtle glass effect, similar to hover popup
 const glassmorphism = {
@@ -90,6 +141,20 @@ const commonThemeOptions: ThemeOptions = {
       xl: 1920,
     },
   },
+  transitions: {
+    duration: {
+      shortest: 150,
+      shorter: 200,
+      short: 250,
+      standard: 300,
+      complex: 375,
+      enteringScreen: 225,
+      leavingScreen: 195,
+      // Custom durations for MapControls
+      filterMenu: 200,
+      filterButton: 200,
+    },
+  },
   components: {
     MuiButton: {
       styleOverrides: {
@@ -144,8 +209,15 @@ export const lightTheme = createTheme({
       default: '#f8fafc', // Very light gray, works with map
       paper: 'rgba(255, 255, 255, 0.95)', // Semi-transparent for overlays
     },
-    // @ts-expect-error - Custom glassmorphism extension
     glassmorphism: glassmorphism.light,
+    alpha: {
+      8: 'rgba(0, 0, 0, 0.08)', // Subtle borders
+      12: 'rgba(0, 0, 0, 0.12)', // Hover states
+      16: 'rgba(0, 0, 0, 0.16)', // Dividers
+      24: 'rgba(0, 0, 0, 0.24)', // Active borders
+      38: 'rgba(0, 0, 0, 0.38)', // Disabled text
+      60: 'rgba(0, 0, 0, 0.6)', // Secondary text
+    },
     text: {
       primary: '#1e293b',
       secondary: '#64748b',
@@ -235,8 +307,15 @@ export const darkTheme = createTheme({
       default: '#0f172a', // Dark slate, matches Mapbox dark
       paper: 'rgba(30, 41, 59, 0.95)', // Semi-transparent for overlays
     },
-    // @ts-expect-error - Custom glassmorphism extension
     glassmorphism: glassmorphism.dark,
+    alpha: {
+      8: 'rgba(255, 255, 255, 0.08)', // Subtle borders
+      12: 'rgba(255, 255, 255, 0.12)', // Hover states
+      16: 'rgba(255, 255, 255, 0.16)', // Dividers
+      24: 'rgba(255, 255, 255, 0.24)', // Active borders
+      38: 'rgba(255, 255, 255, 0.38)', // Disabled text
+      60: 'rgba(255, 255, 255, 0.6)', // Secondary text
+    },
     text: {
       primary: '#f1f5f9',
       secondary: '#94a3b8',

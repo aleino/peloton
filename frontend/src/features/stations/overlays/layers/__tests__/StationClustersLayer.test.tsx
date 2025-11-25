@@ -14,6 +14,7 @@ vi.mock('../../hooks', () => ({
 
 vi.mock('@/features/map/hooks', () => ({
   useMapSource: vi.fn(),
+  useMapControls: vi.fn(),
 }));
 
 import * as mapHooks from '@/features/map/hooks';
@@ -28,6 +29,23 @@ describe('StationClustersLayer', () => {
 
   beforeEach(() => {
     vi.mocked(mapHooks.useMapSource).mockReturnValue(mockData);
+    vi.mocked(mapHooks.useMapControls).mockReturnValue({
+      metric: 'tripCount' as const,
+      direction: 'departures' as const,
+      style: 'dark' as const,
+      visualization: 'points' as const,
+      controls: {
+        style: 'dark' as const,
+        visualization: 'points' as const,
+        direction: 'departures' as const,
+        metric: 'tripCount' as const,
+      },
+      updateStyle: vi.fn(),
+      updateVisualization: vi.fn(),
+      updateDirection: vi.fn(),
+      updateMetric: vi.fn(),
+      updateControls: vi.fn(),
+    });
   });
 
   it('should render cluster and count layers', () => {
@@ -46,7 +64,11 @@ describe('StationClustersLayer', () => {
     render(<StationClustersLayer />);
     expect(hooks.useColorScaleExpression).toHaveBeenCalledWith(
       expect.objectContaining({
-        inputValue: expect.arrayContaining(['/', ['get', 'sumDepartures'], ['get', 'point_count']]),
+        inputValue: expect.arrayContaining([
+          '/',
+          ['get', 'sumDeparturesCount'],
+          ['get', 'point_count'],
+        ]),
       })
     );
   });

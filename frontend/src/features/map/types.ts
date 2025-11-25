@@ -17,3 +17,28 @@ export interface ViewState {
     right?: number;
   };
 }
+
+/**
+ * Centralized type definitions for map controls
+ *
+ * These types are used across map controls, Redux store, and other map-related components.
+ */
+
+// Map visual settings
+export type MapStyle = 'dark' | 'light' | 'satellite' | 'streets';
+export type Visualization = 'points' | 'voronoi';
+
+// Data filter settings
+export type Direction = 'departures' | 'arrivals' | 'diff';
+export type Metric = 'tripCount' | 'durationAvg' | 'distanceAvg';
+
+// UI state
+export type MenuType = 'style' | 'direction' | 'parameter' | 'visualization';
+
+// Re-export UI config types for backward compatibility
+export type {
+  StyleOption,
+  DirectionOption,
+  MetricOption,
+  VisualizationOption,
+} from './components/MapControls/config';

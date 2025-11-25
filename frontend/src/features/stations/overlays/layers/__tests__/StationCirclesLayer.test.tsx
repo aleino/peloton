@@ -14,6 +14,7 @@ vi.mock('../../hooks', () => ({
 
 vi.mock('@/features/map/hooks', () => ({
   useMapSource: vi.fn(),
+  useMapControls: vi.fn(),
 }));
 
 import * as hooks from '../../hooks';
@@ -22,6 +23,23 @@ import * as mapHooks from '@/features/map/hooks';
 describe('StationCirclesLayer', () => {
   beforeEach(() => {
     vi.mocked(mapHooks.useMapSource).mockReturnValue(null);
+    vi.mocked(mapHooks.useMapControls).mockReturnValue({
+      metric: 'tripCount' as const,
+      direction: 'departures' as const,
+      style: 'dark' as const,
+      visualization: 'points' as const,
+      controls: {
+        style: 'dark' as const,
+        visualization: 'points' as const,
+        direction: 'departures' as const,
+        metric: 'tripCount' as const,
+      },
+      updateStyle: vi.fn(),
+      updateVisualization: vi.fn(),
+      updateDirection: vi.fn(),
+      updateMetric: vi.fn(),
+      updateControls: vi.fn(),
+    });
   });
 
   it('should render circle layer', () => {
@@ -33,7 +51,7 @@ describe('StationCirclesLayer', () => {
     render(<StationCirclesLayer />);
     expect(hooks.useColorScaleExpression).toHaveBeenCalledWith({
       geojsonData: null,
-      inputValue: ['get', 'totalDepartures'],
+      inputValue: ['get', 'departuresCount'],
     });
   });
 

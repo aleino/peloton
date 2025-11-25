@@ -1,14 +1,18 @@
 import { Layer } from 'react-map-gl/mapbox';
 import { useStationEventHandlers, useColorScaleExpression } from '../hooks';
-import { createCircleLayerStyle } from '../utils';
-import { useMapSource } from '@/features/map/hooks';
-import type { StationFeatureCollection } from '@peloton/shared';
+import { createCircleLayerStyle, getStationPropertyName } from '../utils';
+import { useMapSource, useMapControls } from '@/features/map/hooks';
+import type { FlattenedStationFeatureCollection } from '@/features/stations/api/useStationsQuery';
 import type { ExpressionSpecification } from 'mapbox-gl';
 import { STATIONS_SOURCE_ID, STATIONS_CIRCLES_LAYER_ID } from '@/features/stations/config/layers';
 
 /**
  * Circle layer component for station markers
- * Displays Viridis-colored circles with hover/selection states
+ * Displays Viridis-colored circles based on selected metric and direction
+ *
+ * Color adapts dynamically to user selections:
+ * - Metric: tripCount, durationAvg, distanceAvg
+ * - Direction: departures, arrivals, diff
  *
  * Responsibilities:
  * - Apply Viridis color scale to markers
@@ -17,13 +21,21 @@ import { STATIONS_SOURCE_ID, STATIONS_CIRCLES_LAYER_ID } from '@/features/statio
  * - Define circle layer paint/layout properties
  */
 export const StationCirclesLayer = () => {
-  const geojsonData = useMapSource<StationFeatureCollection>(STATIONS_SOURCE_ID);
+  const geojsonData = useMapSource<FlattenedStationFeatureCollection>(STATIONS_SOURCE_ID);
 
-  // Apply Viridis colors to feature states
-  // Generate color scale expression based on total departures
+  // Read metric and direction from map controls
+  const { metric, direction } = useMapControls();
+
+  // Determine which property to use for coloring
+  const propertyName = getStationPropertyName(metric, direction);
+
+  // Generate dynamic Mapbox expression for the selected metric
+  const inputValue: ExpressionSpecification = ['get', propertyName];
+
+  // Generate color scale expression
   const stationColor = useColorScaleExpression({
     geojsonData,
-    inputValue: ['get', 'totalDepartures'],
+    inputValue,
   });
 
   // Attach event handlers (manages hover state internally)
