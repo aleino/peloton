@@ -18,10 +18,14 @@ import { StationClustersLayer } from './StationClusters.layer';
  * Cluster Properties:
  * - sumDeparturesCount, sumDeparturesDuration, sumDeparturesDistance
  * - sumReturnsCount, sumReturnsDuration, sumReturnsDistance
+ * - sumDiffCount, sumDiffDurationAvg, sumDiffDistanceAvg
  *
- * These properties sum metric values across all stations in a cluster.
- * To get average per station: divide sum by point_count
- * Example: ['/', ['get', 'sumDeparturesCount'], ['get', 'point_count']]
+ * All properties sum metric values across stations in a cluster.
+ * To get average per station: divide sum by point_count in the layer expression.
+ * Example: ['/', ['get', 'sumDeparturesCount'], ['max', ['get', 'point_count'], 1]]
+ *
+ * Note: Division must happen in the layer expression, not in clusterProperties,
+ * because clusterProperties reduce expressions don't support division operations.
  *
  * @see StationClustersLayer for color calculation using these properties
  */
@@ -42,15 +46,20 @@ export const StationsLayer = () => {
       clusterMaxZoom={14}
       clusterRadius={50}
       clusterProperties={{
-        // Departures metrics
+        // Departures metrics (sum)
         sumDeparturesCount: ['+', ['coalesce', ['get', 'departuresCount'], 0]],
         sumDeparturesDuration: ['+', ['coalesce', ['get', 'departuresDurationAvg'], 0]],
         sumDeparturesDistance: ['+', ['coalesce', ['get', 'departuresDistanceAvg'], 0]],
 
-        // Returns metrics
+        // Returns metrics (sum)
         sumReturnsCount: ['+', ['coalesce', ['get', 'returnsCount'], 0]],
         sumReturnsDuration: ['+', ['coalesce', ['get', 'returnsDurationAvg'], 0]],
         sumReturnsDistance: ['+', ['coalesce', ['get', 'returnsDistanceAvg'], 0]],
+
+        // Difference metrics (sum for map phase, division happens in layer)
+        sumDiffCount: ['+', ['coalesce', ['get', 'diffCount'], 0]],
+        sumDiffDurationAvg: ['+', ['coalesce', ['get', 'diffDurationAvg'], 0]],
+        sumDiffDistanceAvg: ['+', ['coalesce', ['get', 'diffDistanceAvg'], 0]],
       }}
     >
       <StationClustersLayer />

@@ -20,7 +20,7 @@ import type { MapStyle, Direction, Metric, Visualization } from '../types';
  * - Map style (dark, light, satellite, streets)
  * - Visualization type (points, voronoi)
  * - Data direction (departures, arrivals, diff)
- * - Data metric (tripCount, durationAvg, distanceAvg)
+ * - Trip metric (tripCount, durationAvg, distanceAvg)
  *
  * This is a simpler version focused on state management without menu UI logic.
  * For menu-specific functionality, use `useControlMenus` instead.

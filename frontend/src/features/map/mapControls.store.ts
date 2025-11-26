@@ -67,7 +67,7 @@ const mapControlsSlice = createSlice({
     },
 
     /**
-     * Set data metric (totalTrips, avgDuration, avgDistance)
+     * Set trip metric (totalTrips, avgDuration, avgDistance)
      * Closes the menu after selection
      */
     setMetric: (state, action: PayloadAction<Metric>) => {

@@ -37,10 +37,11 @@ export const StationClustersLayer = () => {
 
   // Generate dynamic Mapbox expression: average = sum / point_count
   // Use coalesce to provide a fallback value of 0 if the property is null/undefined
+  // Use max(point_count, 1) to avoid division by zero
   const inputValue: ExpressionSpecification = [
     '/',
     ['coalesce', ['get', clusterPropertyName], 0],
-    ['get', 'point_count'],
+    ['max', ['get', 'point_count'], 1],
   ];
 
   // Generate color scale expression based on average metric value

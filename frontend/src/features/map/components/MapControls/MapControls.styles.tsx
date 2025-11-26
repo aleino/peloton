@@ -51,6 +51,12 @@ const ButtonGroup = styled(Box)(({ theme }) => ({
   gap: 8,
 }));
 
+const Divider = styled(Box)(({ theme }) => ({
+  height: 1,
+  margin: '4px 8px',
+  background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)',
+}));
+
 const FilterButton = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'isOpen',
 })<{ isOpen?: boolean }>(({ theme, isOpen }) => ({
@@ -96,7 +102,7 @@ const MenuContainer = styled(Box)(({ theme }) => ({
   marginTop: 32,
   // Material Design transitions matching Collapse animation
   transition:
-    'opacity 300ms cubic-bezier(0.4, 0, 0.2, 1), transform 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+    'opacity 225ms cubic-bezier(0.4, 0, 0.2, 1), transform 225ms cubic-bezier(0.4, 0, 0.2, 1)',
 }));
 
 const SubGroup = styled(Box)(() => ({
@@ -150,6 +156,7 @@ export const Styled = {
   ButtonWithMenuRow,
   CollapsedMenuWrapper,
   ButtonGroup,
+  Divider,
   ControlButton: FilterButton,
   MenuContainer,
   SubGroup,

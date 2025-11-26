@@ -11,21 +11,25 @@ import type { Metric, Direction } from '@/features/map/types';
  * @returns Property name to use in Mapbox expressions
  */
 export function getStationPropertyName(metric: Metric, direction: Direction): string {
-  // For diff mode, use departures for now (diff calculation TBD)
-  const dir = direction === 'diff' ? 'departures' : direction;
+  // Map direction to internal key ('arrivals' -> 'returns', others pass through)
+  const dir = direction === 'arrivals' ? 'returns' : direction;
 
-  const propertyMap: Record<Metric, Record<'departures' | 'arrivals', string>> = {
+  // Extended property map including diff direction
+  const propertyMap: Record<Metric, Record<'departures' | 'returns' | 'diff', string>> = {
     tripCount: {
       departures: 'departuresCount',
-      arrivals: 'returnsCount',
+      returns: 'returnsCount',
+      diff: 'diffCount',
     },
     durationAvg: {
       departures: 'departuresDurationAvg',
-      arrivals: 'returnsDurationAvg',
+      returns: 'returnsDurationAvg',
+      diff: 'diffDurationAvg',
     },
     distanceAvg: {
       departures: 'departuresDistanceAvg',
-      arrivals: 'returnsDistanceAvg',
+      returns: 'returnsDistanceAvg',
+      diff: 'diffDistanceAvg',
     },
   };
 
@@ -38,26 +42,34 @@ export function getStationPropertyName(metric: Metric, direction: Direction): st
  * Maps user-selected metric and direction to the cluster sum property name
  * defined in Stations.layer.tsx clusterProperties.
  *
+ * Note: All cluster properties use 'sum' prefix because they aggregate values
+ * across stations in a cluster. Division by point_count happens in the layer
+ * expression to calculate per-station averages.
+ *
  * @param metric - Selected metric (tripCount, durationAvg, distanceAvg)
  * @param direction - Selected direction (departures, arrivals, diff)
- * @returns Cluster property name (e.g., 'sumDeparturesCount')
+ * @returns Cluster property name (e.g., 'sumDeparturesCount', 'sumDiffCount')
  */
 export function getClusterPropertyName(metric: Metric, direction: Direction): string {
-  // For diff mode, use departures for now
-  const dir = direction === 'diff' ? 'departures' : direction;
+  // Map direction to internal key ('arrivals' -> 'returns', others pass through)
+  const dir = direction === 'arrivals' ? 'returns' : direction;
 
-  const propertyMap: Record<Metric, Record<'departures' | 'arrivals', string>> = {
+  // Extended property map including diff direction
+  const propertyMap: Record<Metric, Record<'departures' | 'returns' | 'diff', string>> = {
     tripCount: {
       departures: 'sumDeparturesCount',
-      arrivals: 'sumReturnsCount',
+      returns: 'sumReturnsCount',
+      diff: 'sumDiffCount',
     },
     durationAvg: {
       departures: 'sumDeparturesDuration',
-      arrivals: 'sumReturnsDuration',
+      returns: 'sumReturnsDuration',
+      diff: 'sumDiffDurationAvg',
     },
     distanceAvg: {
       departures: 'sumDeparturesDistance',
-      arrivals: 'sumReturnsDistance',
+      returns: 'sumReturnsDistance',
+      diff: 'sumDiffDistanceAvg',
     },
   };
 

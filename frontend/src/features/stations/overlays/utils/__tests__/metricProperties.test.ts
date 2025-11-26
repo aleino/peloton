@@ -28,10 +28,18 @@ describe('metricProperties', () => {
       expect(getStationPropertyName('distanceAvg', 'arrivals')).toBe('returnsDistanceAvg');
     });
 
-    it('should fall back to departures for diff mode', () => {
-      expect(getStationPropertyName('tripCount', 'diff')).toBe('departuresCount');
-      expect(getStationPropertyName('durationAvg', 'diff')).toBe('departuresDurationAvg');
-      expect(getStationPropertyName('distanceAvg', 'diff')).toBe('departuresDistanceAvg');
+    describe('difference direction', () => {
+      it('should return diffCount for tripCount + diff', () => {
+        expect(getStationPropertyName('tripCount', 'diff')).toBe('diffCount');
+      });
+
+      it('should return diffDurationAvg for durationAvg + diff', () => {
+        expect(getStationPropertyName('durationAvg', 'diff')).toBe('diffDurationAvg');
+      });
+
+      it('should return diffDistanceAvg for distanceAvg + diff', () => {
+        expect(getStationPropertyName('distanceAvg', 'diff')).toBe('diffDistanceAvg');
+      });
     });
 
     it('should handle all metric/direction combinations', () => {
@@ -74,22 +82,36 @@ describe('metricProperties', () => {
       expect(getClusterPropertyName('distanceAvg', 'arrivals')).toBe('sumReturnsDistance');
     });
 
-    it('should fall back to departures for diff mode', () => {
-      expect(getClusterPropertyName('tripCount', 'diff')).toBe('sumDeparturesCount');
-      expect(getClusterPropertyName('durationAvg', 'diff')).toBe('sumDeparturesDuration');
-      expect(getClusterPropertyName('distanceAvg', 'diff')).toBe('sumDeparturesDistance');
+    describe('difference direction', () => {
+      it('should return avgDiffCount for tripCount + diff', () => {
+        expect(getClusterPropertyName('tripCount', 'diff')).toBe('avgDiffCount');
+      });
+
+      it('should return avgDiffDurationAvg for durationAvg + diff', () => {
+        expect(getClusterPropertyName('durationAvg', 'diff')).toBe('avgDiffDurationAvg');
+      });
+
+      it('should return avgDiffDistanceAvg for distanceAvg + diff', () => {
+        expect(getClusterPropertyName('distanceAvg', 'diff')).toBe('avgDiffDistanceAvg');
+      });
     });
 
-    it('should handle all metric/direction combinations', () => {
+    it('should handle all metric/direction combinations including diff', () => {
       const metrics: Metric[] = ['tripCount', 'durationAvg', 'distanceAvg'];
       const directions: Direction[] = ['departures', 'arrivals', 'diff'];
 
-      // Verify all combinations return a non-empty string
       metrics.forEach((metric) => {
         directions.forEach((direction) => {
           const result = getClusterPropertyName(metric, direction);
           expect(result).toBeTruthy();
           expect(typeof result).toBe('string');
+
+          // Verify naming pattern
+          if (direction === 'diff') {
+            expect(result).toMatch(/^avg/);
+          } else {
+            expect(result).toMatch(/^sum/);
+          }
         });
       });
     });

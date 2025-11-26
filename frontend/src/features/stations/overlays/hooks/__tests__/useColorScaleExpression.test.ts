@@ -74,6 +74,16 @@ describe('useColorScaleExpression', () => {
               departuresCount: 100,
             },
           },
+          {
+            type: 'Feature',
+            id: '2',
+            geometry: { type: 'Point', coordinates: [24.94, 60.18] },
+            properties: {
+              stationId: '2',
+              name: 'Station 2',
+              departuresCount: 150,
+            },
+          },
         ],
       };
 
@@ -118,6 +128,16 @@ describe('useColorScaleExpression', () => {
               stationId: '1',
               name: 'Station 1',
               returnsCount: 80,
+            },
+          },
+          {
+            type: 'Feature',
+            id: '2',
+            geometry: { type: 'Point', coordinates: [24.94, 60.18] },
+            properties: {
+              stationId: '2',
+              name: 'Station 2',
+              returnsCount: 120,
             },
           },
         ],
@@ -165,6 +185,16 @@ describe('useColorScaleExpression', () => {
               departuresDurationAvg: 920,
             },
           },
+          {
+            type: 'Feature',
+            id: '2',
+            geometry: { type: 'Point', coordinates: [24.94, 60.18] },
+            properties: {
+              stationId: '2',
+              name: 'Station 2',
+              departuresDurationAvg: 1050,
+            },
+          },
         ],
       };
 
@@ -208,6 +238,16 @@ describe('useColorScaleExpression', () => {
               stationId: '1',
               name: 'Station 1',
               returnsDurationAvg: 850,
+            },
+          },
+          {
+            type: 'Feature',
+            id: '2',
+            geometry: { type: 'Point', coordinates: [24.94, 60.18] },
+            properties: {
+              stationId: '2',
+              name: 'Station 2',
+              returnsDurationAvg: 960,
             },
           },
         ],
@@ -255,6 +295,16 @@ describe('useColorScaleExpression', () => {
               departuresDistanceAvg: 2500,
             },
           },
+          {
+            type: 'Feature',
+            id: '2',
+            geometry: { type: 'Point', coordinates: [24.94, 60.18] },
+            properties: {
+              stationId: '2',
+              name: 'Station 2',
+              departuresDistanceAvg: 3200,
+            },
+          },
         ],
       };
 
@@ -300,6 +350,16 @@ describe('useColorScaleExpression', () => {
               returnsDistanceAvg: 2300,
             },
           },
+          {
+            type: 'Feature',
+            id: '2',
+            geometry: { type: 'Point', coordinates: [24.94, 60.18] },
+            properties: {
+              stationId: '2',
+              name: 'Station 2',
+              returnsDistanceAvg: 2800,
+            },
+          },
         ],
       };
 
@@ -342,7 +402,17 @@ describe('useColorScaleExpression', () => {
             properties: {
               stationId: '1',
               name: 'Station 1',
-              departuresCount: 100,
+              diffCount: -0.2,
+            },
+          },
+          {
+            type: 'Feature',
+            id: '2',
+            geometry: { type: 'Point', coordinates: [24.94, 60.18] },
+            properties: {
+              stationId: '2',
+              name: 'Station 2',
+              diffCount: 0.3,
             },
           },
         ],
@@ -351,11 +421,11 @@ describe('useColorScaleExpression', () => {
       const { result } = renderHook(() =>
         useColorScaleExpression({
           geojsonData: mockData,
-          inputValue: ['get', 'departuresCount'],
+          inputValue: ['get', 'diffCount'],
         })
       );
 
-      // Should use departures for diff mode (for now)
+      // Should use diff properties for diff mode
       expect(result.current).not.toBe('#cccccc');
     });
   });
@@ -863,6 +933,328 @@ describe('useColorScaleExpression', () => {
       // Result should be defined after direction change
       expect(result1.current).toBeDefined();
       expect(firstResult).toBeDefined();
+    });
+  });
+
+  describe('with difference direction', () => {
+    it('should use diverging color scale for diff direction', () => {
+      const mockData: FlattenedStationFeatureCollection = {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            id: '1',
+            geometry: { type: 'Point', coordinates: [24.9, 60.2] },
+            properties: {
+              stationId: '1',
+              name: 'Station 1',
+              diffCount: -0.5, // More arrivals
+            },
+          },
+          {
+            type: 'Feature',
+            id: '2',
+            geometry: { type: 'Point', coordinates: [24.91, 60.21] },
+            properties: {
+              stationId: '2',
+              name: 'Station 2',
+              diffCount: 0.5, // More departures
+            },
+          },
+        ],
+      };
+
+      mockUseMapControls.mockReturnValue({
+        metric: 'tripCount',
+        direction: 'diff',
+        style: 'dark',
+        visualization: 'points',
+        controls: {
+          metric: 'tripCount',
+          direction: 'diff',
+          style: 'dark',
+          visualization: 'points',
+        },
+        updateMetric: vi.fn(),
+        updateDirection: vi.fn(),
+        updateStyle: vi.fn(),
+        updateVisualization: vi.fn(),
+        updateControls: vi.fn(),
+      });
+
+      const { result } = renderHook(() =>
+        useColorScaleExpression({
+          geojsonData: mockData,
+          inputValue: ['get', 'diffCount'],
+        })
+      );
+
+      // Should return an interpolate expression (diverging scale)
+      expect(Array.isArray(result.current)).toBe(true);
+      if (Array.isArray(result.current)) {
+        expect(result.current[0]).toBe('interpolate');
+      }
+    });
+
+    it('should use diverging scale for durationAvg in diff mode', () => {
+      const mockData: FlattenedStationFeatureCollection = {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            id: '1',
+            geometry: { type: 'Point', coordinates: [24.9, 60.2] },
+            properties: {
+              stationId: '1',
+              name: 'Station 1',
+              diffDurationAvg: -0.2,
+            },
+          },
+          {
+            type: 'Feature',
+            id: '2',
+            geometry: { type: 'Point', coordinates: [24.91, 60.21] },
+            properties: {
+              stationId: '2',
+              name: 'Station 2',
+              diffDurationAvg: 0.3,
+            },
+          },
+        ],
+      };
+
+      mockUseMapControls.mockReturnValue({
+        metric: 'durationAvg',
+        direction: 'diff',
+        style: 'dark',
+        visualization: 'points',
+        controls: {
+          metric: 'durationAvg',
+          direction: 'diff',
+          style: 'dark',
+          visualization: 'points',
+        },
+        updateMetric: vi.fn(),
+        updateDirection: vi.fn(),
+        updateStyle: vi.fn(),
+        updateVisualization: vi.fn(),
+        updateControls: vi.fn(),
+      });
+
+      const { result } = renderHook(() =>
+        useColorScaleExpression({
+          geojsonData: mockData,
+          inputValue: ['get', 'diffDurationAvg'],
+        })
+      );
+
+      expect(Array.isArray(result.current)).toBe(true);
+      if (Array.isArray(result.current)) {
+        expect(result.current[0]).toBe('interpolate');
+      }
+    });
+
+    it('should use diverging scale for distanceAvg in diff mode', () => {
+      const mockData: FlattenedStationFeatureCollection = {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            id: '1',
+            geometry: { type: 'Point', coordinates: [24.9, 60.2] },
+            properties: {
+              stationId: '1',
+              name: 'Station 1',
+              diffDistanceAvg: 0.1,
+            },
+          },
+          {
+            type: 'Feature',
+            id: '2',
+            geometry: { type: 'Point', coordinates: [24.91, 60.21] },
+            properties: {
+              stationId: '2',
+              name: 'Station 2',
+              diffDistanceAvg: -0.15,
+            },
+          },
+        ],
+      };
+
+      mockUseMapControls.mockReturnValue({
+        metric: 'distanceAvg',
+        direction: 'diff',
+        style: 'dark',
+        visualization: 'points',
+        controls: {
+          metric: 'distanceAvg',
+          direction: 'diff',
+          style: 'dark',
+          visualization: 'points',
+        },
+        updateMetric: vi.fn(),
+        updateDirection: vi.fn(),
+        updateStyle: vi.fn(),
+        updateVisualization: vi.fn(),
+        updateControls: vi.fn(),
+      });
+
+      const { result } = renderHook(() =>
+        useColorScaleExpression({
+          geojsonData: mockData,
+          inputValue: ['get', 'diffDistanceAvg'],
+        })
+      );
+
+      expect(Array.isArray(result.current)).toBe(true);
+      if (Array.isArray(result.current)) {
+        expect(result.current[0]).toBe('interpolate');
+      }
+    });
+
+    it('should return fallback color when all diff values are the same', () => {
+      const mockData: FlattenedStationFeatureCollection = {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            id: '1',
+            geometry: { type: 'Point', coordinates: [24.9, 60.2] },
+            properties: {
+              stationId: '1',
+              name: 'Station 1',
+              diffCount: 0,
+            },
+          },
+          {
+            type: 'Feature',
+            id: '2',
+            geometry: { type: 'Point', coordinates: [24.91, 60.21] },
+            properties: {
+              stationId: '2',
+              name: 'Station 2',
+              diffCount: 0,
+            },
+          },
+        ],
+      };
+
+      mockUseMapControls.mockReturnValue({
+        metric: 'tripCount',
+        direction: 'diff',
+        style: 'dark',
+        visualization: 'points',
+        controls: {
+          metric: 'tripCount',
+          direction: 'diff',
+          style: 'dark',
+          visualization: 'points',
+        },
+        updateMetric: vi.fn(),
+        updateDirection: vi.fn(),
+        updateStyle: vi.fn(),
+        updateVisualization: vi.fn(),
+        updateControls: vi.fn(),
+      });
+
+      const { result } = renderHook(() =>
+        useColorScaleExpression({
+          geojsonData: mockData,
+          inputValue: ['get', 'diffCount'],
+        })
+      );
+
+      // Should return fallback color when all values are the same
+      expect(result.current).toBe('#cccccc');
+    });
+
+    it('should switch from sequential to diverging scale when direction changes to diff', () => {
+      const mockData: FlattenedStationFeatureCollection = {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            id: '1',
+            geometry: { type: 'Point', coordinates: [24.9, 60.2] },
+            properties: {
+              stationId: '1',
+              name: 'Station 1',
+              departuresCount: 100,
+              diffCount: -0.3,
+            },
+          },
+          {
+            type: 'Feature',
+            id: '2',
+            geometry: { type: 'Point', coordinates: [24.91, 60.21] },
+            properties: {
+              stationId: '2',
+              name: 'Station 2',
+              departuresCount: 150,
+              diffCount: 0.5,
+            },
+          },
+        ],
+      };
+
+      // Start with departures
+      mockUseMapControls.mockReturnValue({
+        metric: 'tripCount',
+        direction: 'departures',
+        style: 'dark',
+        visualization: 'points',
+        controls: {
+          metric: 'tripCount',
+          direction: 'departures',
+          style: 'dark',
+          visualization: 'points',
+        },
+        updateMetric: vi.fn(),
+        updateDirection: vi.fn(),
+        updateStyle: vi.fn(),
+        updateVisualization: vi.fn(),
+        updateControls: vi.fn(),
+      });
+
+      const { result, rerender } = renderHook(() =>
+        useColorScaleExpression({
+          geojsonData: mockData,
+          inputValue: ['get', 'departuresCount'],
+        })
+      );
+
+      // Should use sequential scale for departures
+      const departuresResult = result.current;
+      expect(Array.isArray(departuresResult)).toBe(true);
+
+      // Change to diff direction
+      mockUseMapControls.mockReturnValue({
+        metric: 'tripCount',
+        direction: 'diff',
+        style: 'dark',
+        visualization: 'points',
+        controls: {
+          metric: 'tripCount',
+          direction: 'diff',
+          style: 'dark',
+          visualization: 'points',
+        },
+        updateMetric: vi.fn(),
+        updateDirection: vi.fn(),
+        updateStyle: vi.fn(),
+        updateVisualization: vi.fn(),
+        updateControls: vi.fn(),
+      });
+
+      rerender();
+
+      // Should switch to diverging scale for diff
+      expect(Array.isArray(result.current)).toBe(true);
+      if (Array.isArray(result.current)) {
+        expect(result.current[0]).toBe('interpolate');
+      }
+      // Results should be different
+      expect(result.current).not.toEqual(departuresResult);
     });
   });
 });

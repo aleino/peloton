@@ -41,6 +41,19 @@ export interface FlattenedStationFeatureProperties {
   returnsDurationAvg?: number;
   returnsDistanceAvg?: number;
 
+  /**
+   * Relative difference metrics (range: -1.0 to +1.0)
+   *
+   * Calculated as: (departures - returns) / (departures + returns)
+   *
+   * - Positive values (+1.0): More departures (source station)
+   * - Negative values (-1.0): More arrivals (destination station)
+   * - Near zero (0.0): Balanced station
+   */
+  diffCount?: number;
+  diffDurationAvg?: number;
+  diffDistanceAvg?: number;
+
   // Legacy field - kept for backwards compatibility
   totalDepartures?: number;
 }

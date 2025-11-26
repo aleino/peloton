@@ -19,11 +19,9 @@ import type { MapStyle, Direction, Metric, Visualization, MenuType } from '../..
  * Provides state and handlers for map controls including:
  * - Map style selection (dark, light, satellite, streets)
  * - Trip direction filtering (departures, arrivals, diff)
- * - Data metric selection (tripCount, durationAvg, distanceAvg)
+ * - Trip metric selection (tripCount, durationAvg, distanceAvg)
  * - Visualization type (points, voronoi)
  * - Menu UI state (which submenu is open)
- *
- * Note: Menu close has a 300ms delay to show selection feedback
  */
 export const useControlMenus = () => {
   const dispatch = useAppDispatch();
@@ -40,31 +38,19 @@ export const useControlMenus = () => {
   };
 
   const handleStyleSelect = (style: MapStyle) => {
-    // Delay dispatch to show selection feedback before closing menu
-    setTimeout(() => {
-      dispatch(setStyle(style));
-    }, 300);
+    dispatch(setStyle(style));
   };
 
   const handleDirectionSelect = (direction: Direction) => {
-    // Delay dispatch to show selection feedback before closing menu
-    setTimeout(() => {
-      dispatch(setDirection(direction));
-    }, 300);
+    dispatch(setDirection(direction));
   };
 
   const handleMetricSelect = (metric: Metric) => {
-    // Delay dispatch to show selection feedback before closing menu
-    setTimeout(() => {
-      dispatch(setMetric(metric));
-    }, 300);
+    dispatch(setMetric(metric));
   };
 
   const handleVisualizationSelect = (visualization: Visualization) => {
-    // Delay dispatch to show selection feedback before closing menu
-    setTimeout(() => {
-      dispatch(setVisualization(visualization));
-    }, 300);
+    dispatch(setVisualization(visualization));
   };
 
   return {

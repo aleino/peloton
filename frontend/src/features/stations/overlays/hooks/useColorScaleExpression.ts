@@ -3,11 +3,12 @@ import {
   createLinearColorExpression,
   createLogColorExpression,
   createQuantileColorExpression,
+  createDivergingColorExpression,
 } from '@/utils/colorScales';
 import { useAppSelector } from '@/store/hooks';
 import { selectColorScaleType } from '@/features/settings/settings.store';
 import { useMapControls } from '@/features/map/hooks';
-import type { Metric, Direction } from '@/features/map/types';
+import { getStationPropertyName } from '@/features/stations/overlays/utils/metricProperties';
 import type { ExpressionSpecification } from 'mapbox-gl';
 import type {
   FlattenedStationFeatureCollection,
@@ -20,57 +21,25 @@ export interface UseColorScaleExpressionOptions {
 }
 
 /**
- * Get the flattened property name for a given metric and direction
+ * Create a Mapbox color expression using D3 scales (linear, log, quantile, or diverging)
  *
- * Maps user-selected metric and direction to the flattened property name
- * in FlattenedStationFeatureProperties.
+ * This hook generates a Mapbox GL expression for color mapping. The scale type depends
+ * on the selected direction:
  *
- * @param metric - Selected metric (tripCount, durationAvg, distanceAvg)
- * @param direction - Selected direction (departures, arrivals, diff)
- * @returns Property name to use in Mapbox expressions
- */
-function getPropertyName(metric: Metric, direction: Direction): string {
-  // Map 'arrivals' to 'returns' to match property names
-  // For diff mode, we'll use departures for now (diff calculation comes later)
-  const dir =
-    direction === 'diff' ? 'departures' : direction === 'arrivals' ? 'returns' : direction;
-
-  const propertyMap: Record<Metric, Record<'departures' | 'returns', string>> = {
-    tripCount: {
-      departures: 'departuresCount',
-      returns: 'returnsCount',
-    },
-    durationAvg: {
-      departures: 'departuresDurationAvg',
-      returns: 'returnsDurationAvg',
-    },
-    distanceAvg: {
-      departures: 'departuresDistanceAvg',
-      returns: 'returnsDistanceAvg',
-    },
-  };
-
-  return propertyMap[metric][dir as 'departures' | 'returns'];
-}
-
-/**
- * Create a Mapbox color expression using D3 scales (linear, log, or quantile)
- *
- * This hook generates a Mapbox GL expression for color mapping using the Viridis
- * color scale. The metric and direction are read from Redux state:
- * - Metric: tripCount, durationAvg, distanceAvg
- * - Direction: departures, arrivals, diff
- *
- * The scale type is read from settings and can be:
+ * **Sequential scales (departures, arrivals)**: Viridis color scheme
  * - 'linear': Even distribution across value range (scaleLinear)
  * - 'log': Logarithmic distribution for exponential data (scaleLog)
  * - 'quantile': Equal-sized buckets/deciles (scaleQuantile) - DEFAULT
  *
- * Note: Duration (durationAvg) and distance (distanceAvg) metrics always use quantile scale
- * regardless of the settings, as these continuous measurements benefit from equal-sized bins.
- * Only tripCount uses the user-selected scale type.
+ * **Diverging scale (diff)**: RdBu (Red-White-Blue) color scheme
+ * - Always uses linear interpolation
+ * - Red: More arrivals (negative values)
+ * - White: Balanced (zero)
+ * - Blue: More departures (positive values)
  *
- * The color scale maps values to Viridis colors from purple (#440154) to yellow-green (#fde725).
+ * Note: Duration (durationAvg) and distance (distanceAvg) metrics always use quantile scale
+ * for sequential data, as continuous measurements benefit from equal-sized bins.
+ * Only tripCount uses the user-selected scale type for sequential data.
  *
  * @param options - Configuration for expression generation
  * @param options.geojsonData - Station GeoJSON data to calculate scale from
@@ -91,7 +60,7 @@ export const useColorScaleExpression = (
     }
 
     // Determine which property to use for color scaling
-    const propertyName = getPropertyName(metric, direction);
+    const propertyName = getStationPropertyName(metric, direction);
 
     // Extract values from the dynamic property
     const values = geojsonData.features.map((f) => {
@@ -111,6 +80,11 @@ export const useColorScaleExpression = (
     // If min equals max (including all zeros), return fallback color
     if (min === max) {
       return '#cccccc';
+    }
+
+    // Use diverging scale for difference direction
+    if (direction === 'diff') {
+      return createDivergingColorExpression(values, inputValue);
     }
 
     // Calculate 5th and 95th percentiles to discard extreme outliers

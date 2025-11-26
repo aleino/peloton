@@ -17,7 +17,7 @@ import {
 
 // Material Design standard easing for menu transitions
 const MENU_TRANSITION_EASING = 'cubic-bezier(0.4, 0, 0.2, 1)';
-const MENU_TRANSITION_DURATION = 100;
+const MENU_TRANSITION_DURATION = 225;
 
 /**
  * Map controls with submenu options
@@ -25,7 +25,7 @@ const MENU_TRANSITION_DURATION = 100;
  * Features:
  * - Map style menu (dark, light, satellite, streets)
  * - Direction filter (departures, arrivals, diff)
- * - Data metric selection (total trips, avg duration, avg distance)
+ * - Trip metric selection (total trips, avg duration, avg distance)
  * - Station visualization (points, voronoi)
  * - Rectangular button design with glassmorphic styling
  * - Expandable submenus with square option buttons
@@ -100,6 +100,29 @@ export const MapControls = () => {
             </Styled.CollapsedMenuWrapper>
           </Styled.ButtonWithMenuRow>
 
+          <Styled.Divider />
+
+          <Styled.ButtonWithMenuRow>
+            <ControlButton
+              icon={<MetricIcon size={CONTROL_BUTTON_ICON_SIZE} />}
+              isOpen={openMenu === 'parameter'}
+              onClick={() => handleMenuToggle('parameter')}
+              ariaLabel="Trip metric"
+            />
+            <Styled.CollapsedMenuWrapper>
+              <Collapse
+                in={openMenu === 'parameter'}
+                timeout={MENU_TRANSITION_DURATION}
+                easing={MENU_TRANSITION_EASING}
+                orientation="horizontal"
+              >
+                <ControlMenu label="Trip metric">
+                  <MetricMenu selectedMetric={selectedMetric} onSelect={handleMetricSelect} />
+                </ControlMenu>
+              </Collapse>
+            </Styled.CollapsedMenuWrapper>
+          </Styled.ButtonWithMenuRow>
+
           <Styled.ButtonWithMenuRow>
             <ControlButton
               icon={<DirectionIcon size={CONTROL_BUTTON_ICON_SIZE} />}
@@ -119,27 +142,6 @@ export const MapControls = () => {
                     selectedDirection={selectedDirection}
                     onSelect={handleDirectionSelect}
                   />
-                </ControlMenu>
-              </Collapse>
-            </Styled.CollapsedMenuWrapper>
-          </Styled.ButtonWithMenuRow>
-
-          <Styled.ButtonWithMenuRow>
-            <ControlButton
-              icon={<MetricIcon size={CONTROL_BUTTON_ICON_SIZE} />}
-              isOpen={openMenu === 'parameter'}
-              onClick={() => handleMenuToggle('parameter')}
-              ariaLabel="Data metric"
-            />
-            <Styled.CollapsedMenuWrapper>
-              <Collapse
-                in={openMenu === 'parameter'}
-                timeout={MENU_TRANSITION_DURATION}
-                easing={MENU_TRANSITION_EASING}
-                orientation="horizontal"
-              >
-                <ControlMenu label="Data metric">
-                  <MetricMenu selectedMetric={selectedMetric} onSelect={handleMetricSelect} />
                 </ControlMenu>
               </Collapse>
             </Styled.CollapsedMenuWrapper>

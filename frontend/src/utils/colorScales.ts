@@ -1,39 +1,36 @@
-import { scaleLinear, scaleLog, scaleQuantile } from 'd3-scale';
+import { scaleLinear, scaleLog, scaleQuantile, scaleDiverging } from 'd3-scale';
+import { interpolatePiYG, interpolateViridis } from 'd3-scale-chromatic';
+import { extent, quantileSorted } from 'd3-array';
 import type { ExpressionSpecification } from 'mapbox-gl';
 
-/**
- * Viridis color scale with paired t-stops and colors for Mapbox expressions
- * Each stop defines a normalized position (t) and corresponding color
- */
-export const VIRIDIS_SCALE = {
-  stops: [
-    { t: 0.0, color: '#440154' }, // deep purple
-    { t: 0.1, color: '#48186a' },
-    { t: 0.2, color: '#3f4a8a' },
-    { t: 0.3, color: '#31688e' },
-    { t: 0.4, color: '#26838f' },
-    { t: 0.5, color: '#1f9d88' },
-    { t: 0.6, color: '#35b779' },
-    { t: 0.7, color: '#6ece58' },
-    { t: 0.8, color: '#b5de2b' },
-    { t: 0.9, color: '#c8e020' },
-    { t: 1.0, color: '#fde725' }, // bright yellow-green
-  ],
-  /** Convenience accessor for just the colors */
-  get colors() {
-    return this.stops.map((s) => s.color);
-  },
-  /** Convenience accessor for just the t-values */
-  get tValues() {
-    return this.stops.map((s) => s.t);
-  },
-} as const;
+const NUM_STOPS = 11;
+const DEFAULT_COLOR = '#cccccc';
+const NEUTRAL_COLOR = '#f7f7f7';
 
 /**
- * @deprecated Use VIRIDIS_SCALE.colors instead
- * Kept for backward compatibility
+ * Validate and filter numeric values
  */
-export const VIRIDIS_COLOR_ARRAY = VIRIDIS_SCALE.colors;
+function getValidValues(values: number[]): number[] {
+  return values.filter((v) => Number.isFinite(v) && v !== undefined);
+}
+
+/**
+ * Generic function to create Mapbox interpolate expression from D3 scale
+ */
+function createInterpolateExpression(
+  scale: (value: number) => number,
+  colorInterpolator: (t: number) => string,
+  inputValue: ExpressionSpecification
+): ExpressionSpecification {
+  const stops = Array.from({ length: NUM_STOPS }, (_, i) => {
+    const t = i / (NUM_STOPS - 1);
+    const value = scale(t);
+    const color = colorInterpolator(t);
+    return [value, color];
+  }).flat();
+
+  return ['interpolate', ['linear'], inputValue, ...stops] as ExpressionSpecification;
+}
 
 /**
  * Calculate min and max departure counts from station data
@@ -56,37 +53,27 @@ export const VIRIDIS_COLOR_ARRAY = VIRIDIS_SCALE.colors;
  * ```
  */
 export function getDepartureRange(
-  stations: Array<{
-    properties: { totalDepartures?: number };
-  }>,
+  stations: Array<{ properties: { totalDepartures?: number } }>,
   usePercentiles = false
-): {
-  minDepartures: number;
-  maxDepartures: number;
-} {
-  const departures = stations
-    .map((s) => s.properties.totalDepartures ?? 0)
-    .filter((d) => d !== undefined);
+): { minDepartures: number; maxDepartures: number } {
+  const departures = getValidValues(stations.map((s) => s.properties.totalDepartures ?? 0));
 
   if (departures.length === 0) {
     return { minDepartures: 0, maxDepartures: 0 };
   }
 
   if (usePercentiles) {
-    // Sort and use percentiles to exclude extreme outliers (discard top/bottom 5%)
     const sorted = [...departures].sort((a, b) => a - b);
-    const p5Index = Math.max(0, Math.floor(sorted.length * 0.05));
-    const p95Index = Math.min(sorted.length - 1, Math.ceil(sorted.length * 0.95) - 1);
-
     return {
-      minDepartures: sorted[p5Index] ?? 0,
-      maxDepartures: sorted[p95Index] ?? 0,
+      minDepartures: quantileSorted(sorted, 0.05) ?? 0,
+      maxDepartures: quantileSorted(sorted, 0.95) ?? 0,
     };
   }
 
+  const [minDepartures, maxDepartures] = extent(departures);
   return {
-    minDepartures: Math.min(...departures),
-    maxDepartures: Math.max(...departures),
+    minDepartures: minDepartures ?? 0,
+    maxDepartures: maxDepartures ?? 0,
   };
 }
 
@@ -107,23 +94,13 @@ export function createLinearColorExpression(
   maxValue: number,
   inputValue: ExpressionSpecification
 ): string | ExpressionSpecification {
-  // Handle edge case where all values are the same
   if (minValue === maxValue) {
-    return VIRIDIS_SCALE.stops[5]!.color; // Middle color (teal)
+    return interpolateViridis(0.5);
   }
 
-  // Create D3 linear scale with clamping to handle outliers
-  const scale = scaleLinear<number>().domain([minValue, maxValue]).range([0, 1]).clamp(true);
+  const scale = scaleLinear().domain([0, 1]).range([minValue, maxValue]).clamp(true);
 
-  return [
-    'interpolate',
-    ['linear'],
-    inputValue,
-    ...VIRIDIS_SCALE.stops.flatMap((stop) => {
-      const value = scale.invert(stop.t);
-      return [value, stop.color];
-    }),
-  ] as ExpressionSpecification;
+  return createInterpolateExpression((t) => scale(t), interpolateViridis, inputValue);
 }
 
 /**
@@ -144,26 +121,14 @@ export function createLogColorExpression(
   maxValue: number,
   inputValue: ExpressionSpecification
 ): string | ExpressionSpecification {
-  // Handle edge cases
   if (minValue === maxValue) {
-    return VIRIDIS_SCALE.stops[5]!.color; // Middle color (teal)
+    return interpolateViridis(0.5);
   }
 
-  // Ensure minValue is positive for log scale
   const safeMin = Math.max(minValue, 1);
+  const scale = scaleLog().domain([0, 1]).range([safeMin, maxValue]).clamp(true);
 
-  // Create D3 log scale with clamping to handle outliers
-  const scale = scaleLog<number>().domain([safeMin, maxValue]).range([0, 1]).clamp(true);
-
-  return [
-    'interpolate',
-    ['linear'],
-    inputValue,
-    ...VIRIDIS_SCALE.stops.flatMap((stop) => {
-      const value = scale.invert(stop.t);
-      return [value, stop.color];
-    }),
-  ] as ExpressionSpecification;
+  return createInterpolateExpression((t) => scale(t), interpolateViridis, inputValue);
 }
 
 /**
@@ -182,35 +147,90 @@ export function createQuantileColorExpression(
   values: number[],
   inputValue: ExpressionSpecification
 ): string | ExpressionSpecification {
-  // Handle edge cases
-  if (values.length === 0) {
-    return '#cccccc'; // Fallback color
+  const validValues = getValidValues(values);
+
+  if (validValues.length === 0) {
+    return DEFAULT_COLOR;
   }
 
-  if (values.length === 1 || Math.min(...values) === Math.max(...values)) {
-    return VIRIDIS_SCALE.stops[5]!.color; // Middle color (teal)
+  const [minVal, maxVal] = extent(validValues);
+  if (validValues.length === 1 || minVal === maxVal) {
+    return interpolateViridis(0.5);
   }
 
-  // Sort values and trim top/bottom 5%
-  const sorted = [...values].sort((a, b) => a - b);
-  const p5Index = Math.max(0, Math.floor(sorted.length * 0.05));
-  const p95Index = Math.min(sorted.length - 1, Math.ceil(sorted.length * 0.95) - 1);
-  const trimmedValues = sorted.slice(p5Index, p95Index + 1);
+  const sorted = [...validValues].sort((a, b) => a - b);
+  const p5Value = quantileSorted(sorted, 0.05) ?? minVal ?? 0;
+  const p95Value = quantileSorted(sorted, 0.95) ?? maxVal ?? 0;
+  const trimmed = sorted.filter((v) => v >= p5Value && v <= p95Value);
 
-  // Create D3 quantile scale (deciles) with trimmed values
-  const scale = scaleQuantile<string>().domain(trimmedValues).range(VIRIDIS_SCALE.colors);
+  const colors = Array.from({ length: NUM_STOPS }, (_, i) =>
+    interpolateViridis(i / (NUM_STOPS - 1))
+  );
+  const scale = scaleQuantile<string>().domain(trimmed).range(colors);
 
-  // Get quantile thresholds (breakpoints between deciles)
-  const quantiles = scale.quantiles();
-
-  // Build Mapbox step expression
-  // Format: ['step', input, color0, threshold1, color1, threshold2, color2, ...]
-  const stepExpression: ExpressionSpecification = [
+  return [
     'step',
     inputValue,
-    VIRIDIS_SCALE.colors[0]!, // Base color for values below first threshold
-    ...quantiles.flatMap((threshold, i) => [threshold, VIRIDIS_SCALE.colors[i + 1]!]),
+    colors[0]!,
+    ...scale.quantiles().flatMap((threshold, i) => [threshold, colors[i + 1]!]),
   ] as ExpressionSpecification;
+}
 
-  return stepExpression;
+/**
+ * Create a Mapbox color expression using D3 diverging scale (RdBu)
+ *
+ * Diverging scales are ideal for data with a meaningful midpoint (zero),
+ * showing both negative and positive deviations from that center point.
+ *
+ * Uses D3's scaleDiverging with interpolateRdBu:
+ * - Red: Negative values (more arrivals)
+ * - White: Zero (neutral/balanced)
+ * - Blue: Positive values (more departures)
+ *
+ * The scale uses symmetric ranges around zero to ensure the midpoint
+ * (white) represents exactly zero, even with asymmetric data.
+ *
+ * @param values - Array of numeric values (can include negative, zero, positive)
+ * @param inputValueExpression - Mapbox expression that provides the value to map
+ * @returns Mapbox expression for diverging color mapping
+ *
+ * @example
+ * ```typescript
+ * // For difference data ranging from -0.8 to +0.6
+ * const expression = createDivergingColorExpression(
+ *   [-0.8, -0.5, 0, 0.3, 0.6],
+ *   ['get', 'diffCount']
+ * );
+ * ```
+ */
+export function createDivergingColorExpression(
+  values: number[],
+  inputValueExpression: ExpressionSpecification
+): ExpressionSpecification | string {
+  const validValues = getValidValues(values);
+
+  if (validValues.length === 0) {
+    return DEFAULT_COLOR;
+  }
+
+  const [minValue, maxValue] = extent(validValues);
+  if (minValue === undefined || maxValue === undefined || minValue === maxValue) {
+    return NEUTRAL_COLOR;
+  }
+  const sortedValues = [...validValues].sort((a, b) => a - b);
+
+  // Use percentiles to trim extreme outliers (5th and 95th percentiles)
+  const p5Value = quantileSorted(sortedValues, 0.05) ?? minValue;
+  const p95Value = quantileSorted(sortedValues, 0.95) ?? maxValue;
+
+  const maxAbsValue = Math.max(Math.abs(p5Value), Math.abs(p95Value));
+  const scale = scaleDiverging(interpolatePiYG).domain([-maxAbsValue, 0, maxAbsValue]).clamp(true);
+
+  const stops = Array.from({ length: NUM_STOPS }, (_, i) => {
+    const t = i / (NUM_STOPS - 1);
+    const value = -maxAbsValue + t * (2 * maxAbsValue);
+    return [value, scale(value)];
+  }).flat();
+
+  return ['interpolate', ['linear'], inputValueExpression, ...stops] as ExpressionSpecification;
 }

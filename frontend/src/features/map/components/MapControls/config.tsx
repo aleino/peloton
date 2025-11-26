@@ -50,7 +50,7 @@ export const DIRECTION_OPTIONS: readonly DirectionOption[] = [
   { value: 'diff', icon: ArrowRightLeft, label: 'Difference' },
 ] as const;
 
-// Data Metrics
+// Trip Metrics
 export interface MetricOption {
   value: Metric;
   icon: LucideIcon;
