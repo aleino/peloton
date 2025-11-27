@@ -30,9 +30,31 @@ export const MARKER_STROKE_WIDTH = {
 } as const;
 
 /**
- * Transition duration for smooth state changes
+ * Transition durations for different animation types
+ *
+ * Organized by use case:
+ * - INTERACTION: Fast transitions for hover/selection states (snappy feel)
+ * - LAYER_OPACITY: Smooth transitions for layer visibility changes (cross-fade effect)
+ * - COLOR_SCALE: Color transitions when changing metrics (smooth color morphing)
  */
-export const MARKER_TRANSITION_DURATION = 100; // milliseconds
+export const TRANSITION_DURATION = {
+  /** Fast transitions for hover/selection states */
+  INTERACTION: 100,
+  /** Smooth transitions for layer visibility changes */
+  LAYER_OPACITY: 200,
+  /** Color scale transitions when changing metrics */
+  COLOR_SCALE: 300,
+} as const;
+
+/**
+ * @deprecated Use TRANSITION_DURATION.INTERACTION instead
+ */
+export const MARKER_TRANSITION_DURATION = TRANSITION_DURATION.INTERACTION;
+
+/**
+ * @deprecated Use TRANSITION_DURATION.LAYER_OPACITY instead
+ */
+export const FILL_OPACITY_TRANSITION_DURATION = TRANSITION_DURATION.LAYER_OPACITY;
 
 /**
  * Marker stroke color (consistent across states)

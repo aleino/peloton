@@ -5,115 +5,63 @@ import {
   createQuantileColorExpression,
   createDivergingColorExpression,
 } from '@/utils/colorScales';
-import { useAppSelector } from '@/store/hooks';
-import { selectColorScaleType } from '@/features/settings/settings.store';
-import { useMapControls } from '@/features/map/hooks';
-import { getStationPropertyName } from '@/features/stations/overlays/utils/metricProperties';
 import type { ExpressionSpecification } from 'mapbox-gl';
-import type {
-  FlattenedStationFeatureCollection,
-  FlattenedStationFeatureProperties,
-} from '@/features/stations/api/useStationsQuery';
 
 export interface UseColorScaleExpressionOptions {
-  geojsonData: FlattenedStationFeatureCollection | null;
+  minValue: number;
+  maxValue: number;
+  scaleType: 'linear' | 'log' | 'quantile';
   inputValue: ExpressionSpecification;
+  isDiverging?: boolean;
+  values?: number[];
 }
 
 /**
  * Create a Mapbox color expression using D3 scales (linear, log, quantile, or diverging)
  *
- * This hook generates a Mapbox GL expression for color mapping. The scale type depends
- * on the selected direction:
- *
- * **Sequential scales (departures, arrivals)**: Viridis color scheme
- * - 'linear': Even distribution across value range (scaleLinear)
- * - 'log': Logarithmic distribution for exponential data (scaleLog)
- * - 'quantile': Equal-sized buckets/deciles (scaleQuantile) - DEFAULT
- *
- * **Diverging scale (diff)**: RdBu (Red-White-Blue) color scheme
- * - Always uses linear interpolation
- * - Red: More arrivals (negative values)
- * - White: Balanced (zero)
- * - Blue: More departures (positive values)
- *
- * Note: Duration (durationAvg) and distance (distanceAvg) metrics always use quantile scale
- * for sequential data, as continuous measurements benefit from equal-sized bins.
- * Only tripCount uses the user-selected scale type for sequential data.
+ * This hook generates a Mapbox GL expression for color mapping.
  *
  * @param options - Configuration for expression generation
- * @param options.geojsonData - Station GeoJSON data to calculate scale from
+ * @param options.minValue - Minimum value for the scale (or 5th percentile)
+ * @param options.maxValue - Maximum value for the scale (or 95th percentile)
+ * @param options.scaleType - Type of scale to use ('linear', 'log', 'quantile')
  * @param options.inputValue - Mapbox expression to use as input value
- * @returns Mapbox expression for color mapping, or fallback color if no data
+ * @param options.isDiverging - Whether to use a diverging color scale (default: false)
+ * @param options.values - Array of all values (required for quantile and diverging scales)
+ * @returns Mapbox expression for color mapping
  */
 export const useColorScaleExpression = (
   options: UseColorScaleExpressionOptions
 ): string | ExpressionSpecification => {
-  const { geojsonData, inputValue } = options;
-  const scaleType = useAppSelector(selectColorScaleType);
-  const { metric, direction } = useMapControls();
+  const { minValue, maxValue, scaleType, inputValue, isDiverging = false, values } = options;
 
   return useMemo((): string | ExpressionSpecification => {
-    // Return fallback color if no data
-    if (!geojsonData || geojsonData.features.length === 0) {
+    // Handle edge case where min equals max
+    if (minValue === maxValue) {
       return '#cccccc';
     }
 
-    // Determine which property to use for color scaling
-    const propertyName = getStationPropertyName(metric, direction);
-
-    // Extract values from the dynamic property
-    const values = geojsonData.features.map((f) => {
-      const value = f.properties[propertyName as keyof FlattenedStationFeatureProperties];
-      return (value as number | undefined) ?? 0;
-    });
-
-    // Handle edge case where all stations have the same value
-    if (values.length === 0) {
-      return '#cccccc';
-    }
-
-    // Calculate min and max once to check for valid range
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-
-    // If min equals max (including all zeros), return fallback color
-    if (min === max) {
-      return '#cccccc';
-    }
-
-    // Use diverging scale for difference direction
-    if (direction === 'diff') {
+    // Use diverging scale if requested
+    if (isDiverging) {
+      if (!values) {
+        console.warn('Values required for diverging scale');
+        return '#cccccc';
+      }
       return createDivergingColorExpression(values, inputValue);
     }
 
-    // Calculate 5th and 95th percentiles to discard extreme outliers
-    const sorted = [...values].sort((a, b) => a - b);
-    const p5Index = Math.max(0, Math.floor(sorted.length * 0.05));
-    const p95Index = Math.min(sorted.length - 1, Math.ceil(sorted.length * 0.95) - 1);
-    const p5Value = sorted[p5Index] ?? min;
-    const p95Value = sorted[p95Index] ?? max;
-
-    // Use quantile scale for durationAvg and distanceAvg metrics (better for continuous measurements)
-    // Use settings-based scale for tripCount
-    const effectiveScaleType =
-      metric === 'durationAvg' || metric === 'distanceAvg' ? 'quantile' : scaleType;
-
-    // Choose scale based on effective scale type
-    switch (effectiveScaleType) {
-      case 'linear': {
-        return createLinearColorExpression(p5Value, p95Value, inputValue);
-      }
-
-      case 'log': {
-        return createLogColorExpression(p5Value, p95Value, inputValue);
-      }
-
+    switch (scaleType) {
+      case 'linear':
+        return createLinearColorExpression(minValue, maxValue, inputValue);
+      case 'log':
+        return createLogColorExpression(minValue, maxValue, inputValue);
       case 'quantile':
-      default: {
-        // Quantile scale uses all values (trimming handled internally)
+        if (!values) {
+          console.warn('Values required for quantile scale');
+          return '#cccccc';
+        }
         return createQuantileColorExpression(values, inputValue);
-      }
     }
-  }, [geojsonData, inputValue, scaleType, metric, direction]);
+    return '#cccccc';
+  }, [minValue, maxValue, scaleType, inputValue, isDiverging, values]);
 };

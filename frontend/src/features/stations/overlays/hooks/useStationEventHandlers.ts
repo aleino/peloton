@@ -6,6 +6,10 @@ import { useStations } from '@/features/stations';
 import { useStationCentering } from '@/features/stations/hooks/useStationCentering';
 import type { StationMapEventData } from '@/features/stations/types';
 
+export interface UseStationEventHandlersOptions {
+  enabled?: boolean;
+}
+
 /**
  * Station-specific event handling logic
  * Handles click (selection) and hover interactions with MapBox feature state
@@ -13,11 +17,23 @@ import type { StationMapEventData } from '@/features/stations/types';
  *
  * @param layerId - ID of the layer to attach events to
  * @param sourceId - ID of the GeoJSON source
+ * @param options - Optional configuration
+ * @param options.enabled - Whether event attachment is enabled (default: true)
  *
  * @example
  * useStationEventHandlers(STATIONS_CIRCLES_LAYER_ID, STATIONS_SOURCE_ID);
+ *
+ * @example With conditional enabling
+ * useStationEventHandlers(VORONOI_LAYER_ID, VORONOI_SOURCE_ID, {
+ *   enabled: isLayerReady
+ * });
  */
-export const useStationEventHandlers = (layerId: string, sourceId: string): void => {
+export const useStationEventHandlers = (
+  layerId: string,
+  sourceId: string,
+  options?: UseStationEventHandlersOptions
+): void => {
+  const { enabled = true } = options ?? {};
   const { setHoveredStation, setSelectedDepartureStationId, selectedDepartureStationId } =
     useStations();
   const { main: map } = useMap();
@@ -34,7 +50,15 @@ export const useStationEventHandlers = (layerId: string, sourceId: string): void
       const feature = e.features?.[0];
       const stationId = feature?.properties?.['stationId'];
       const featureId = feature?.id;
-      const coordinates = (feature?.geometry as GeoJSON.Point)?.coordinates as [number, number];
+
+      // Extract coordinates - support both Point and Polygon geometries
+      let coordinates: [number, number] | undefined;
+      if (feature?.geometry?.type === 'Point') {
+        coordinates = feature.geometry.coordinates as [number, number];
+      } else if (feature?.geometry?.type === 'Polygon') {
+        // For Voronoi polygons, use the click location or first polygon coordinate
+        coordinates = [e.lngLat.lng, e.lngLat.lat];
+      }
 
       if (stationId && coordinates && featureId !== undefined) {
         // Clear previous selection feature-state
@@ -88,7 +112,18 @@ export const useStationEventHandlers = (layerId: string, sourceId: string): void
         map.getCanvas().style.cursor = 'pointer';
 
         // Build station data object
-        const coordinates = (feature.geometry as GeoJSON.Point).coordinates as [number, number];
+        // Extract coordinates - support both Point and Polygon geometries
+        let coordinates: [number, number];
+        if (feature.geometry.type === 'Point') {
+          coordinates = feature.geometry.coordinates as [number, number];
+        } else if (feature.geometry.type === 'Polygon') {
+          // For Voronoi polygons, use the hover location or polygon centroid
+          coordinates = [e.lngLat.lng, e.lngLat.lat];
+        } else {
+          // Fallback for unexpected geometry types
+          return;
+        }
+
         setHoveredStation({
           stationId,
           coordinates,
@@ -143,5 +178,6 @@ export const useStationEventHandlers = (layerId: string, sourceId: string): void
   useLayerEvents({
     layerId,
     handlers,
+    enabled,
   });
 };

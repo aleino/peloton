@@ -5,6 +5,10 @@
  */
 
 export { useStationsQuery } from './useStationsQuery';
+export type {
+  FlattenedStationFeatureCollection,
+  FlattenedStationFeatureProperties,
+} from './useStationsQuery';
 export { useStationDetail } from './useStationDetail';
 export { fetchStations, fetchStationDetail } from './stationsApi';
 export { stationsQueryKeys } from './stationsQueryKeys';

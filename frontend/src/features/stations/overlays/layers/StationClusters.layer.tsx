@@ -1,15 +1,21 @@
+import { useMemo } from 'react';
 import { Layer } from 'react-map-gl/mapbox';
 import { useClusterEventHandlers, useColorScaleExpression } from '../hooks';
-import { getClusterPropertyName } from '../utils';
+import { getClusterPropertyName, getStationPropertyName } from '../utils';
 import { useMapSource, useMapControls } from '@/features/map/hooks';
 import type { LayerProps } from 'react-map-gl/mapbox';
 import type { ExpressionSpecification } from 'mapbox-gl';
-import type { FlattenedStationFeatureCollection } from '@/features/stations/api/useStationsQuery';
+import type {
+  FlattenedStationFeatureCollection,
+  FlattenedStationFeatureProperties,
+} from '@/features/stations/api/useStationsQuery';
 import {
   STATIONS_SOURCE_ID,
   STATIONS_CLUSTERS_LAYER_ID,
   STATIONS_CLUSTER_COUNT_LAYER_ID,
 } from '@/features/stations/config/layers';
+import { useAppSelector } from '@/store/hooks';
+import { selectColorScaleType } from '@/features/settings/settings.store';
 
 /**
  * Cluster layer component for station markers
@@ -31,6 +37,7 @@ export const StationClustersLayer = () => {
 
   // Read metric and direction from map controls
   const { metric, direction } = useMapControls();
+  const scaleType = useAppSelector(selectColorScaleType);
 
   // Determine which cluster property to use for coloring
   const clusterPropertyName = getClusterPropertyName(metric, direction);
@@ -44,10 +51,48 @@ export const StationClustersLayer = () => {
     ['max', ['get', 'point_count'], 1],
   ];
 
+  // Calculate stats for color scale (based on individual stations)
+  // We use the same scale as individual stations so clusters are comparable
+  const propertyName = getStationPropertyName(metric, direction);
+  const { min, max, values } = useMemo(() => {
+    if (!geojsonData || geojsonData.features.length === 0) {
+      return { min: 0, max: 0, values: [] };
+    }
+
+    const vals = geojsonData.features.map((f) => {
+      const value = f.properties[propertyName as keyof FlattenedStationFeatureProperties];
+      return (value as number | undefined) ?? 0;
+    });
+
+    if (vals.length === 0) {
+      return { min: 0, max: 0, values: [] };
+    }
+
+    const minVal = Math.min(...vals);
+    const maxVal = Math.max(...vals);
+
+    // Calculate percentiles for linear/log scales to avoid outliers
+    const sorted = [...vals].sort((a, b) => a - b);
+    const p5Index = Math.max(0, Math.floor(sorted.length * 0.05));
+    const p95Index = Math.min(sorted.length - 1, Math.ceil(sorted.length * 0.95) - 1);
+    const p5Value = sorted[p5Index] ?? minVal;
+    const p95Value = sorted[p95Index] ?? maxVal;
+
+    return {
+      min: p5Value,
+      max: p95Value,
+      values: vals,
+    };
+  }, [geojsonData, propertyName]);
+
   // Generate color scale expression based on average metric value
   const clusterColor = useColorScaleExpression({
-    geojsonData,
+    minValue: min,
+    maxValue: max,
+    scaleType,
     inputValue,
+    isDiverging: direction === 'diff',
+    values,
   });
 
   // Attach cluster event handlers (click to zoom)

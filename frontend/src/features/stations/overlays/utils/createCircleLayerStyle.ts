@@ -7,13 +7,14 @@ import {
   MARKER_STROKE_WIDTH,
   MARKER_OPACITY,
   MARKER_STROKE_COLOR,
-  MARKER_TRANSITION_DURATION,
+  TRANSITION_DURATION,
 } from '../config';
 
 /**
  * Generate circle layer configuration for station markers
  * Pure function - no side effects, fully testable
  *
+ * @param colorExpression - Mapbox expression or color string for circle fill
  * @param filter - Optional Mapbox expression for filtering features
  */
 export const createCircleLayerStyle = (
@@ -50,11 +51,15 @@ export const createCircleLayerStyle = (
     'circle-stroke-color': MARKER_STROKE_COLOR,
 
     'circle-radius-transition': {
-      duration: MARKER_TRANSITION_DURATION,
+      duration: TRANSITION_DURATION.INTERACTION,
       delay: 0,
     },
     'circle-stroke-width-transition': {
-      duration: MARKER_TRANSITION_DURATION,
+      duration: TRANSITION_DURATION.INTERACTION,
+      delay: 0,
+    },
+    'circle-opacity-transition': {
+      duration: TRANSITION_DURATION.LAYER_OPACITY,
       delay: 0,
     },
   },

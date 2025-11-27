@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import type { StationsListResponseBody } from '@peloton/shared';
+
 import { StationsLayer } from '../Stations.layer';
 
 // Mock dependencies
@@ -13,6 +13,17 @@ vi.mock('react-map-gl/mapbox', () => ({
 
 vi.mock('@/features/stations/api', () => ({
   useStationsQuery: vi.fn(),
+}));
+
+vi.mock('@/features/map/hooks', () => ({
+  useMapControls: vi.fn().mockReturnValue({
+    visualization: 'points',
+    metric: 'tripCount',
+    direction: 'departures',
+  }),
+  useWaterLayerOrder: vi.fn().mockReturnValue({
+    restoreOriginalOrder: vi.fn(),
+  }),
 }));
 
 vi.mock('../StationCircles.layer', () => ({
@@ -27,6 +38,10 @@ vi.mock('../StationClusters.layer', () => ({
   StationClustersLayer: () => <div data-testid="clusters-layer" />,
 }));
 
+vi.mock('../StationVoronoi.layer', () => ({
+  StationVoronoiLayer: () => <div data-testid="voronoi-layer" />,
+}));
+
 import * as api from '@/features/stations/api';
 
 describe('StationsLayer', () => {
@@ -38,10 +53,10 @@ describe('StationsLayer', () => {
   it('should render source and sub-layers when data is available', () => {
     console.log('Running test: render source and sub-layers');
     vi.mocked(api.useStationsQuery).mockReturnValue({
-      data: mockData,
+      data: mockData as unknown as api.FlattenedStationFeatureCollection,
       isLoading: false,
       error: null,
-    } as unknown as UseQueryResult<StationsListResponseBody, Error>);
+    } as unknown as UseQueryResult<api.FlattenedStationFeatureCollection, Error>);
 
     render(<StationsLayer />);
 
@@ -56,7 +71,7 @@ describe('StationsLayer', () => {
       data: undefined,
       isLoading: true,
       error: null,
-    } as unknown as UseQueryResult<StationsListResponseBody, Error>);
+    } as unknown as UseQueryResult<api.FlattenedStationFeatureCollection, Error>);
 
     const { container } = render(<StationsLayer />);
     expect(container.firstChild).toBeNull();
@@ -67,7 +82,7 @@ describe('StationsLayer', () => {
       data: undefined,
       isLoading: false,
       error: new Error('Failed to fetch'),
-    } as unknown as UseQueryResult<StationsListResponseBody, Error>);
+    } as unknown as UseQueryResult<api.FlattenedStationFeatureCollection, Error>);
 
     const { container } = render(<StationsLayer />);
     expect(container.firstChild).toBeNull();
@@ -78,7 +93,7 @@ describe('StationsLayer', () => {
       data: undefined,
       isLoading: false,
       error: null,
-    } as unknown as UseQueryResult<StationsListResponseBody, Error>);
+    } as unknown as UseQueryResult<api.FlattenedStationFeatureCollection, Error>);
 
     const { container } = render(<StationsLayer />);
     expect(container.firstChild).toBeNull();
@@ -86,10 +101,10 @@ describe('StationsLayer', () => {
 
   it('should not render when data is not a FeatureCollection', () => {
     vi.mocked(api.useStationsQuery).mockReturnValue({
-      data: { type: 'Feature' } as unknown as StationsListResponseBody, // Not a FeatureCollection
+      data: { type: 'Feature' } as unknown as api.FlattenedStationFeatureCollection, // Not a FeatureCollection
       isLoading: false,
       error: null,
-    } as unknown as UseQueryResult<StationsListResponseBody, Error>);
+    } as unknown as UseQueryResult<api.FlattenedStationFeatureCollection, Error>);
 
     const { container } = render(<StationsLayer />);
     expect(container.firstChild).toBeNull();
@@ -97,10 +112,10 @@ describe('StationsLayer', () => {
 
   it('should render layers in correct order', () => {
     vi.mocked(api.useStationsQuery).mockReturnValue({
-      data: mockData,
+      data: mockData as unknown as api.FlattenedStationFeatureCollection,
       isLoading: false,
       error: null,
-    } as unknown as UseQueryResult<StationsListResponseBody, Error>);
+    } as unknown as UseQueryResult<api.FlattenedStationFeatureCollection, Error>);
 
     const { container } = render(<StationsLayer />);
     const layers = Array.from(container.querySelectorAll('[data-testid$="-layer"]')).map((el) =>

@@ -13,6 +13,54 @@ React 18 + TypeScript + Vite web application for visualizing HSL city bike trip 
 - **TanStack Query (React Query)** for API data fetching
 - **Vitest** for testing
 
+## ✨ Features
+
+### Map Visualizations
+
+The map supports two visualization modes for bike stations:
+
+#### Points Mode (Default)
+
+- **Circle markers** colored by selected metric using Viridis color scale
+- **Clustering** at low zoom levels aggregates nearby stations
+- **Station icons** visible at high zoom levels
+- **Hover tooltips** show station details
+- **Click selection** opens detailed station information
+
+#### Voronoi Mode
+
+- **Tessellation polygons** showing each station's service area
+- Each polygon represents the area closest to that station
+- **Same color scales** as point markers (Viridis for sequential, RdBu for diverging)
+- **No clustering** - individual stations always visible
+- **Interactive cells** with hover highlighting and click selection
+
+Toggle between modes using the visualization control in the map controls panel.
+
+### Metric Selection
+
+View different aspects of station activity:
+
+- **Trip Count**: Total number of trips (departures/arrivals)
+- **Duration Average**: Average trip duration in minutes
+- **Distance Average**: Average trip distance in meters
+
+### Direction Analysis
+
+Analyze station usage patterns:
+
+- **Departures**: Trips starting from each station
+- **Arrivals**: Trips ending at each station
+- **Difference**: Net flow showing source vs. destination stations (diverging colors)
+
+### Color Scales
+
+Multiple scale types for data visualization:
+
+- **Linear**: Even distribution across value range
+- **Logarithmic**: Emphasizes relative differences (good for power-law distributions)
+- **Quantile**: Equal-sized buckets ensuring balanced color distribution (default)
+
 ## 🚀 Quick Start
 
 ### Prerequisites

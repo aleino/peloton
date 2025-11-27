@@ -1,6 +1,6 @@
 import type { LayerProps } from 'react-map-gl/mapbox';
 import type { ExpressionSpecification } from 'mapbox-gl';
-import { STATIONS_SOURCE_ID, STATIONS_SYMBOLS_LAYER_ID } from '../config';
+import { STATIONS_SOURCE_ID, STATIONS_SYMBOLS_LAYER_ID, TRANSITION_DURATION } from '../config';
 
 /**
  * Generate symbol layer configuration for station icons
@@ -18,5 +18,12 @@ export const createSymbolLayerStyle = (filter?: ExpressionSpecification): LayerP
     'icon-size': 1,
     'icon-allow-overlap': true,
     'icon-ignore-placement': true,
+  },
+  paint: {
+    'icon-opacity': 1,
+    'icon-opacity-transition': {
+      duration: TRANSITION_DURATION.LAYER_OPACITY,
+      delay: 0,
+    },
   },
 });

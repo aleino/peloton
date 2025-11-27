@@ -29,3 +29,13 @@ export const STATIONS_CLUSTERS_LAYER_ID = 'stations-clusters';
  * Layer ID for cluster count labels
  */
 export const STATIONS_CLUSTER_COUNT_LAYER_ID = 'stations-cluster-count';
+
+/**
+ * Source ID for Voronoi polygon data
+ */
+export const VORONOI_SOURCE_ID = 'voronoi-source';
+
+/**
+ * Layer ID for Voronoi cell polygons
+ */
+export const VORONOI_LAYER_ID = 'voronoi-layer';

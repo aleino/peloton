@@ -1,5 +1,5 @@
 import { scaleLinear, scaleLog, scaleQuantile, scaleDiverging } from 'd3-scale';
-import { interpolatePiYG, interpolateViridis } from 'd3-scale-chromatic';
+import { interpolateBrBG, interpolateViridis } from 'd3-scale-chromatic';
 import { extent, quantileSorted } from 'd3-array';
 import type { ExpressionSpecification } from 'mapbox-gl';
 
@@ -224,7 +224,7 @@ export function createDivergingColorExpression(
   const p95Value = quantileSorted(sortedValues, 0.95) ?? maxValue;
 
   const maxAbsValue = Math.max(Math.abs(p5Value), Math.abs(p95Value));
-  const scale = scaleDiverging(interpolatePiYG).domain([-maxAbsValue, 0, maxAbsValue]).clamp(true);
+  const scale = scaleDiverging(interpolateBrBG).domain([-maxAbsValue, 0, maxAbsValue]).clamp(true);
 
   const stops = Array.from({ length: NUM_STOPS }, (_, i) => {
     const t = i / (NUM_STOPS - 1);
