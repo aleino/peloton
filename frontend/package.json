@@ -16,6 +16,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
+    "bench": "vitest bench",
     "lint-staged": "lint-staged"
   },
   "dependencies": {

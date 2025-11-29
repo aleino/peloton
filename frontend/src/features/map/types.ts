@@ -27,13 +27,14 @@ export interface ViewState {
 // Map visual settings
 export type MapStyle = 'dark' | 'light' | 'satellite' | 'streets';
 export type Visualization = 'points' | 'voronoi';
+export type ColorScale = 'linear' | 'sqrt' | 'log' | 'quantile' | 'jenks';
 
 // Data filter settings
 export type Direction = 'departures' | 'arrivals' | 'diff';
 export type Metric = 'tripCount' | 'durationAvg' | 'distanceAvg';
 
 // UI state
-export type MenuType = 'style' | 'direction' | 'parameter' | 'visualization';
+export type MenuType = 'style' | 'direction' | 'parameter' | 'visualization' | 'colorScale';
 
 // Re-export UI config types for backward compatibility
 export type {

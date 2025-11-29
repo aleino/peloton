@@ -18,7 +18,7 @@ import {
 import { TRANSITION_DURATION } from '../config';
 import type { MapStyle } from '@/features/map/types';
 import { useAppSelector } from '@/store/hooks';
-import { selectColorScaleType } from '@/features/settings/settings.store';
+import { selectColorScale } from '@/features/map/mapControls.store';
 import type { FlattenedStationFeatureProperties } from '@/features/stations/api/useStationsQuery';
 
 /**
@@ -44,7 +44,7 @@ import type { FlattenedStationFeatureProperties } from '@/features/stations/api/
 export const StationVoronoiLayer = () => {
   const { main: map } = useMap();
   const { style } = useMapControls();
-  const scaleType = useAppSelector(selectColorScaleType);
+  const scaleType = useAppSelector(selectColorScale);
 
   // Track water layer state: ready flag, first water layer ID, and the style it was set up for
   const [waterLayerState, setWaterLayerState] = useState<{
@@ -169,14 +169,14 @@ export const StationVoronoiLayer = () => {
     // Calculate percentiles for linear/log scales to avoid outliers
     // We do this here to pass "clean" min/max to the hook
     const sorted = [...vals].sort((a, b) => a - b);
-    const p5Index = Math.max(0, Math.floor(sorted.length * 0.05));
-    const p95Index = Math.min(sorted.length - 1, Math.ceil(sorted.length * 0.95) - 1);
-    const p5Value = sorted[p5Index] ?? minVal;
-    const p95Value = sorted[p95Index] ?? maxVal;
+    const p1Index = Math.max(0, Math.floor(sorted.length * 0.01));
+    const p99Index = Math.min(sorted.length - 1, Math.ceil(sorted.length * 0.99) - 1);
+    const p1Value = sorted[p1Index] ?? minVal;
+    const p99Value = sorted[p99Index] ?? maxVal;
 
     return {
-      min: p5Value,
-      max: p95Value,
+      min: p1Value,
+      max: p99Value,
       values: vals,
     };
   }, [stationData, propertyName]);

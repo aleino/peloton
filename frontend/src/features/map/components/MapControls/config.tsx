@@ -12,11 +12,16 @@ import {
   Ruler,
   CircleDot,
   Hexagon,
+  TrendingUp,
+  Activity,
+  BarChart3,
+  BarChart,
+  Network,
 } from 'lucide-react';
-import type { MapStyle, Direction, Metric, Visualization } from '../../types';
+import type { MapStyle, Direction, Metric, Visualization, ColorScale } from '../../types';
 
 // Re-export types for convenience (used by menu components)
-export type { MapStyle, Direction, Metric, Visualization };
+export type { MapStyle, Direction, Metric, Visualization, ColorScale };
 
 // Icon sizes
 export const CONTROL_BUTTON_ICON_SIZE = 22;
@@ -94,4 +99,50 @@ export const getMetricOption = (value: Metric): MetricOption => {
 export const getVisualizationOption = (value: Visualization): VisualizationOption => {
   const option = VISUALIZATION_OPTIONS.find((opt) => opt.value === value);
   return option ?? VISUALIZATION_OPTIONS[0]!;
+};
+
+// Color Scales
+export interface ColorScaleOption {
+  value: ColorScale;
+  icon: LucideIcon;
+  label: string;
+  description: string;
+}
+
+export const COLOR_SCALE_OPTIONS: readonly ColorScaleOption[] = [
+  {
+    value: 'linear',
+    icon: TrendingUp,
+    label: 'Linear',
+    description: 'Even distribution across value range',
+  },
+  {
+    value: 'sqrt',
+    icon: Activity,
+    label: 'Square Root',
+    description: 'Moderate compression of high values (good for count data)',
+  },
+  {
+    value: 'log',
+    icon: BarChart3,
+    label: 'Logarithmic',
+    description: 'Strong compression for highly skewed data',
+  },
+  {
+    value: 'quantile',
+    icon: BarChart,
+    label: 'Quantile',
+    description: 'Equal-sized buckets (deciles)',
+  },
+  {
+    value: 'jenks',
+    icon: Network,
+    label: 'Smart Clusters',
+    description: 'Natural data groupings (intelligent breaks)',
+  },
+] as const;
+
+export const getColorScaleOption = (value: ColorScale): ColorScaleOption => {
+  const option = COLOR_SCALE_OPTIONS.find((opt) => opt.value === value);
+  return option ?? COLOR_SCALE_OPTIONS[0]!;
 };

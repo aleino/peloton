@@ -6,12 +6,14 @@ import { StyleMenu } from './StyleMenu';
 import { DirectionMenu } from './DirectionMenu';
 import { MetricMenu } from './MetricMenu';
 import { VisualizationMenu } from './VisualizationMenu';
+import { ColorScaleMenu } from './ColorScaleMenu';
 import { useControlMenus } from './useControlMenus';
 import {
   getStyleOption,
   getDirectionOption,
   getMetricOption,
   getVisualizationOption,
+  getColorScaleOption,
   CONTROL_BUTTON_ICON_SIZE,
 } from './config';
 
@@ -24,13 +26,12 @@ const MENU_TRANSITION_DURATION = 225;
  *
  * Features:
  * - Map style menu (dark, light, satellite, streets)
- * - Direction filter (departures, arrivals, diff)
- * - Trip metric selection (total trips, avg duration, avg distance)
  * - Station visualization (points, voronoi)
+ * - Color scale selection (linear, sqrt, log, quantile)
+ * - Trip metric selection (total trips, avg duration, avg distance)
+ * - Direction filter (departures, arrivals, diff)
  * - Rectangular button design with glassmorphic styling
  * - Expandable submenus with square option buttons
- *
- * Mock data for initial phase - will be connected to actual state later
  */
 export const MapControls = () => {
   const {
@@ -39,17 +40,20 @@ export const MapControls = () => {
     selectedDirection,
     selectedMetric,
     selectedVisualization,
+    selectedColorScale,
     handleMenuToggle,
     handleStyleSelect,
     handleDirectionSelect,
     handleMetricSelect,
     handleVisualizationSelect,
+    handleColorScaleSelect,
   } = useControlMenus();
 
   const StyleIcon = getStyleOption(selectedStyle).icon;
   const DirectionIcon = getDirectionOption(selectedDirection).icon;
   const MetricIcon = getMetricOption(selectedMetric).icon;
   const VisualizationIcon = getVisualizationOption(selectedVisualization).icon;
+  const ColorScaleIcon = getColorScaleOption(selectedColorScale).icon;
 
   return (
     <Styled.Container>
@@ -94,6 +98,30 @@ export const MapControls = () => {
                   <VisualizationMenu
                     selectedVisualization={selectedVisualization}
                     onSelect={handleVisualizationSelect}
+                  />
+                </ControlMenu>
+              </Collapse>
+            </Styled.CollapsedMenuWrapper>
+          </Styled.ButtonWithMenuRow>
+
+          <Styled.ButtonWithMenuRow>
+            <ControlButton
+              icon={<ColorScaleIcon size={CONTROL_BUTTON_ICON_SIZE} />}
+              isOpen={openMenu === 'colorScale'}
+              onClick={() => handleMenuToggle('colorScale')}
+              ariaLabel="Color scale"
+            />
+            <Styled.CollapsedMenuWrapper>
+              <Collapse
+                in={openMenu === 'colorScale'}
+                timeout={MENU_TRANSITION_DURATION}
+                easing={MENU_TRANSITION_EASING}
+                orientation="horizontal"
+              >
+                <ControlMenu label="Color scale">
+                  <ColorScaleMenu
+                    selectedColorScale={selectedColorScale}
+                    onSelect={handleColorScaleSelect}
                   />
                 </ControlMenu>
               </Collapse>

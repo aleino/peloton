@@ -1,5 +1,5 @@
 import { createSlice, createSelector, PayloadAction } from '@reduxjs/toolkit';
-import type { MapStyle, Direction, Metric, Visualization, MenuType } from './types';
+import type { MapStyle, Direction, Metric, Visualization, ColorScale, MenuType } from './types';
 
 /**
  * Redux state for map controls
@@ -8,6 +8,7 @@ export interface MapControlsState {
   // Visual settings
   style: MapStyle;
   visualization: Visualization;
+  colorScale: ColorScale;
 
   // Data settings
   direction: Direction;
@@ -24,6 +25,7 @@ export interface MapControlsState {
 const initialState: MapControlsState = {
   style: 'dark',
   visualization: 'points',
+  colorScale: 'quantile',
   direction: 'departures',
   metric: 'tripCount',
   openMenu: null,
@@ -54,6 +56,15 @@ const mapControlsSlice = createSlice({
      */
     setVisualization: (state, action: PayloadAction<Visualization>) => {
       state.visualization = action.payload;
+      state.openMenu = null;
+    },
+
+    /**
+     * Set color scale type (linear, sqrt, log, quantile)
+     * Closes the menu after selection
+     */
+    setColorScale: (state, action: PayloadAction<ColorScale>) => {
+      state.colorScale = action.payload;
       state.openMenu = null;
     },
 
@@ -104,6 +115,7 @@ const mapControlsSlice = createSlice({
 export const {
   setStyle,
   setVisualization,
+  setColorScale,
   setDirection,
   setMetric,
   toggleMenu,
@@ -119,6 +131,8 @@ export const selectMapStyle = (state: { map: { controls: MapControlsState } }) =
   state.map.controls.style;
 export const selectVisualization = (state: { map: { controls: MapControlsState } }) =>
   state.map.controls.visualization;
+export const selectColorScale = (state: { map: { controls: MapControlsState } }) =>
+  state.map.controls.colorScale;
 export const selectDirection = (state: { map: { controls: MapControlsState } }) =>
   state.map.controls.direction;
 export const selectMetric = (state: { map: { controls: MapControlsState } }) =>
@@ -132,12 +146,14 @@ export const selectMapControls = createSelector(
   [
     (state: { map: { controls: MapControlsState } }) => state.map.controls.style,
     (state: { map: { controls: MapControlsState } }) => state.map.controls.visualization,
+    (state: { map: { controls: MapControlsState } }) => state.map.controls.colorScale,
     (state: { map: { controls: MapControlsState } }) => state.map.controls.direction,
     (state: { map: { controls: MapControlsState } }) => state.map.controls.metric,
   ],
-  (style, visualization, direction, metric) => ({
+  (style, visualization, colorScale, direction, metric) => ({
     style,
     visualization,
+    colorScale,
     direction,
     metric,
   })

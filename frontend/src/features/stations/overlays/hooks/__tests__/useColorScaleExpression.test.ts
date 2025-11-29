@@ -34,6 +34,17 @@ describe('useColorScaleExpression', () => {
     expect(result.current).toEqual(expect.arrayContaining(['interpolate', ['linear']]));
   });
 
+  it('should return sqrt expression', () => {
+    const { result } = renderHook(() =>
+      useColorScaleExpression({
+        ...defaultOptions,
+        scaleType: 'sqrt',
+      })
+    );
+
+    expect(result.current).toEqual(expect.arrayContaining(['interpolate', ['linear']]));
+  });
+
   it('should return log expression', () => {
     const { result } = renderHook(() =>
       useColorScaleExpression({
@@ -89,6 +100,31 @@ describe('useColorScaleExpression', () => {
       useColorScaleExpression({
         ...defaultOptions,
         isDiverging: true,
+        // values missing
+      })
+    );
+
+    expect(result.current).toBe('#cccccc');
+  });
+
+  it('should return jenks expression', () => {
+    const values = [1, 5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 80, 100];
+    const { result } = renderHook(() =>
+      useColorScaleExpression({
+        ...defaultOptions,
+        scaleType: 'jenks',
+        values,
+      })
+    );
+
+    expect(result.current).toEqual(expect.arrayContaining(['step']));
+  });
+
+  it('should return fallback for jenks without values', () => {
+    const { result } = renderHook(() =>
+      useColorScaleExpression({
+        ...defaultOptions,
+        scaleType: 'jenks',
         // values missing
       })
     );

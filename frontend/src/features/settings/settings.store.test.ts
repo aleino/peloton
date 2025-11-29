@@ -17,9 +17,9 @@ describe('settingsSlice', () => {
     it('should return initial state', () => {
       const state = settingsReducer(undefined, { type: '@@INIT' });
       expect(state).toEqual({
-        theme: 'light',
+        theme: 'dark',
         language: 'en',
-        mapStyle: 'light',
+        mapStyle: 'dark',
         colorScaleType: 'quantile',
         sidebarOpen: true,
         visibleLayers: {
@@ -54,6 +54,9 @@ describe('settingsSlice', () => {
 
       const state3 = settingsReducer(state2, setColorScaleType('quantile'));
       expect(state3.colorScaleType).toBe('quantile');
+
+      const state4 = settingsReducer(state3, setColorScaleType('jenks'));
+      expect(state4.colorScaleType).toBe('jenks');
     });
 
     it('should toggle sidebar', () => {

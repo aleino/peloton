@@ -5,6 +5,7 @@ import {
   createLogColorExpression,
   createQuantileColorExpression,
   createDivergingColorExpression,
+  createJenksColorExpression,
 } from './colorScales';
 import { interpolateViridis } from 'd3-scale-chromatic';
 import type { ExpressionSpecification } from 'mapbox-gl';
@@ -371,6 +372,103 @@ describe('colorScales', () => {
       // The color at zero should be light (whitish) - RdBu's midpoint
       const zeroColor = expression[zeroColorIndex] as string;
       expect(zeroColor).toBeTruthy();
+    });
+  });
+
+  describe('createJenksColorExpression', () => {
+    const inputValue: ExpressionSpecification = ['get', 'value'];
+
+    it('should create step expression with Jenks breaks', () => {
+      const values = [1, 2, 5, 10, 15, 20, 50, 100, 150, 200];
+      const expression = createJenksColorExpression(values, inputValue, 5);
+
+      expect(Array.isArray(expression)).toBe(true);
+      if (Array.isArray(expression)) {
+        expect(expression[0]).toBe('step');
+        expect(expression[1]).toEqual(inputValue);
+        // Should have base color + breaks and colors
+        expect(expression.length).toBeGreaterThan(3);
+      }
+    });
+
+    it('should handle empty values', () => {
+      const expression = createJenksColorExpression([], inputValue);
+      expect(expression).toBe('#cccccc');
+    });
+
+    it('should handle single value', () => {
+      const expression = createJenksColorExpression([42], inputValue);
+      expect(typeof expression).toBe('string');
+      expect(expression).toBe(interpolateViridis(0.5));
+    });
+
+    it('should handle all same values', () => {
+      const values = [100, 100, 100, 100, 100];
+      const expression = createJenksColorExpression(values, inputValue);
+      expect(typeof expression).toBe('string');
+      expect(expression).toBe(interpolateViridis(0.5));
+    });
+
+    it('should filter out invalid values', () => {
+      const values = [1, 2, NaN, 5, Infinity, 10, -Infinity, 20];
+      const expression = createJenksColorExpression(values, inputValue);
+      expect(Array.isArray(expression)).toBe(true);
+    });
+
+    it('should create correct number of color classes', () => {
+      const values = Array.from({ length: 100 }, (_, i) => i + 1);
+      const numClasses = 7;
+      const expression = createJenksColorExpression(values, inputValue, numClasses);
+
+      if (Array.isArray(expression)) {
+        // Count the number of colors in the expression
+        // Format: ['step', input, color0, break1, color1, break2, color2, ...]
+        // Colors are at positions: 2, 4, 6, 8, ...
+        const colorCount = Math.floor((expression.length - 2) / 2) + 1;
+        expect(colorCount).toBeLessThanOrEqual(numClasses);
+      }
+    });
+
+    it('should use Viridis color scale', () => {
+      const values = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+      const expression = createJenksColorExpression(values, inputValue, 5);
+
+      if (Array.isArray(expression)) {
+        // Extract colors from expression (at positions 2, 4, 6, ...)
+        const colors: string[] = [];
+        for (let i = 2; i < expression.length; i += 2) {
+          if (typeof expression[i] === 'string') {
+            colors.push(expression[i] as string);
+          }
+        }
+
+        // All colors should be hex strings
+        expect(colors.every((c) => /^#[0-9a-f]{6}$/i.test(c))).toBe(true);
+      }
+    });
+
+    it('should trim extreme outliers (5th and 95th percentiles)', () => {
+      // Dataset with extreme outliers
+      const values = [
+        1, // Bottom outlier
+        ...Array.from({ length: 100 }, (_, i) => 50 + i), // Main data 50-149
+        9999, // Top outlier
+      ];
+
+      const expression = createJenksColorExpression(values, inputValue, 5);
+
+      if (Array.isArray(expression)) {
+        // Extract break values (at positions 3, 5, 7, ...)
+        const breaks: number[] = [];
+        for (let i = 3; i < expression.length; i += 2) {
+          if (typeof expression[i] === 'number') {
+            breaks.push(expression[i] as number);
+          }
+        }
+
+        // Breaks should not include extreme outliers
+        expect(breaks.every((b) => b > 1 && b < 9999)).toBe(true);
+      }
     });
   });
 });

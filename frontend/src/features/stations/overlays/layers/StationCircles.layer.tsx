@@ -10,7 +10,7 @@ import type {
 import type { ExpressionSpecification } from 'mapbox-gl';
 import { STATIONS_SOURCE_ID, STATIONS_CIRCLES_LAYER_ID } from '@/features/stations/config/layers';
 import { useAppSelector } from '@/store/hooks';
-import { selectColorScaleType } from '@/features/settings/settings.store';
+import { selectColorScale } from '@/features/map/mapControls.store';
 
 /**
  * Circle layer component for station markers
@@ -29,9 +29,9 @@ import { selectColorScaleType } from '@/features/settings/settings.store';
 export const StationCirclesLayer = () => {
   const geojsonData = useMapSource<FlattenedStationFeatureCollection>(STATIONS_SOURCE_ID);
 
-  // Read metric and direction from map controls
+  // Read metric, direction, and color scale from map controls
   const { metric, direction } = useMapControls();
-  const scaleType = useAppSelector(selectColorScaleType);
+  const scaleType = useAppSelector(selectColorScale);
 
   // Determine which property to use for coloring
   const propertyName = getStationPropertyName(metric, direction);
@@ -59,14 +59,14 @@ export const StationCirclesLayer = () => {
 
     // Calculate percentiles for linear/log scales to avoid outliers
     const sorted = [...vals].sort((a, b) => a - b);
-    const p5Index = Math.max(0, Math.floor(sorted.length * 0.05));
-    const p95Index = Math.min(sorted.length - 1, Math.ceil(sorted.length * 0.95) - 1);
-    const p5Value = sorted[p5Index] ?? minVal;
-    const p95Value = sorted[p95Index] ?? maxVal;
+    const p1Index = Math.max(0, Math.floor(sorted.length * 0.01));
+    const p99Index = Math.min(sorted.length - 1, Math.ceil(sorted.length * 0.99) - 1);
+    const p1Value = sorted[p1Index] ?? minVal;
+    const p99Value = sorted[p99Index] ?? maxVal;
 
     return {
-      min: p5Value,
-      max: p95Value,
+      min: p1Value,
+      max: p99Value,
       values: vals,
     };
   }, [geojsonData, propertyName]);

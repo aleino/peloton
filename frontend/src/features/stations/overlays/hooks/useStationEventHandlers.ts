@@ -87,11 +87,19 @@ export const useStationEventHandlers = (
       }
 
       const feature = e.features?.[0];
-      const properties = feature?.properties;
       const featureId = feature?.id;
-      const stationId = properties?.['stationId'] as string | undefined;
+      const stationId = feature?.properties?.['stationId'];
 
-      if (!feature || !properties || featureId === undefined || !stationId) {
+      // Extract coordinates - support both Point and Polygon geometries
+      let coordinates: [number, number] | undefined;
+      if (feature?.geometry?.type === 'Point') {
+        coordinates = feature.geometry.coordinates as [number, number];
+      } else if (feature?.geometry?.type === 'Polygon') {
+        // For Voronoi polygons, use the hover location
+        coordinates = [e.lngLat.lng, e.lngLat.lat];
+      }
+
+      if (!stationId || !coordinates || featureId === undefined) {
         return;
       }
 
@@ -111,19 +119,7 @@ export const useStationEventHandlers = (
         lastHoveredFeatureIdRef.current = featureId;
         map.getCanvas().style.cursor = 'pointer';
 
-        // Build station data object
-        // Extract coordinates - support both Point and Polygon geometries
-        let coordinates: [number, number];
-        if (feature.geometry.type === 'Point') {
-          coordinates = feature.geometry.coordinates as [number, number];
-        } else if (feature.geometry.type === 'Polygon') {
-          // For Voronoi polygons, use the hover location or polygon centroid
-          coordinates = [e.lngLat.lng, e.lngLat.lat];
-        } else {
-          // Fallback for unexpected geometry types
-          return;
-        }
-
+        console.log('Setting hovered station:', stationId);
         setHoveredStation({
           stationId,
           coordinates,

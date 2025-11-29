@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type ColorScaleType = 'linear' | 'log' | 'quantile';
+export type ColorScaleType = 'linear' | 'sqrt' | 'log' | 'quantile' | 'jenks';
 
 export interface SettingsState {
   theme: 'light' | 'dark' | 'system';

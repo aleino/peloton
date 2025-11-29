@@ -79,6 +79,8 @@ export interface FlattenedStationFeatureCollection {
   features: FlattenedStationFeature[];
 }
 
+const VALID_ID_MAX_LENGTH = 5;
+
 /**
  * Hook to fetch all stations as GeoJSON with flattened metrics for Mapbox
  *
@@ -112,7 +114,15 @@ export const useStationsQuery = (options: useStationsQueryOptions = {}) => {
     queryKey: stationsQueryKeys.list(bounds),
     queryFn: async () => {
       const data = await fetchStations({ ...(bounds && { bounds }) });
-      return flattenStationMetrics(data);
+
+      // TODO: Move to backend data pipeline
+      const filteredData = {
+        ...data,
+        // Remove Honkasuo station with invalid ID
+        features: data.features.filter((f) => f.id.length < VALID_ID_MAX_LENGTH),
+      };
+
+      return flattenStationMetrics(filteredData);
     },
     enabled,
     staleTime: 5 * 60 * 1000, // 5 minutes
