@@ -209,4 +209,7 @@ env/
 db/.env
 db/backups/
 
+# Generated route files
+frontend/public/routes/
+
 .DS_Store

@@ -1,0 +1,18 @@
+# Valhalla tile data (stored in Docker volumes)
+valhalla_tiles/
+*.tar
+
+# Large OSM data files (don't commit to git)
+data/*.osm.pbf
+data/*.osm
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+
+# Keep directory structure
+!data/.gitkeep

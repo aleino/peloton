@@ -1,0 +1,63 @@
+{
+  "mjolnir": {
+    "tile_dir": "/custom_files/valhalla_tiles",
+    "admin": "/custom_files/valhalla_tiles/admins.sqlite",
+    "timezone": "/custom_files/valhalla_tiles/tz_world.sqlite",
+    "logging": {
+      "type": "std_out",
+      "color": true
+    }
+  },
+  "httpd": {
+    "service": {
+      "listen": "tcp://*:8002",
+      "loopback": "ipc:///tmp/loopback",
+      "interrupt": "ipc:///tmp/interrupt"
+    }
+  },
+  "loki": {
+    "service": {
+      "proxy": "ipc:///tmp/loki"
+    },
+    "logging": {
+      "type": "std_out",
+      "color": true
+    }
+  },
+  "thor": {
+    "service": {
+      "proxy": "ipc:///tmp/thor"
+    },
+    "logging": {
+      "type": "std_out",
+      "color": true
+    }
+  },
+  "odin": {
+    "service": {
+      "proxy": "ipc:///tmp/odin"
+    },
+    "logging": {
+      "type": "std_out",
+      "color": true
+    }
+  },
+  "service_limits": {
+    "bicycle": {
+      "max_distance": 50000.0,
+      "max_locations": 50,
+      "max_matrix_distance": 100000.0,
+      "max_matrix_locations": 50
+    }
+  },
+  "costing_options": {
+    "bicycle": {
+      "bicycle_type": "Road",
+      "cycling_speed": 15.0,
+      "use_roads": 0.1,
+      "use_hills": 0.25,
+      "use_ferry": 0.2,
+      "avoid_bad_surfaces": 0.85
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "description": "Helsinki Metropolitan Area (Helsinki, Espoo, Vantaa)",
+  "bbox": {
+    "min_lon": 24.6,
+    "min_lat": 60.0,
+    "max_lon": 25.3,
+    "max_lat": 60.5
+  },
+  "notes": {
+    "coverage": "Covers all HSL bike stations + buffer for routing",
+    "stations_range": "Lat: 60.15-60.30, Lon: 24.80-25.15",
+    "buffer": "~20km buffer for alternate routes",
+    "osmium_format": "24.6,60.0,25.3,60.5"
+  }
+}

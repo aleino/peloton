@@ -1,0 +1,17 @@
+# Database connectivity
+psycopg2-binary==2.9.9
+
+# HTTP client for Valhalla API
+requests==2.31.0
+
+# Polyline encoding/decoding
+polyline==2.0.2
+
+# Environment variable management
+python-dotenv==1.0.0
+
+# Optional: Progress bars
+tqdm==4.66.1
+
+# Testing
+pytest==7.4.3
