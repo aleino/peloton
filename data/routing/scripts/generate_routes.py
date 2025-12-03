@@ -84,6 +84,7 @@ class RoutePipeline:
         self.bidirectional_map: Dict[str, RouteStatistics] = {}
         self.per_station_routes: Dict[str, List[RouteStatistics]] = {}
         self.global_routes: List[RouteStatistics] = []
+        self.aggregate_routes: Dict[str, List[RouteStatistics]] = {}
 
     def run(self):
         """
@@ -230,6 +231,32 @@ class RoutePipeline:
             logger.info(f"  Selected {total_individual} individual station routes")
         else:
             logger.info("Individual station routes disabled")
+
+        # Get per-station aggregate routes if enabled
+        if gen_config.should_generate_aggregate():
+            logger.info("Selecting per-station aggregate routes...")
+            assert (
+                gen_config.per_station_aggregate_strategy is not None
+            ), "per_station_aggregate_strategy should not be None when should_generate_aggregate() is True"
+            aggregate_routes = self._get_routes_per_station(
+                gen_config.per_station_aggregate_strategy
+            )
+            self.aggregate_routes = aggregate_routes
+
+            # Add to union
+            for station_id, routes in aggregate_routes.items():
+                for route in routes:
+                    key = (route.departure_station_id, route.return_station_id)
+                    if key not in all_routes_dict:
+                        all_routes_dict[key] = route
+
+            total_aggregate = sum(len(routes) for routes in aggregate_routes.values())
+            logger.info(
+                f"  Selected {total_aggregate} aggregate routes from all stations"
+            )
+        else:
+            self.aggregate_routes = {}
+            logger.info("Per-station aggregate routes disabled")
 
         # Convert to list and deduplicate bidirectional
         all_routes = list(all_routes_dict.values())
@@ -400,6 +427,9 @@ class RoutePipeline:
                 r for r in generated_routes if r.route_key in global_route_keys
             ]
 
+            assert (
+                self.config.generation.global_strategy is not None
+            ), "global_strategy must not be None when generating global routes"
             filename = self.writer.write_global_routes(
                 global_generated, strategy=self.config.generation.global_strategy
             )
@@ -417,6 +447,23 @@ class RoutePipeline:
             created_files.extend(station_files)
             logger.info(f"  Wrote {len(station_files)} station files")
 
+        # Write aggregate routes file if enabled
+        if self.config.generation.should_generate_aggregate():
+            logger.info("Writing per-station aggregate file...")
+            assert (
+                self.config.generation.per_station_aggregate_strategy is not None
+            ), "per_station_aggregate_strategy must not be None when generating aggregate routes"
+            filename = self.writer.write_aggregate_routes(
+                generated_routes,
+                self.aggregate_routes,
+                strategy=self.config.generation.per_station_aggregate_strategy,
+            )
+            created_files.append(filename)
+            total_routes = sum(len(routes) for routes in self.aggregate_routes.values())
+            logger.info(
+                f"  Wrote aggregate file with {total_routes} routes from {len(self.aggregate_routes)} stations to {filename}"
+            )
+
         # Write manifest
         logger.info("Writing manifest...")
         gen_stats = self.generator.get_statistics()
@@ -429,6 +476,11 @@ class RoutePipeline:
             "individual_strategy": (
                 str(self.config.generation.individual_strategy)
                 if self.config.generation.individual_strategy
+                else None
+            ),
+            "aggregate_strategy": (
+                str(self.config.generation.per_station_aggregate_strategy)
+                if self.config.generation.per_station_aggregate_strategy
                 else None
             ),
             "total_routes": len(generated_routes),

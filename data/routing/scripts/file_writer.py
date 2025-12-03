@@ -10,7 +10,7 @@ from datetime import datetime, UTC
 from collections import defaultdict
 
 from models import RouteGeometry, RouteStatistics
-from config import OutputConfig
+from config import OutputConfig, RouteSelectionStrategy
 
 logger = logging.getLogger(__name__)
 
@@ -122,7 +122,7 @@ class RouteFileWriter:
     def write_global_routes(
         self,
         routes: List[RouteGeometry],
-        strategy: "RouteSelectionStrategy",  # Forward reference
+        strategy: RouteSelectionStrategy,
     ) -> str:
         """
         Write global routes file with new naming convention.
@@ -138,8 +138,12 @@ class RouteFileWriter:
         from config import RouteSelectionType
 
         if strategy.selection_type == RouteSelectionType.TOP_N:
+            assert strategy.top_n is not None, "top_n must be set for TOP_N strategy"
             filename = f"top-{strategy.top_n}.json.gz"
         else:  # PERCENTAGE
+            assert (
+                strategy.coverage_percentage is not None
+            ), "coverage_percentage must be set for PERCENTAGE strategy"
             pct_int = int(strategy.coverage_percentage)
             filename = f"top-{pct_int}pct.json.gz"
 
@@ -175,6 +179,97 @@ class RouteFileWriter:
         file_size = filepath.stat().st_size
         logger.info(
             f"Wrote {len(routes)} global routes to {filepath.name} "
+            f"({file_size:,} bytes)"
+        )
+
+        return filename
+
+    def write_aggregate_routes(
+        self,
+        routes: List[RouteGeometry],
+        aggregate_per_station: Dict[str, List[RouteStatistics]],
+        strategy: RouteSelectionStrategy,
+    ) -> str:
+        """
+        Write per-station aggregate routes file.
+
+        Args:
+            routes: List of route geometries (all routes)
+            aggregate_per_station: Dict of station_id -> routes to include
+            strategy: Route selection strategy used
+
+        Returns:
+            Filename of created file
+        """
+        # Determine filename based on strategy
+        from config import RouteSelectionType
+
+        if strategy.selection_type == RouteSelectionType.TOP_N:
+            assert strategy.top_n is not None, "top_n must be set for TOP_N strategy"
+            filename = f"per-station-top-{strategy.top_n}.json.gz"
+        else:  # PERCENTAGE
+            assert (
+                strategy.coverage_percentage is not None
+            ), "coverage_percentage must be set for PERCENTAGE strategy"
+            pct_int = int(strategy.coverage_percentage)
+            filename = f"per-station-{pct_int}pct.json.gz"
+
+        filepath = self.config.base_dir / filename
+
+        # Filter and organize routes by station
+        route_lookup = {r.route_key: r for r in routes}
+        stations_data = []
+
+        for station_id in sorted(aggregate_per_station.keys()):
+            station_routes_stats = aggregate_per_station[station_id]
+            station_routes_geom = []
+
+            for route_stat in station_routes_stats:
+                # Create route key
+                key = f"{min(route_stat.departure_station_id, route_stat.return_station_id)}-{max(route_stat.departure_station_id, route_stat.return_station_id)}"
+
+                if key in route_lookup:
+                    route = route_lookup[key]
+                    station_routes_geom.append(
+                        {
+                            "to": route_stat.return_station_id,
+                            "polyline": route.polyline,
+                            "distance_km": round(route.distance_km, 2),
+                            "duration_min": round(route.duration_minutes, 1),
+                            "trip_count": route_stat.trip_count,
+                            "bidirectional": True,
+                        }
+                    )
+
+            if station_routes_geom:
+                stations_data.append(
+                    {
+                        "station_id": station_id,
+                        "routes": station_routes_geom,
+                        "count": len(station_routes_geom),
+                    }
+                )
+
+        # Convert to JSON format
+        data = {
+            "generation_strategy": {
+                "type": strategy.selection_type.value,
+                "value": (
+                    strategy.top_n
+                    if strategy.selection_type.value == "top_n"
+                    else strategy.coverage_percentage
+                ),
+            },
+            "stations": stations_data,
+            "total_stations": len(stations_data),
+            "total_routes": sum(s["count"] for s in stations_data),
+        }
+
+        self._write_gzipped_json(filepath, data)
+
+        file_size = filepath.stat().st_size
+        logger.info(
+            f"Wrote {len(stations_data)} stations with aggregate routes to {filepath.name} "
             f"({file_size:,} bytes)"
         )
 
