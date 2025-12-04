@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Navigation2, Home } from 'lucide-react';
+import { Navigation2, Home, Square } from 'lucide-react';
 import { useAppDispatch } from '@/store/hooks';
 import { clearStationSelections } from '@/features/stations/stations.store';
 import { MAP_ANIMATION, INITIAL_VIEW_STATE } from '../../map.config';
@@ -101,6 +101,19 @@ export const MapZoomControls = () => {
     });
   };
 
+  const handleToggleTilt = () => {
+    if (!main) {
+      return;
+    }
+    const map = main.getMap();
+    const currentPitch = map.getPitch();
+
+    map.easeTo({
+      pitch: currentPitch < 10 ? 50 : 0,
+      duration: MAP_ANIMATION.compassDuration,
+    });
+  };
+
   return (
     <Styled.Container data-testid="map-zoom-controls-container">
       {/* Primary zoom controls */}
@@ -125,6 +138,21 @@ export const MapZoomControls = () => {
           data-testid="home-button"
         >
           <Home size={20} />
+        </Styled.SecondaryButton>
+
+        <Styled.SecondaryButton
+          onClick={handleToggleTilt}
+          aria-label="Toggle map tilt"
+          data-testid="tilt-button"
+        >
+          <Square
+            size={20}
+            style={{
+              transform: 'perspective(20px) rotateX(30deg)',
+              transformOrigin: 'center',
+              willChange: 'transform',
+            }}
+          />
         </Styled.SecondaryButton>
 
         <Styled.SecondaryButton
